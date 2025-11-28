@@ -29,7 +29,7 @@ class KtorRemoteBookDataSource(
                 parameter("q", query)
                 parameter("limit", resultLimit)
                 parameter("language", "eng")
-                parameter("fields", "key,title,author_name,author_key,cover_edition,cover_i,ratings_average,ratings_count,number_of_pages_median,edition_count")
+                parameter("fields", "key,title,author_name,author_key,cover_edition_key,cover_i,ratings_average,ratings_count,first_publish_year,language,number_of_pages_median,edition_count")
             }
         }
     }

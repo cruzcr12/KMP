@@ -4,6 +4,15 @@
     <string name="close_hint">Clear search</string>
     <string name="search_results">Search Results</string>
     <string name="favorites">Favorites</string>
+    <string name="book_cover">Book cover</string>
+    <string name="rating">Rating</string>
+    <string name="pages">Pages</string>
+    <string name="languages">Languages</string>
+    <string name="synopsis">Synopsis</string>
+    <string name="description_unavailable">Description not available.</string>
+    <string name="go_back">Go back</string>
+    <string name="mark_as_favorite">Mark as favorite</string>
+    <string name="remove_from_favorites">Remove from favorites</string>
     <string name="no_search_results">Oops, there are not any books matching your search query.</string>
     <string name="no_favorite_books">You haven't saved any favorite books yet.</string>
     <string name="error_unknown">Oops, something went wrong.</string>
