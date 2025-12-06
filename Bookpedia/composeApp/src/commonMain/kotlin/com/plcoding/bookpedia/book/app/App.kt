@@ -47,7 +47,14 @@ fun App() {
             navigation<Route.BookGraph>(
                 startDestination = Route.BookList
             ){
-                composable<Route.BookList> {
+                composable<Route.BookList>(
+                    exitTransition = {
+                        slideOutHorizontally()
+                    },
+                    popEnterTransition = {
+                        slideInHorizontally()
+                    }
+                ) {
                     // Fetches a VM scoped to this screen. When you leave the screen, the VM is cleared
                     val viewModel = koinViewModel<BookListViewModel>()
                     // Fetches a VM scoped to the parent graph. This allows the data to persist even when
@@ -69,7 +76,14 @@ fun App() {
                         }
                     )
                 }
-                composable<Route.BookDetail> {
+                composable<Route.BookDetail>(
+                    enterTransition = { slideInHorizontally{ initialOffset ->
+                            initialOffset
+                    } },
+                    exitTransition = { slideOutHorizontally { initialOffset ->
+                        initialOffset
+                    } }
+                ) {
                     // Because this screen is inside the same BookGraph, it retrieves the exact same
                     // instance of SelectedBookViewModel that the List screen used.
                     val selectedBookViewModel =

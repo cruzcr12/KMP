@@ -1,5 +1,6 @@
 package com.plcoding.bookpedia.book.data.database
 
+import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
@@ -11,6 +12,7 @@ import androidx.room.TypeConverters
 @TypeConverters( //Specify the type converters that you want to use in the database
     StringListTypeConverter::class
 )
+@ConstructedBy(BookDatabaseConstructor::class)
 abstract class FavoriteBookDatabase: RoomDatabase() {
     abstract val favoriteBookDao: FavoriteBookDao
 
