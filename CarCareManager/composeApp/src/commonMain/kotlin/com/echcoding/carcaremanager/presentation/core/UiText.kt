@@ -1,4 +1,4 @@
-package com.echcoding.carcaremanager.core.presentation
+package com.echcoding.carcaremanager.presentation.core
 
 import androidx.compose.runtime.Composable
 import org.jetbrains.compose.resources.StringResource

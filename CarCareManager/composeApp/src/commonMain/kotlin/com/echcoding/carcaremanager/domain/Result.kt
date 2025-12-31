@@ -1,8 +1,8 @@
-package com.echcoding.carcaremanager.core.domain
+package com.echcoding.carcaremanager.domain
 
 sealed interface Result<out D, out E: Error> {
     data class Success<out D>(val data: D): Result<D, Nothing>
-    data class Error<out E: com.echcoding.carcaremanager.core.domain.Error>(val error: E):
+    data class Error<out E: com.echcoding.carcaremanager.domain.Error>(val error: E):
         Result<Nothing, E>
 }
 

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string name="app_name">Car Care Manager</string>
+    <string name="no_vehicles_registered">No vehicles registered</string>
+    <string name="no_vehicle_selected">No vehicle selected</string>
+    <string name="add_first_vehicle">Add your first vehicle to get started</string>
+    <string name="my_vehicles">My Vehicles</string>
+    <string name="add_new_vehicle">Add New Vehicle</string>
+    <string name="active">Active</string>
+    <string name="odometer">Odometer</string>
+    <string name="vehicles">Vehicles</string>
+    <string name="services">Services</string>
+    <string name="history">History</string>
+    <string name="edit_vehicle">Edit Vehicle</string>
+    <string name="new_vehicle">New Vehicle</string>
+    <string name="back">Back</string>
+    <string name="vehicle_name">Vehicle Nickname</string>
+    <string name="vehicle_name_placeholder">e.g. My Daily Driver</string>
+    <string name="year">Year</string>
+    <string name="year_placeholder">2004</string>
+    <string name="make">Make</string>
+    <string name="make_placeholder">e.g. Toyota</string>
+    <string name="model">Model</string>
+    <string name="model_placeholder">e.g. Rav4</string>
+    <string name="license_plate">License Plate</string>
+    <string name="license_plate_placeholder">e.g. ABC-123</string>
+    <string name="fuel_type">Fuel Type</string>
+
+</resources>
