@@ -1,4 +1,4 @@
-package com.echcoding.carcaremanager.presentation.navigation
+package com.echcoding.carcaremanager.presentation.core.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

@@ -7,12 +7,14 @@ sealed interface Route {
     data object CarAppGraph : Route
 
     @Serializable
-    data object VehicleGraph : Route
-    
-    @Serializable
     data object VehicleList : Route
 
     @Serializable
     data object AddVehicle : Route
 
+    @Serializable
+    data object ServiceList : Route
+
+    @Serializable
+    data object AddService : Route
 }

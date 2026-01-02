@@ -31,9 +31,12 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun AddNewVehicleButton(onClick: () -> Unit) {
+fun AddNewVehicleButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
     val stroke = Stroke(
-        width = 2f,
+        width = 3f,
         pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
     )
     Box(

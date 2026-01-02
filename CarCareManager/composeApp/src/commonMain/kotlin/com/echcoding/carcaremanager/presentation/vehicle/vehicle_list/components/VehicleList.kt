@@ -46,10 +46,13 @@ fun VehicleList(
             )
         }
 
+        /*
         item {
             AddNewVehicleButton(onClick = onAddVehicle)
             Spacer(modifier = Modifier.height(20.dp))
         }
+        */
+
     }
 }
 

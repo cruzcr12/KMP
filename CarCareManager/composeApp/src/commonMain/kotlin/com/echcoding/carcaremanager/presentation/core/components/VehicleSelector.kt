@@ -1,4 +1,4 @@
-package com.echcoding.carcaremanager.presentation.navigation
+package com.echcoding.carcaremanager.presentation.core.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background

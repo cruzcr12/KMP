@@ -22,8 +22,10 @@ import androidx.navigation.compose.rememberNavController
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_detail.VehicleDetailScreenRoot
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_detail.VehicleDetailState
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.VehicleListScreenRoot
+import com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.VehicleListViewModel
 import com.echcoding.carcaremanager.theme.AppTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 @Preview
@@ -34,22 +36,32 @@ fun App() {
         // The NavHost is a container that displays the current screen based on the navigation state
         NavHost(
             navController = navController,
-            startDestination = Route.VehicleGraph
+            startDestination = Route.CarAppGraph
         ) {
             // Group related screens in a navigation graph
             // This is important for shared view models between the screens
-            navigation<Route.VehicleGraph>(
+            navigation<Route.CarAppGraph>(
                 startDestination = Route.VehicleList
             ) {
                 composable<Route.VehicleList>(
                     exitTransition = { slideOutHorizontally() + fadeOut() },
                     popEnterTransition = { slideInHorizontally() + fadeIn() }
                 ) {
+                    // Fetches a VM scoped to this screen. When you leave the screen, the VM is cleared
+                    val viewModel = koinViewModel<VehicleListViewModel>()
+                    // Fetches a VM scoped to the parent graph. This allows the data to persist across screens
+
+
+
                     VehicleListScreenRoot(
+                        viewModel = viewModel,
                         onAddVehicle = {
                             navController.navigate(
                                 Route.AddVehicle
                             )
+                        },
+                        onSelectVehicle = {
+
                         }
                     )
                 }

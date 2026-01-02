@@ -1,4 +1,4 @@
-package com.echcoding.carcaremanager.presentation.navigation
+package com.echcoding.carcaremanager.presentation.core.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -24,7 +25,13 @@ import com.echcoding.carcaremanager.presentation.core.RoyalBlue
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun TabMenuItem(label: String, icon: androidx.compose.ui.graphics.vector.ImageVector, isSelected: Boolean) {
+fun TabMenuItem(
+    label: String,
+    icon: ImageVector,
+    isSelected: Boolean,
+    onClick: () -> Unit = {},
+    modifier: Modifier = Modifier
+    ) {
     val color = if (isSelected) RoyalBlue else PaleSky
     Column(
         modifier = Modifier.padding(top = 12.dp),
@@ -57,5 +64,5 @@ fun TabMenuItem(label: String, icon: androidx.compose.ui.graphics.vector.ImageVe
 @Preview(showBackground = true)
 @Composable
 fun TabMenuItemPreview(){
-    TabMenuItem("Services", Icons.Default.Build, false)
+    TabMenuItem("Services", Icons.Default.Build, true)
 }

@@ -2,6 +2,8 @@ package com.echcoding.carcaremanager.presentation.vehicle.vehicle_list
 
 import com.echcoding.carcaremanager.domain.model.FuelType
 import com.echcoding.carcaremanager.domain.model.OdometerUnit
+import com.echcoding.carcaremanager.domain.model.Vehicle
+import com.echcoding.carcaremanager.presentation.core.UiText
 
 /**
  * The UI in this project will use MVI architecture.
@@ -9,14 +11,10 @@ import com.echcoding.carcaremanager.domain.model.OdometerUnit
  * It bundles the state with all the actions that can be made in the View
  */
 data class VehicleListState(
-    val id: String? = null,
-    val name: String = "",
-    val maker: String = "",
-    val model: String = "",
-    val licensePlate: String = "",
-    val year: String = "",
-    val fuelType: FuelType = FuelType.GAS,
-    val odometer: String = "",
-    val odometerUnit: OdometerUnit = OdometerUnit.KILOMETERS,
-    val isActive: Boolean = false
+    val selectedVehicle: Vehicle? = null,
+    val vehicles: List<Vehicle> = emptyList(),
+    val isActive: Boolean = false,
+    val selectedTabIndex: Int = 0,
+    val isLoading: Boolean = false, // determine if the list of vehicles is being fetched
+    val errorMessage: UiText? = null, // to display any error when loading the list of vehicles
 )
