@@ -58,7 +58,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun VehicleListScreenRoot(
     viewModel: VehicleListViewModel = koinViewModel(),
     onAddVehicle: () -> Unit,
-    onSelectVehicle: () -> Unit
+    onSelectVehicle: (Vehicle) -> Unit
 ){
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -67,7 +67,7 @@ fun VehicleListScreenRoot(
         onAction = { action ->
             when(action){
                 is VehicleListAction.OnAddVehicleClick -> onAddVehicle()
-                is VehicleListAction.OnSelectVehicleClick -> onSelectVehicle()
+                is VehicleListAction.OnSelectVehicleClick -> onSelectVehicle(action.vehicle)
                 else -> Unit
             }
             // Forward action to ViewModel
@@ -128,7 +128,7 @@ private fun VehicleListScreen(
                     }
                     // History Tab
                     Tab(
-                        selected = state.selectedTabIndex == 0,
+                        selected = state.selectedTabIndex == 1,
                         onClick = { onAction(VehicleListAction.OnTabSelected(1)) },
                         modifier = Modifier.weight(1f)
                     ){
@@ -136,7 +136,7 @@ private fun VehicleListScreen(
                     }
                     // Vehicles Tab
                     Tab(
-                        selected = state.selectedTabIndex == 0,
+                        selected = state.selectedTabIndex == 2,
                         onClick = { onAction(VehicleListAction.OnTabSelected(2)) },
                         modifier = Modifier.weight(1f)
                     ){
@@ -243,7 +243,7 @@ private fun VehicleListScreen(
                                     VehicleList(
                                         vehicles = state.vehicles,
                                         onAddVehicle = { onAction(VehicleListAction.OnAddVehicleClick) },
-                                        onVehicleClick = { },
+                                        onVehicleClick = { onAction(VehicleListAction.OnSelectVehicleClick(it)) },
                                         padding = innerPadding,
                                         modifier = modifier,
                                         scrollState = vehiclesListState

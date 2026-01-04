@@ -1,7 +1,7 @@
 package com.echcoding.carcaremanager.domain.model
 
 data class Vehicle(
-    val id: String,
+    val id: Int,
     val name: String,
     val maker: String,
     val model: String,

@@ -1,6 +1,8 @@
 package com.echcoding.carcaremanager.di
 
+import com.echcoding.carcaremanager.presentation.vehicle.vehicle_detail.VehicleDetailViewModel
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.VehicleListViewModel
+import com.echcoding.carcaremanager.presentation.vehicle.vehicle_selected.SelectedVehicleViewModel
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
@@ -32,6 +34,6 @@ val sharedModule = module {
     //single { get<FavoriteBookDatabase>().favoriteBookDao }
 
     viewModelOf(::VehicleListViewModel)
-    //viewModelOf(::BookDetailViewModel)
-    //viewModelOf(::SelectedBookViewModel)
+    viewModelOf(::VehicleDetailViewModel)
+    viewModelOf(::SelectedVehicleViewModel)
 }

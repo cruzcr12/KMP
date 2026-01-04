@@ -13,6 +13,10 @@ sealed interface Route {
     data object AddVehicle : Route
 
     @Serializable
+    data class VehicleDetails(val vehicleId: Int) : Route
+
+
+    @Serializable
     data object ServiceList : Route
 
     @Serializable

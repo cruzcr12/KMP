@@ -36,13 +36,18 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import carcaremanager.composeapp.generated.resources.Res
 import carcaremanager.composeapp.generated.resources.back
 import carcaremanager.composeapp.generated.resources.edit_vehicle
@@ -69,26 +74,44 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun VehicleDetailScreenRoot(
+    viewModel: VehicleDetailViewModel,
     onBackClick: () -> Unit
 ){
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
     VehicleDetailScreen(
-        state = VehicleDetailState(),
-        onStateChange = {},
-        onSaveClick = {},
-        onBackClick = onBackClick,
+        state = state,
+        onAction = { action ->
+            when(action){
+                is VehicleDetailAction.OnSaveVehicleClick -> { }
+                is VehicleDetailAction.OnBackClick -> onBackClick()
+                else -> Unit
+            }
+            viewModel.onAction(action)
+        },
         modifier = Modifier.fillMaxSize()
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun VehicleDetailScreen(
     state: VehicleDetailState,
-    onStateChange: (VehicleDetailState) -> Unit,
-    onSaveClick: () -> Unit,
-    onBackClick: () -> Unit,
+    onAction: (VehicleDetailAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val focusManager = LocalFocusManager.current
+
+    // This will intercept the back press
+    BackHandler(enabled = true) {
+        // You can check if a field is focused or just clear focus generally
+        // If focus is cleared, the keyboard hides, and the screen stays open.
+        focusManager.clearFocus()
+        // Logic: If you want the SECOND back press to actually close the screen,
+        // you would normally check if the keyboard was already hidden here.
+    }
+
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -100,7 +123,7 @@ fun VehicleDetailScreen(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
+                    IconButton(onClick = { onAction(VehicleDetailAction.OnBackClick) } ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(Res.string.back),
@@ -126,7 +149,7 @@ fun VehicleDetailScreen(
             DetailField(
                 label = stringResource(Res.string.vehicle_name),
                 value = state.vehicle?.name,
-                onValueChange = { onStateChange(state.copy(vehicle = state.vehicle?.copy(name = it))) },
+                onValueChange = { onAction(VehicleDetailAction.OnStateChange(vehicle = state.vehicle?.copy(name = it)) ) }, //    onStateChange(state.copy(vehicle = state.vehicle?.copy(name = it))) },
                 placeholder = stringResource(Res.string.vehicle_name_placeholder),
                 icon = Icons.Default.DirectionsCar
             )
@@ -135,7 +158,7 @@ fun VehicleDetailScreen(
                 DetailField(
                     label = stringResource(Res.string.year),
                     value = state.vehicle?.year?.toString(),
-                    onValueChange = { onStateChange(state.copy(vehicle = state.vehicle?.copy(year = it.toIntOrNull() ?: 0))) },
+                    onValueChange = { onAction(VehicleDetailAction.OnStateChange(vehicle = state.vehicle?.copy(year = it.toIntOrNull() ?: 0))) },   //onStateChange(state.copy(vehicle = state.vehicle?.copy(year = it.toIntOrNull() ?: 0))) },
                     placeholder = stringResource(Res.string.year_placeholder),
                     icon = Icons.Default.Numbers,
                     keyboardType = KeyboardType.Number,
@@ -144,7 +167,8 @@ fun VehicleDetailScreen(
                 DetailField(
                     label = stringResource(Res.string.license_plate),
                     value = state.vehicle?.licensePlate,
-                    onValueChange = { onStateChange(state.copy(vehicle = state.vehicle?.copy(licensePlate = it))) },
+                    onValueChange = { onAction(VehicleDetailAction.OnStateChange(vehicle = state.vehicle?.copy(licensePlate = it))) },
+                        //onStateChange(state.copy(vehicle = state.vehicle?.copy(licensePlate = it))) },
                     placeholder = stringResource(Res.string.license_plate_placeholder),
                     icon = Icons.Default.Pin,
                     modifier = Modifier.weight(1.5f)
@@ -154,7 +178,8 @@ fun VehicleDetailScreen(
             DetailField(
                 label = stringResource(Res.string.make),
                 value = state.vehicle?.maker,
-                onValueChange = { onStateChange(state.copy(vehicle = state.vehicle?.copy(maker = it))) },
+                onValueChange = { onAction(VehicleDetailAction.OnStateChange(vehicle = state.vehicle?.copy(maker = it))) },
+                    //onStateChange(state.copy(vehicle = state.vehicle?.copy(maker = it))) },
                 placeholder = stringResource(Res.string.make_placeholder),
                 icon = Icons.Default.Settings
             )
@@ -162,7 +187,8 @@ fun VehicleDetailScreen(
             DetailField(
                 label = stringResource(Res.string.model),
                 value = state.vehicle?.model,
-                onValueChange = { onStateChange(state.copy(vehicle = state.vehicle?.copy(model = it))) },
+                onValueChange = { onAction(VehicleDetailAction.OnStateChange(vehicle = state.vehicle?.copy(model = it))) },
+                    //onStateChange(state.copy(vehicle = state.vehicle?.copy(model = it))) },
                 placeholder = stringResource(Res.string.model_placeholder),
                 icon = Icons.Default.DirectionsCar
             )
@@ -178,7 +204,8 @@ fun VehicleDetailScreen(
                     FuelType.entries.forEachIndexed { index, fuelType ->
                         SegmentedButton(
                             shape = SegmentedButtonDefaults.itemShape(index = index, count = FuelType.entries.size),
-                            onClick = { onStateChange(state.copy(vehicle = state.vehicle?.copy(fuelType = fuelType))) },
+                            onClick = { onAction(VehicleDetailAction.OnStateChange(vehicle = state.vehicle?.copy(fuelType = fuelType))) },
+                                //onStateChange(state.copy(vehicle = state.vehicle?.copy(fuelType = fuelType))) },
                             selected = state.vehicle?.fuelType == fuelType,
                             colors = SegmentedButtonDefaults.colors(
                                 activeContainerColor = Color(0xFF2563EB),
@@ -208,7 +235,8 @@ fun VehicleDetailScreen(
                         onValueChange = { newValue ->
                             // 2. Filter out non-numeric characters if necessary, or just use toIntOrNull
                             val intValue = newValue.filter { it.isDigit() }.toIntOrNull() ?: 0
-                            onStateChange(state.copy(vehicle = state.vehicle?.copy(odometer = intValue)))
+                            onAction(VehicleDetailAction.OnStateChange(vehicle = state.vehicle?.copy(odometer = intValue)))
+                            //onStateChange(state.copy(vehicle = state.vehicle?.copy(odometer = intValue)))
                         },
                         modifier = Modifier.weight(1f),
                         leadingIcon = {
@@ -228,7 +256,10 @@ fun VehicleDetailScreen(
                         OdometerUnit.entries.forEachIndexed { index, unit ->
                             SegmentedButton(
                                 shape = SegmentedButtonDefaults.itemShape(index = index, count = 2),
-                                onClick = {  },
+                                onClick = {
+                                    onAction(VehicleDetailAction.OnStateChange(vehicle = state.vehicle?.copy(odometerUnit = unit)))
+                                    //onStateChange(state.copy(vehicle = state.vehicle?.copy(odometerUnit = unit)))
+                                },
                                 selected = state.vehicle?.odometerUnit == unit,
                                 colors = SegmentedButtonDefaults.colors(
                                     activeContainerColor = Color(0xFF2563EB),
@@ -246,7 +277,7 @@ fun VehicleDetailScreen(
             Spacer(modifier = Modifier.weight(1f))
 
             Button(
-                onClick = onSaveClick,
+                onClick = { onAction(VehicleDetailAction.OnSaveVehicleClick) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
@@ -273,8 +304,6 @@ fun VehicleDetailScreen(
 fun VehicleDetailScreenPreview() {
     VehicleDetailScreen(
         state = VehicleDetailState(),
-        onStateChange = {},
-        onSaveClick = {},
-        onBackClick = {}
+        onAction =  {},
     )
 }

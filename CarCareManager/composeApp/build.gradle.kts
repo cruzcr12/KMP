@@ -62,6 +62,8 @@ kotlin {
             implementation(libs.sqlite.bundled)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
+            implementation(libs.kotlinx.datetime)
+            implementation(libs.jetbrains.ui.backhandler)
             api(libs.koin.core)
 
             implementation(libs.bundles.ktor)

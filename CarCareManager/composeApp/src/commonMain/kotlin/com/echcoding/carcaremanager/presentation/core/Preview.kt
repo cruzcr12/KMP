@@ -6,7 +6,7 @@ import com.echcoding.carcaremanager.domain.model.Vehicle
 
 val vehicles = listOf(
     Vehicle(
-        id = "1",
+        id = 1,
         name = "My Daily Driver",
         maker = "Toyota",
         model = "Camry",
@@ -18,7 +18,7 @@ val vehicles = listOf(
         active = true
     ),
     Vehicle(
-        id = "2",
+        id = 2,
         name = "Weekend Cruiser",
         maker = "Mazda",
         model = "MX-5",
@@ -30,7 +30,7 @@ val vehicles = listOf(
         active = false
     ),
     Vehicle(
-        id = "3",
+        id = 3,
         name = "Family Hauler",
         maker = "Honda",
         model = "Odyssey",
