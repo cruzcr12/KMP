@@ -15,12 +15,8 @@ import kotlinx.coroutines.flow.map
 class VehicleRepositoryImpl(
     private val vehicleDao: VehicleDao
 ): VehicleRepository {
-    override suspend fun addVehicle(vehicle: Vehicle) {
-        vehicleDao.insertVehicle(vehicle.toVehicleEntity())
-    }
-
-    override suspend fun updateVehicle(vehicle: Vehicle) {
-        vehicleDao.updateVehicle(vehicle.toVehicleEntity())
+    override suspend fun upsertVehicle(vehicle: Vehicle) {
+        vehicleDao.upsertVehicle(vehicle.toVehicleEntity())
     }
 
     override suspend fun deleteVehicleById(id: Int) {

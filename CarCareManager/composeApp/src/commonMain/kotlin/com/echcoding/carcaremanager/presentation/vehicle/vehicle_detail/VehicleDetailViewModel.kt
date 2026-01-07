@@ -10,7 +10,9 @@ import com.echcoding.carcaremanager.domain.model.OdometerUnit
 import com.echcoding.carcaremanager.domain.model.Vehicle
 import com.echcoding.carcaremanager.domain.repository.VehicleRepository
 import com.echcoding.carcaremanager.presentation.core.getCurrentYear
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -20,6 +22,10 @@ class VehicleDetailViewModel(
 ): ViewModel() {
     private val _state = MutableStateFlow(VehicleDetailState())
     val state = _state
+
+    // Side Effect channel
+    private val _effects = Channel<VehicleDetailSideEffect>()
+    val effects = _effects.receiveAsFlow()
 
     init {
         val vehicleId: Long? = savedStateHandle.toRoute<Route.VehicleDetails>().vehicleId
@@ -59,15 +65,18 @@ class VehicleDetailViewModel(
                         _state.update { it.copy(isSaving = true, errorMessage = null) }
                         try {
                             // If user is editing, try to update the current vehicle, otherwise add a new one
-                            if(_state.value.isEditing){
+                            /*if(_state.value.isEditing){
                                 repository.updateVehicle(currentVehicle)
                             }else{
                                 repository.addVehicle(currentVehicle)
-                            }
+                            }*/
+                            repository.upsertVehicle(currentVehicle)
+
                             // Success
                             _state.update { it.copy(isSaving = false) }
                             // Navigate back to the list screen
                             //savedStateHandle.navController.navigateUp()
+                            _effects.send(VehicleDetailSideEffect.NavigateBack)
                         } catch (e: Exception) {
                             // Catch any error and update state accordingly
                             _state.update { it.copy(

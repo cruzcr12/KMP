@@ -17,12 +17,6 @@ interface VehicleDao {
     @Upsert
     suspend fun upsertVehicle(vehicle: VehicleEntity)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertVehicle(vehicle: VehicleEntity)
-
-    @Update
-    suspend fun updateVehicle(vehicle: VehicleEntity)
-
     // This function will delete a vehicle from the database
     @Query("DELETE FROM vehicles WHERE id = :id")
     suspend fun deleteVehicleById(id: Int)

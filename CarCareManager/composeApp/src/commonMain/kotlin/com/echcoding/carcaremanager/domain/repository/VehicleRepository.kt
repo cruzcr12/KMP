@@ -9,8 +9,7 @@ import kotlinx.coroutines.flow.Flow
  * Domain layer is not allowed to anything outside
  */
 interface VehicleRepository {
-    suspend fun addVehicle(vehicle: Vehicle)
-    suspend fun updateVehicle(vehicle: Vehicle)
+    suspend fun upsertVehicle(vehicle: Vehicle)
     suspend fun deleteVehicleById(id: Int)
     suspend fun getVehicleById(id: Int): Vehicle?
     suspend fun getAllVehicles(): Flow<List<Vehicle>>
