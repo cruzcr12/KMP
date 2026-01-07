@@ -1,6 +1,4 @@
-@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
-
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import com.android.build.api.dsl.androidLibrary
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -15,12 +13,14 @@ plugins {
 }
 
 kotlin {
+
     androidTarget {
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -54,7 +54,6 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
-            // This provides standard icons like Edit and Delete
             implementation(compose.materialIconsExtended)
             implementation(libs.jetbrains.compose.navigation)
             implementation(libs.kotlinx.serialization.json)
@@ -76,9 +75,10 @@ kotlin {
             implementation(libs.ktor.client.darwin)
         }
 
-        /* dependencies {
+        /*
+        dependencies {
             ksp(libs.androidx.room.compiler)
-        } */
+        }*/
     }
 }
 
@@ -110,6 +110,15 @@ android {
 }
 
 dependencies {
+    // KSP for Android
+    add("kspAndroid", libs.androidx.room.compiler)
+
+    // KSP for iOS
+    add("kspIosArm64", libs.androidx.room.compiler)
+    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
+
+    // Existing UI Tooling
     debugImplementation(compose.uiTooling)
 }
+
 

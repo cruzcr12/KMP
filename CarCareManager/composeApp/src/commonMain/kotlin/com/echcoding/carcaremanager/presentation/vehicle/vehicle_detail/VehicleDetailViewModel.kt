@@ -8,27 +8,30 @@ import com.echcoding.carcaremanager.app.Route
 import com.echcoding.carcaremanager.domain.model.FuelType
 import com.echcoding.carcaremanager.domain.model.OdometerUnit
 import com.echcoding.carcaremanager.domain.model.Vehicle
+import com.echcoding.carcaremanager.domain.repository.VehicleRepository
 import com.echcoding.carcaremanager.presentation.core.getCurrentYear
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class VehicleDetailViewModel(
+    private val repository: VehicleRepository,
     private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
     private val _state = MutableStateFlow(VehicleDetailState())
     val state = _state
 
     init {
-        val vehicleId: Int = savedStateHandle.toRoute<Route.VehicleDetails>().vehicleId
-        if (vehicleId != -1) {
+        val vehicleId: Long? = savedStateHandle.toRoute<Route.VehicleDetails>().vehicleId
+        if (vehicleId != null && vehicleId != 0L) {
             //TODO load vehicle functionality
             //loadVehicle(vehicleId)
+            _state.update { it.copy(isEditing = true)}
         } else {
             // Initialize a blank vehicle for 'Add Vehicle' feature
             _state.update { it.copy(
                 vehicle = Vehicle(
-                    id = -1,
+                    id = 0,
                     name = "",
                     maker = "",
                     model = "",
@@ -52,19 +55,35 @@ class VehicleDetailViewModel(
                 val currentVehicle = _state.value.vehicle
                 if (currentVehicle != null){
                     viewModelScope.launch {
-                        _state.value = _state.value.copy(isSaving =  true)
-                        // Call the repository to save the data
-                        // vehicleRepository.saveVehicle(currentVehicle)
-                        _state.value = _state.value.copy(isSaving = false)
-                        // Navigate back or show success
+                        // Clear previous errors and show loading
+                        _state.update { it.copy(isSaving = true, errorMessage = null) }
+                        try {
+                            // If user is editing, try to update the current vehicle, otherwise add a new one
+                            if(_state.value.isEditing){
+                                repository.updateVehicle(currentVehicle)
+                            }else{
+                                repository.addVehicle(currentVehicle)
+                            }
+                            // Success
+                            _state.update { it.copy(isSaving = false) }
+                            // Navigate back to the list screen
+                            //savedStateHandle.navController.navigateUp()
+                        } catch (e: Exception) {
+                            // Catch any error and update state accordingly
+                            _state.update { it.copy(
+                                isSaving = false,
+                                errorMessage = "There was a problem adding the vehicle: ${e.message ?: "Unknown error"}"
+                            )}
+                        }
                     }
 
                 }
             }
+            is VehicleDetailAction.OnSelectedVehicleChange -> {
+                _state.update { it.copy(vehicle = action.vehicle )}
+            }
             is VehicleDetailAction.OnStateChange -> {
-                _state.update {
-                    it.copy(vehicle = action.vehicle)
-                }
+                _state.update { it.copy(vehicle = action.vehicle) }
             }
             else -> Unit
         }

@@ -1,20 +1,10 @@
 package com.echcoding.carcaremanager.app
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.safeContentPadding
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
@@ -23,10 +13,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import com.echcoding.carcaremanager.presentation.core.vehicles
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_detail.VehicleDetailAction
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_detail.VehicleDetailScreenRoot
-import com.echcoding.carcaremanager.presentation.vehicle.vehicle_detail.VehicleDetailState
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_detail.VehicleDetailViewModel
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.VehicleListScreenRoot
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.VehicleListViewModel
@@ -60,12 +48,16 @@ fun App() {
                     val viewModel = koinViewModel<VehicleListViewModel>()
                     // Fetches a VM scoped to the parent graph. This allows the data to persist across screens
                     val selectedVehicleViewModel = it.sharedKoinViewModel<SelectedVehicleViewModel>(navController)
+                    // Resets the selected vehicle when navigating to this screen
+                    LaunchedEffect(true){
+                        selectedVehicleViewModel.onSelectVehicle(null)
+                    }
 
                     VehicleListScreenRoot(
                         viewModel = viewModel,
                         onAddVehicle = {
                             navController.navigate(
-                                Route.VehicleDetails(vehicleId = -1)
+                                Route.VehicleDetails(vehicleId = null)
                             )
                         },
                         onSelectVehicle = { vehicle ->
@@ -79,11 +71,9 @@ fun App() {
 
                 // Vehicle Details screen route
                 composable<Route.VehicleDetails>(
-                    enterTransition = { slideInHorizontally{ initialOffset ->
-                        initialOffset } },
-                    exitTransition = { slideOutHorizontally { initialOffset ->
-                        initialOffset } }
-                ){
+                    enterTransition = { slideInHorizontally{ initialOffset -> initialOffset } },
+                    exitTransition = { slideOutHorizontally { initialOffset -> initialOffset } }
+                ){ it ->
                     // Fetches a VM scoped to this screen. When you leave the screen, the VM is cleared
                     val viewModel = koinViewModel<VehicleDetailViewModel>()
                     // Retrieves the exact same instance of SelectedVehicleViewModel that the list screen used
@@ -92,14 +82,14 @@ fun App() {
 
                     LaunchedEffect(selectedVehicle){
                         selectedVehicle?.let {
-                            viewModel.onAction(VehicleDetailAction.OnSelectedVehicleChange(it))
+                            viewModel.onAction(VehicleDetailAction.OnSelectedVehicleChange(vehicle = it))
                         }
                     }
 
                     VehicleDetailScreenRoot(
                         viewModel = viewModel,
                         onBackClick = {
-                            navController.popBackStack()
+                            navController.navigateUp() //.popBackStack()
                         }
                     )
                 }

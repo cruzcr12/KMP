@@ -3,12 +3,12 @@ package com.echcoding.carcaremanager.presentation.vehicle.vehicle_list
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -22,10 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
-import androidx.compose.material3.TabIndicatorScope
-import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -38,7 +35,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import carcaremanager.composeapp.generated.resources.Res
 import carcaremanager.composeapp.generated.resources.history
-import carcaremanager.composeapp.generated.resources.no_vehicles_registered
 import carcaremanager.composeapp.generated.resources.services
 import carcaremanager.composeapp.generated.resources.vehicles
 import com.echcoding.carcaremanager.domain.model.Vehicle
@@ -48,7 +44,7 @@ import com.echcoding.carcaremanager.presentation.core.components.TabMenuItem
 import com.echcoding.carcaremanager.presentation.core.components.TitleBarHeader
 import com.echcoding.carcaremanager.presentation.core.components.VehicleSelector
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.components.AddNewVehicleButton
-import com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.components.EmptyVehicleState
+import com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.components.EmptyVehicleList
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.components.VehicleList
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -60,6 +56,7 @@ fun VehicleListScreenRoot(
     onAddVehicle: () -> Unit,
     onSelectVehicle: (Vehicle) -> Unit
 ){
+    // This automatically reacts to the Flow in the VM
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     VehicleListScreen(
@@ -87,8 +84,10 @@ private fun VehicleListScreen(
     val vehiclesListState = rememberLazyListState()
 
     // Adds an effect to scroll the list to the top when the vehicle list changes
-    LaunchedEffect(state.vehicles){
-        vehiclesListState.animateScrollToItem(0)
+    LaunchedEffect(state.vehicles.size){
+        if(state.vehicles.isNotEmpty()) {
+            vehiclesListState.animateScrollToItem(0)
+        }
     }
     // Adds an effect when the selected tab index changes
     LaunchedEffect(state.selectedTabIndex){
@@ -144,19 +143,6 @@ private fun VehicleListScreen(
                     }
                 }
 
-
-/*
-                // Tabs
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround
-                ) {
-                    TabMenuItem(stringResource(Res.string.services), Icons.Default.Build, state.selectedTabIndex == 0)
-                    TabMenuItem(stringResource(Res.string.history), Icons.Default.History, state.selectedTabIndex == 1)
-                    TabMenuItem(stringResource(Res.string.vehicles), Icons.Default.DirectionsCar, state.selectedTabIndex == 2)
-                }
-*/
-
                 HorizontalDivider(color = AthensGray, thickness = 1.dp)
 
                 // Active Vehicle Selector (Dropdown style)
@@ -181,24 +167,38 @@ private fun VehicleListScreen(
                 state = pagerState,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f)
             ){ pageIndex ->
                 when(pageIndex){
                     0 -> {
                         // Services
-                        Text(
-                            text = stringResource(Res.string.services),
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.headlineSmall,
-                        )
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier
+                                .fillMaxSize()
+                        ) {
+                            Text(
+                                text = stringResource(Res.string.services),
+                                textAlign = TextAlign.Center,
+                                style = MaterialTheme.typography.headlineSmall,
+                            )
+                        }
+
                     }
                     1 -> {
                         // History
-                        Text(
-                            text = stringResource(Res.string.history),
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.headlineSmall,
-                        )
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier
+                                .fillMaxSize()
+                        ) {
+                            Text(
+                                text = stringResource(Res.string.history),
+                                textAlign = TextAlign.Center,
+                                style = MaterialTheme.typography.headlineSmall,
+                            )
+                        }
                     }
                     2 -> {
                         // Vehicles
@@ -207,12 +207,19 @@ private fun VehicleListScreen(
                         } else{
                             when {
                                 state.errorMessage != null -> {
-                                    Text(
-                                        text = state.errorMessage.asString(),
-                                        textAlign = TextAlign.Center,
-                                        style = MaterialTheme.typography.headlineSmall,
-                                        color = MaterialTheme.colorScheme.error
-                                    )
+                                    Column(
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.Center,
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                    ) {
+                                        Text(
+                                            text = state.errorMessage.asString(),
+                                            textAlign = TextAlign.Center,
+                                            style = MaterialTheme.typography.headlineSmall,
+                                            color = MaterialTheme.colorScheme.error
+                                        )
+                                    }
                                 }
                                 state.vehicles.isEmpty() -> {
                                     Column(
@@ -222,7 +229,7 @@ private fun VehicleListScreen(
                                         horizontalAlignment = Alignment.CenterHorizontally,
                                         verticalArrangement = Arrangement.Center
                                     ){
-                                        EmptyVehicleState(modifier = Modifier.weight(2f))
+                                        EmptyVehicleList(modifier = Modifier.weight(2f))
 
                                         AddNewVehicleButton(
                                             onClick = { onAction(VehicleListAction.OnAddVehicleClick) },
@@ -230,27 +237,30 @@ private fun VehicleListScreen(
                                         )
                                         Spacer(modifier = Modifier.height(20.dp))
                                     }
-
-/*
-                                    Text(
-                                        text = stringResource(Res.string.no_vehicles_registered),
-                                        textAlign = TextAlign.Center,
-                                        style = MaterialTheme.typography.headlineSmall,
-                                        color = MaterialTheme.colorScheme.error
-                                    ) */
                                 }
                                 else -> {
-                                    VehicleList(
-                                        vehicles = state.vehicles,
-                                        onAddVehicle = { onAction(VehicleListAction.OnAddVehicleClick) },
-                                        onVehicleClick = { onAction(VehicleListAction.OnSelectVehicleClick(it)) },
-                                        padding = innerPadding,
-                                        modifier = modifier,
-                                        scrollState = vehiclesListState
-                                    )
-                                    Spacer(modifier = Modifier.height(10.dp))
-                                    AddNewVehicleButton(onClick = { onAction(VehicleListAction.OnAddVehicleClick) })
-                                    Spacer(modifier = Modifier.height(10.dp))
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxWidth(),
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.Top
+                                    ) {
+                                        VehicleList(
+                                            vehicles = state.vehicles,
+                                            onAddVehicle = { onAction(VehicleListAction.OnAddVehicleClick) },
+                                            onVehicleClick = {
+                                                onAction(
+                                                    VehicleListAction.OnSelectVehicleClick(it)
+                                                )
+                                            },
+                                            padding = innerPadding,
+                                            modifier = modifier
+                                                .fillMaxWidth()
+                                                .fillMaxHeight()
+                                            ,
+                                            scrollState = vehiclesListState
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -258,13 +268,7 @@ private fun VehicleListScreen(
                 }
 
             }
-
-
-
-
-
         }
-
     }
 }
 
@@ -273,6 +277,9 @@ private fun VehicleListScreen(
 fun VehicleListScreenPreview(){
     VehicleListScreen(
         state = VehicleListState(
+            vehicles = vehicles,
+            isLoading = false,
+            errorMessage = null,
             selectedTabIndex = 2,
         ),
         onAction = {},

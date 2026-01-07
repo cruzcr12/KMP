@@ -32,11 +32,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -83,7 +87,6 @@ fun VehicleDetailScreenRoot(
         state = state,
         onAction = { action ->
             when(action){
-                is VehicleDetailAction.OnSaveVehicleClick -> { }
                 is VehicleDetailAction.OnBackClick -> onBackClick()
                 else -> Unit
             }
@@ -101,18 +104,28 @@ fun VehicleDetailScreen(
     modifier: Modifier = Modifier
 ) {
     val focusManager = LocalFocusManager.current
+    val snackbarHostState = remember { SnackbarHostState() }
+
 
     // This will intercept the back press
     BackHandler(enabled = true) {
-        // You can check if a field is focused or just clear focus generally
+        // Check if a field is focused or just clear focus generally.
         // If focus is cleared, the keyboard hides, and the screen stays open.
         focusManager.clearFocus()
-        // Logic: If you want the SECOND back press to actually close the screen,
-        // you would normally check if the keyboard was already hidden here.
     }
 
+    // Observe the error message from the state
+    LaunchedEffect(state.errorMessage){
+        state.errorMessage?.let { error ->
+            snackbarHostState.showSnackbar(
+                message = error,
+                withDismissAction = true
+            )
+        }
+    }
 
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = {

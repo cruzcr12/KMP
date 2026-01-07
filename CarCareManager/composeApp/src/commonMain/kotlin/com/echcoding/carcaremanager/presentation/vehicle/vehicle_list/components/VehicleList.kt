@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -29,15 +30,15 @@ fun VehicleList(
 ) {
     LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .padding(padding),
         state = scrollState,
-        contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
+        contentPadding = PaddingValues(horizontal = 20.dp, vertical = 10.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         items(
             items = vehicles,
-            key = { it.id }
+            key = { it.id ?: -1 }
         ) { vehicle ->
             VehicleListItem(
                 vehicle = vehicle,
@@ -46,12 +47,14 @@ fun VehicleList(
             )
         }
 
-        /*
+
         item {
             AddNewVehicleButton(onClick = onAddVehicle)
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier
+                .height(20.dp)
+            )
         }
-        */
+
 
     }
 }

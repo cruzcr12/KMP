@@ -2,6 +2,7 @@ package com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,6 +33,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun AddNewVehicleButton(
+    padding: PaddingValues = PaddingValues(0.dp),
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {

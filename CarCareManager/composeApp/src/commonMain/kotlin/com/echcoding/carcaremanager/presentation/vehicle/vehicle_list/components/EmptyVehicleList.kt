@@ -23,7 +23,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun EmptyVehicleState(modifier: Modifier = Modifier) {
+fun EmptyVehicleList(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
@@ -50,5 +50,5 @@ fun EmptyVehicleState(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun EmptyVehicleStatePreview() {
-    EmptyVehicleState()
+    EmptyVehicleList()
 }

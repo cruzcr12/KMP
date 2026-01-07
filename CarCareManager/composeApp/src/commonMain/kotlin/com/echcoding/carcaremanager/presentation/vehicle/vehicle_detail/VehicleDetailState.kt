@@ -6,5 +6,6 @@ data class VehicleDetailState(
     val vehicle: Vehicle? = null,
     val isLoading: Boolean = false,
     val isSaving: Boolean = false,
-    val isEditing: Boolean = false
+    val isEditing: Boolean = false,
+    val errorMessage: String? = null
 )

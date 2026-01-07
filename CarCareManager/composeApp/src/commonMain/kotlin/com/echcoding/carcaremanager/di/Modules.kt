@@ -1,10 +1,17 @@
 package com.echcoding.carcaremanager.di
 
+import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import com.echcoding.carcaremanager.data.database.CarCareManagerDatabase
+import com.echcoding.carcaremanager.data.database.DatabaseFactory
+import com.echcoding.carcaremanager.data.repository.VehicleRepositoryImpl
+import com.echcoding.carcaremanager.domain.repository.VehicleRepository
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_detail.VehicleDetailViewModel
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.VehicleListViewModel
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_selected.SelectedVehicleViewModel
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 
@@ -21,17 +28,16 @@ val sharedModule = module {
     ///single { HttpClientFactory.create(get()) }
     // A shorthand to create the Singleton. The bind method allows to bind the implementation to the interface
     //singleOf(::KtorRemoteBookDataSource).bind<RemoteBookDataSource>()
-    //singleOf(::DefaultBookRepository).bind<BookRepository>()
+    singleOf(::VehicleRepositoryImpl).bind<VehicleRepository>()
 
     // Inject the database instance using koin
-    /*single {
+    single {
         get<DatabaseFactory>().create()
             .setDriver(BundledSQLiteDriver())
             .build()
     }
-    */
-
-    //single { get<FavoriteBookDatabase>().favoriteBookDao }
+    // DAOs
+    single { get<CarCareManagerDatabase>().vehicleDao }
 
     viewModelOf(::VehicleListViewModel)
     viewModelOf(::VehicleDetailViewModel)
