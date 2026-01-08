@@ -19,7 +19,7 @@ interface VehicleDao {
 
     // This function will delete a vehicle from the database
     @Query("DELETE FROM vehicles WHERE id = :id")
-    suspend fun deleteVehicleById(id: Int)
+    suspend fun deleteVehicleById(id: Long)
 
     // This function will retrieve a list of all vehicles from the database
     @Query("SELECT * FROM vehicles")

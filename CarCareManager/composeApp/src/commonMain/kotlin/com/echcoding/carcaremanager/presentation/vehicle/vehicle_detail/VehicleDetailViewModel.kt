@@ -30,8 +30,7 @@ class VehicleDetailViewModel(
     init {
         val vehicleId: Long? = savedStateHandle.toRoute<Route.VehicleDetails>().vehicleId
         if (vehicleId != null && vehicleId != 0L) {
-            //TODO load vehicle functionality
-            //loadVehicle(vehicleId)
+            // Update isEditing status to show the corresponding title
             _state.update { it.copy(isEditing = true)}
         } else {
             // Initialize a blank vehicle for 'Add Vehicle' feature
@@ -64,14 +63,7 @@ class VehicleDetailViewModel(
                         // Clear previous errors and show loading
                         _state.update { it.copy(isSaving = true, errorMessage = null) }
                         try {
-                            // If user is editing, try to update the current vehicle, otherwise add a new one
-                            /*if(_state.value.isEditing){
-                                repository.updateVehicle(currentVehicle)
-                            }else{
-                                repository.addVehicle(currentVehicle)
-                            }*/
                             repository.upsertVehicle(currentVehicle)
-
                             // Success
                             _state.update { it.copy(isSaving = false) }
                             // Navigate back to the list screen

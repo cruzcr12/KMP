@@ -82,7 +82,6 @@ fun VehicleDetailScreenRoot(
     onBackClick: () -> Unit
 ){
     val state by viewModel.state.collectAsStateWithLifecycle()
-
     // Observe the side effects independently of the state
     LaunchedEffect(Unit) {
         viewModel.effects.collect { effect ->
@@ -94,7 +93,6 @@ fun VehicleDetailScreenRoot(
             }
         }
     }
-
 
     VehicleDetailScreen(
         state = state,

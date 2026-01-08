@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
  */
 interface VehicleRepository {
     suspend fun upsertVehicle(vehicle: Vehicle)
-    suspend fun deleteVehicleById(id: Int)
+    suspend fun deleteVehicleById(id: Long)
     suspend fun getVehicleById(id: Int): Vehicle?
     suspend fun getAllVehicles(): Flow<List<Vehicle>>
 }

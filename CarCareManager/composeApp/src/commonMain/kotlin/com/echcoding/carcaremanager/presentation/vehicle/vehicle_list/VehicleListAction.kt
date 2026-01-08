@@ -10,6 +10,8 @@ sealed interface VehicleListAction {
     data class OnSelectVehicleClick(val vehicle: Vehicle) : VehicleListAction
     data object OnAddVehicleClick : VehicleListAction
     data class OnEditVehicle(val vehicle: Vehicle) : VehicleListAction
-    data class OnDeleteVehicle(val vehicle: Vehicle) : VehicleListAction
+    data class OnDeleteVehicle(val vehicleId: Long) : VehicleListAction
+    data object OnConfirmDeleteVehicle : VehicleListAction
+    data object OnDismissDeleteDialog: VehicleListAction
     data class OnTabSelected(val index: Int) : VehicleListAction
 }

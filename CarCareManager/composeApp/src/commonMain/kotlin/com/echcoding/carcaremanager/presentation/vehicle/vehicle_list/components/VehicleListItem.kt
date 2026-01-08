@@ -15,11 +15,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DirectionsCar
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -50,7 +54,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun VehicleListItem(
     vehicle: Vehicle,
     isActive: Boolean,
-    onClick: () -> Unit,
+    onEditClick:() -> Unit,
+    onDeleteClick:() -> Unit,
+    onSelectClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val backgroundColor = if (isActive) MaterialTheme.colorScheme.primary else Color.White
@@ -63,7 +69,7 @@ fun VehicleListItem(
         elevation = CardDefaults.cardElevation(if (isActive) 4.dp else 2.dp),
         modifier = modifier
             .fillMaxWidth()
-            .clickable { onClick() }
+            .clickable { onSelectClick() }
     ) {
         Column(
             modifier = Modifier
@@ -124,6 +130,7 @@ fun VehicleListItem(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
+                // Left side: Odometer information
                 Column {
                     Text(
                         text = stringResource(Res.string.odometer).uppercase(),
@@ -140,12 +147,35 @@ fun VehicleListItem(
                         fontSize = 20.sp
                     )
                 }
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                    contentDescription = null,
-                    tint = secondaryContentColor,
-                    modifier = Modifier.size(24.dp)
-                )
+                // Right side: Action buttons
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    // Delete button
+                    IconButton(
+                        onClick = onDeleteClick,
+                        modifier = Modifier.size(36.dp).background(Color.Red.copy(alpha = 0.1f), RoundedCornerShape(8.dp))
+                    ) {
+                        Icon(Icons.Default.Delete, contentDescription = "Delete", tint = if(isActive) Color.White else Color.Red, modifier = Modifier.size(20.dp))
+                    }
+
+                    // Edit button
+                    IconButton(
+                        onClick = onEditClick,
+                        modifier = Modifier.size(36.dp).background(Color.Black.copy(alpha = 0.05f), RoundedCornerShape(8.dp))
+                    ) {
+                        Icon(Icons.Default.Edit, contentDescription = "Edit", tint = contentColor, modifier = Modifier.size(20.dp))
+                    }
+
+                    // Select/Active Button (Only show if NOT active)
+                    if (!isActive) {
+                        IconButton(
+                            onClick = onSelectClick,
+                            modifier = Modifier.size(36.dp).background(RoyalBlue.copy(alpha = 0.1f), RoundedCornerShape(8.dp))
+                        ) {
+                            Icon(Icons.Default.CheckCircle, contentDescription = "Select", tint = RoyalBlue, modifier = Modifier.size(20.dp))
+                        }
+                    }
+                }
+
             }
         }
     }
@@ -159,7 +189,9 @@ private fun VehicleListItemPreview() {
         VehicleListItem(
             vehicle = vehicles[0],
             isActive = false,
-            onClick = {}
+            onDeleteClick = {},
+            onEditClick = {},
+            onSelectClick = {}
         )
     }
 }
@@ -171,7 +203,9 @@ private fun VehicleListItemActivePreview() {
         VehicleListItem(
             vehicle = vehicles[2],
             isActive = true,
-            onClick = {}
+            onDeleteClick = {},
+            onEditClick = {},
+            onSelectClick = {}
         )
     }
 }

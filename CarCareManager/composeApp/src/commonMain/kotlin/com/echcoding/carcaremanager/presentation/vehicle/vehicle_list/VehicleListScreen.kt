@@ -16,17 +16,24 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.History
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,6 +41,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import carcaremanager.composeapp.generated.resources.Res
+import carcaremanager.composeapp.generated.resources.cancel
+import carcaremanager.composeapp.generated.resources.delete
+import carcaremanager.composeapp.generated.resources.delete_vehicle
+import carcaremanager.composeapp.generated.resources.delete_vehicle_confirmation
 import carcaremanager.composeapp.generated.resources.history
 import carcaremanager.composeapp.generated.resources.services
 import carcaremanager.composeapp.generated.resources.vehicles
@@ -58,19 +69,40 @@ fun VehicleListScreenRoot(
 ){
     // This automatically reacts to the Flow in the VM
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val snackbarHostState  = remember { SnackbarHostState() }
 
-    VehicleListScreen(
-        state = state,
-        onAction = { action ->
-            when(action){
-                is VehicleListAction.OnAddVehicleClick -> onAddVehicle()
-                is VehicleListAction.OnSelectVehicleClick -> onSelectVehicle(action.vehicle)
-                else -> Unit
+    // Listen for the Delete Success side effect
+    LaunchedEffect(true){
+        viewModel.events.collect { event ->
+            when(event){
+                is VehicleListSideEffect.ShowSnackbar -> {
+                    snackbarHostState.showSnackbar(
+                        message = event.message,
+                        duration = SnackbarDuration.Short
+                    )
+                }
             }
-            // Forward action to ViewModel
-            viewModel.onAction(action)
         }
-    )
+    }
+
+    Scaffold(
+        // Attach the host to the scaffold
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+    ){
+        VehicleListScreen(
+            state = state,
+            onAction = { action ->
+                when(action){
+                    is VehicleListAction.OnAddVehicleClick -> onAddVehicle()
+                    is VehicleListAction.OnSelectVehicleClick -> onSelectVehicle(action.vehicle)
+                    else -> Unit
+                }
+                // Forward action to ViewModel
+                viewModel.onAction(action)
+            }
+        )
+    }
+
 }
 
 @Composable
@@ -214,7 +246,7 @@ private fun VehicleListScreen(
                                             .fillMaxSize()
                                     ) {
                                         Text(
-                                            text = state.errorMessage.asString(),
+                                            text = state.errorMessage,
                                             textAlign = TextAlign.Center,
                                             style = MaterialTheme.typography.headlineSmall,
                                             color = MaterialTheme.colorScheme.error
@@ -239,6 +271,25 @@ private fun VehicleListScreen(
                                     }
                                 }
                                 else -> {
+                                    if(state.showDeleteConfirmationDialog){
+                                        AlertDialog(
+                                            onDismissRequest = { onAction(VehicleListAction.OnDismissDeleteDialog) },
+                                            title = { Text(text = stringResource(Res.string.delete_vehicle)) },
+                                            text = { Text(text = stringResource(Res.string.delete_vehicle_confirmation)) },
+                                            confirmButton = {
+                                                TextButton(
+                                                    onClick = { onAction(VehicleListAction.OnConfirmDeleteVehicle) },
+                                                    colors = ButtonDefaults.textButtonColors(contentColor = Color.Red)
+                                                ) { Text(stringResource(Res.string.delete)) }
+                                            },
+                                            dismissButton = {
+                                                TextButton(onClick = { onAction(VehicleListAction.OnDismissDeleteDialog) }) {
+                                                    Text(stringResource(Res.string.cancel))
+                                                }
+                                            }
+                                        )
+                                    }
+
                                     Column(
                                         modifier = Modifier
                                             .fillMaxWidth(),
@@ -247,8 +298,14 @@ private fun VehicleListScreen(
                                     ) {
                                         VehicleList(
                                             vehicles = state.vehicles,
-                                            onAddVehicle = { onAction(VehicleListAction.OnAddVehicleClick) },
-                                            onVehicleClick = {
+                                            onAddVehicleClick = { onAction(VehicleListAction.OnAddVehicleClick) },
+                                            onEditVehicleClick = { onAction(VehicleListAction.OnSelectVehicleClick(it))},
+                                            onDeleteVehicleClick = {
+                                                onAction(
+                                                    VehicleListAction.OnDeleteVehicle(it?:-1)
+                                                )
+                                            },
+                                            onSelectVehicleClick = {
                                                 onAction(
                                                     VehicleListAction.OnSelectVehicleClick(it)
                                                 )

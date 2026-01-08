@@ -22,8 +22,10 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun VehicleList(
     vehicles: List<Vehicle>,
-    onAddVehicle: () -> Unit,
-    onVehicleClick: (Vehicle) -> Unit,
+    onAddVehicleClick: () -> Unit,
+    onEditVehicleClick: (Vehicle) -> Unit,
+    onDeleteVehicleClick: (Long?) -> Unit,
+    onSelectVehicleClick: (Vehicle) -> Unit,
     padding: PaddingValues = PaddingValues(0.dp),
     modifier: Modifier = Modifier,
     scrollState: LazyListState = rememberLazyListState(),
@@ -43,13 +45,15 @@ fun VehicleList(
             VehicleListItem(
                 vehicle = vehicle,
                 isActive = vehicle.name == "Family Hauler",
-                onClick = { onVehicleClick(vehicle) }
+                onDeleteClick = { onDeleteVehicleClick(vehicle.id) },
+                onEditClick = { onEditVehicleClick(vehicle) },
+                onSelectClick = { onSelectVehicleClick(vehicle) }
             )
         }
 
 
         item {
-            AddNewVehicleButton(onClick = onAddVehicle)
+            AddNewVehicleButton(onClick = onAddVehicleClick)
             Spacer(modifier = Modifier
                 .height(20.dp)
             )
@@ -65,7 +69,9 @@ fun VehicleList(
 fun VehicleListPreview() {
     VehicleList(
         vehicles = vehicles,
-        onAddVehicle = {},
-        onVehicleClick = {}
+        onAddVehicleClick = {},
+        onEditVehicleClick = {},
+        onDeleteVehicleClick = {},
+        onSelectVehicleClick = {}
     )
 }

@@ -1,9 +1,6 @@
 package com.echcoding.carcaremanager.presentation.vehicle.vehicle_list
 
-import com.echcoding.carcaremanager.domain.model.FuelType
-import com.echcoding.carcaremanager.domain.model.OdometerUnit
 import com.echcoding.carcaremanager.domain.model.Vehicle
-import com.echcoding.carcaremanager.presentation.core.UiText
 
 /**
  * The UI in this project will use MVI architecture.
@@ -15,6 +12,10 @@ data class VehicleListState(
     val vehicles: List<Vehicle> = emptyList(),
     val isActive: Boolean = false,
     val selectedTabIndex: Int = 0,
-    val isLoading: Boolean = false, // determine if the list of vehicles is being fetched
-    val errorMessage: UiText? = null, // to display any error when loading the list of vehicles
+    val isLoading: Boolean = false, // Determine if the list of vehicles is being fetched
+    val errorMessage: String? = null, // To display any error when displaying the list of vehicles
+    val vehicleToDeleteId: Long? = null, // When this is not null, show confirmation dialog
+    val showDeleteConfirmationDialog: Boolean = false, // When this is true, show the confirmation dialog
+    val snackbarMessage: String? = null // To display any informating messages
+
 )
