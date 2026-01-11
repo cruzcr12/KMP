@@ -16,6 +16,10 @@ class VehicleRepositoryImpl(
     private val vehicleDao: VehicleDao
 ): VehicleRepository {
     override suspend fun upsertVehicle(vehicle: Vehicle) {
+        // If saving an active vehicle, deactivate all other vehicles
+        if (vehicle.active) {
+            vehicleDao.deactivateAllVehicles()
+        }
         vehicleDao.upsertVehicle(vehicle.toVehicleEntity())
     }
 
@@ -24,14 +28,22 @@ class VehicleRepositoryImpl(
     }
 
     override suspend fun getVehicleById(id: Int): Vehicle? {
-        return vehicleDao.getVehicleById(id)?.toVehicle()
+        return vehicleDao.getVehicleById(id.toLong())?.toVehicle()
     }
 
     override suspend fun getAllVehicles(): Flow<List<Vehicle>> {
         return vehicleDao.getAllVehicles()
-            .map { vehicle ->
-                vehicle.map { it.toVehicle() }
+            .map { entities ->
+                entities.map { it.toVehicle() }
             }
     }
 
+    override fun getActiveVehicle(): Flow<Vehicle?> {
+        return vehicleDao.getActiveVehicle().map { it?.toVehicle() }
+    }
+
+    override suspend fun setActiveVehicle(vehicleId: Long) {
+        // Uses the database transaction to ensure that the active vehicle is updated atomically
+        vehicleDao.selectVehicle(vehicleId)
+    }
 }

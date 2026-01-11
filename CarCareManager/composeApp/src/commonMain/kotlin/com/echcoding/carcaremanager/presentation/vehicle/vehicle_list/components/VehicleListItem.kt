@@ -53,12 +53,12 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun VehicleListItem(
     vehicle: Vehicle,
-    isActive: Boolean,
     onEditClick:() -> Unit,
     onDeleteClick:() -> Unit,
     onSelectClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val isActive:Boolean = vehicle.active
     val backgroundColor = if (isActive) MaterialTheme.colorScheme.primary else Color.White
     val contentColor = if (isActive) Color.White else Ebony
     val secondaryContentColor = if (isActive) Color.White.copy(alpha = 0.7f) else PaleSky
@@ -69,7 +69,6 @@ fun VehicleListItem(
         elevation = CardDefaults.cardElevation(if (isActive) 4.dp else 2.dp),
         modifier = modifier
             .fillMaxWidth()
-            .clickable { onSelectClick() }
     ) {
         Column(
             modifier = Modifier
@@ -188,7 +187,6 @@ private fun VehicleListItemPreview() {
 
         VehicleListItem(
             vehicle = vehicles[0],
-            isActive = false,
             onDeleteClick = {},
             onEditClick = {},
             onSelectClick = {}
@@ -201,8 +199,7 @@ private fun VehicleListItemPreview() {
 private fun VehicleListItemActivePreview() {
     AppTheme {
         VehicleListItem(
-            vehicle = vehicles[2],
-            isActive = true,
+            vehicle = vehicles[1],
             onDeleteClick = {},
             onEditClick = {},
             onSelectClick = {}

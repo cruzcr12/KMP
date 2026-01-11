@@ -60,7 +60,7 @@ fun App() {
                                 Route.VehicleDetails(vehicleId = null)
                             )
                         },
-                        onSelectVehicle = { vehicle ->
+                        onEditVehicle = { vehicle ->
                             selectedVehicleViewModel.onSelectVehicle(vehicle)
                             navController.navigate(
                                 Route.VehicleDetails(vehicleId = vehicle.id)

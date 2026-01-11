@@ -17,7 +17,7 @@ val vehicles = listOf(
         odometerUnit = OdometerUnit.MILES,
         active = true
     ),
-    /* Vehicle(
+    Vehicle(
         id = 2,
         name = "Weekend Cruiser",
         maker = "Mazda",
@@ -28,7 +28,8 @@ val vehicles = listOf(
         odometer = 28100,
         odometerUnit = OdometerUnit.MILES,
         active = false
-    ),*/
+    ),
+    /*
     Vehicle(
         id = 3,
         name = "Family Hauler",
@@ -40,5 +41,5 @@ val vehicles = listOf(
         odometer = 32500,
         odometerUnit = OdometerUnit.MILES,
         active = false
-    )
+    )*/
 )

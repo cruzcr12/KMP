@@ -36,7 +36,7 @@ class VehicleDetailViewModel(
             // Initialize a blank vehicle for 'Add Vehicle' feature
             _state.update { it.copy(
                 vehicle = Vehicle(
-                    id = 0,
+                    id = null,
                     name = "",
                     maker = "",
                     model = "",
@@ -45,7 +45,7 @@ class VehicleDetailViewModel(
                     fuelType = FuelType.GAS,
                     odometer = 0,
                     odometerUnit = OdometerUnit.KILOMETERS,
-                    active = false
+                    active = true
                 ),
                 isLoading = false,
                 isSaving = false,
@@ -67,7 +67,6 @@ class VehicleDetailViewModel(
                             // Success
                             _state.update { it.copy(isSaving = false) }
                             // Navigate back to the list screen
-                            //savedStateHandle.navController.navigateUp()
                             _effects.send(VehicleDetailSideEffect.NavigateBack)
                         } catch (e: Exception) {
                             // Catch any error and update state accordingly

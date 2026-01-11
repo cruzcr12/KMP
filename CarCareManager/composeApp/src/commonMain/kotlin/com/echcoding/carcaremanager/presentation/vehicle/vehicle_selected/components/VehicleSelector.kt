@@ -1,4 +1,4 @@
-package com.echcoding.carcaremanager.presentation.core.components
+package com.echcoding.carcaremanager.presentation.vehicle.vehicle_selected.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background

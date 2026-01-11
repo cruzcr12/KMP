@@ -53,7 +53,7 @@ import com.echcoding.carcaremanager.presentation.core.AthensGray
 import com.echcoding.carcaremanager.presentation.core.vehicles
 import com.echcoding.carcaremanager.presentation.core.components.TabMenuItem
 import com.echcoding.carcaremanager.presentation.core.components.TitleBarHeader
-import com.echcoding.carcaremanager.presentation.core.components.VehicleSelector
+import com.echcoding.carcaremanager.presentation.vehicle.vehicle_selected.components.VehicleSelector
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.components.AddNewVehicleButton
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.components.EmptyVehicleList
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.components.VehicleList
@@ -65,7 +65,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun VehicleListScreenRoot(
     viewModel: VehicleListViewModel = koinViewModel(),
     onAddVehicle: () -> Unit,
-    onSelectVehicle: (Vehicle) -> Unit
+    onEditVehicle: (Vehicle) -> Unit
 ){
     // This automatically reacts to the Flow in the VM
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -94,7 +94,7 @@ fun VehicleListScreenRoot(
             onAction = { action ->
                 when(action){
                     is VehicleListAction.OnAddVehicleClick -> onAddVehicle()
-                    is VehicleListAction.OnSelectVehicleClick -> onSelectVehicle(action.vehicle)
+                    is VehicleListAction.OnEditVehicle -> onEditVehicle(action.vehicle)
                     else -> Unit
                 }
                 // Forward action to ViewModel
@@ -271,6 +271,7 @@ private fun VehicleListScreen(
                                     }
                                 }
                                 else -> {
+                                    // Confirmation dialog to delete the vehicle
                                     if(state.showDeleteConfirmationDialog){
                                         AlertDialog(
                                             onDismissRequest = { onAction(VehicleListAction.OnDismissDeleteDialog) },
@@ -299,17 +300,9 @@ private fun VehicleListScreen(
                                         VehicleList(
                                             vehicles = state.vehicles,
                                             onAddVehicleClick = { onAction(VehicleListAction.OnAddVehicleClick) },
-                                            onEditVehicleClick = { onAction(VehicleListAction.OnSelectVehicleClick(it))},
-                                            onDeleteVehicleClick = {
-                                                onAction(
-                                                    VehicleListAction.OnDeleteVehicle(it?:-1)
-                                                )
-                                            },
-                                            onSelectVehicleClick = {
-                                                onAction(
-                                                    VehicleListAction.OnSelectVehicleClick(it)
-                                                )
-                                            },
+                                            onEditVehicleClick = { onAction(VehicleListAction.OnEditVehicle(it))},
+                                            onDeleteVehicleClick = { onAction(VehicleListAction.OnDeleteVehicle(it?:-1))},
+                                            onSelectVehicleClick = { onAction(VehicleListAction.OnSelectVehicleClick(it?:-1))},
                                             padding = innerPadding,
                                             modifier = modifier
                                                 .fillMaxWidth()

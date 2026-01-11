@@ -2,6 +2,7 @@ package com.echcoding.carcaremanager.presentation.vehicle.vehicle_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.echcoding.carcaremanager.domain.repository.VehicleRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,7 +36,9 @@ class VehicleListViewModel(
     fun onAction(action: VehicleListAction) {
         when (action) {
             is VehicleListAction.OnSelectVehicleClick -> {
-
+                viewModelScope.launch {
+                    repository.setActiveVehicle(action.vehicleId)
+                }
             }
             is VehicleListAction.OnEditVehicle -> {
 

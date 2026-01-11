@@ -25,7 +25,7 @@ fun VehicleList(
     onAddVehicleClick: () -> Unit,
     onEditVehicleClick: (Vehicle) -> Unit,
     onDeleteVehicleClick: (Long?) -> Unit,
-    onSelectVehicleClick: (Vehicle) -> Unit,
+    onSelectVehicleClick: (Long?) -> Unit,
     padding: PaddingValues = PaddingValues(0.dp),
     modifier: Modifier = Modifier,
     scrollState: LazyListState = rememberLazyListState(),
@@ -44,10 +44,9 @@ fun VehicleList(
         ) { vehicle ->
             VehicleListItem(
                 vehicle = vehicle,
-                isActive = vehicle.name == "Family Hauler",
                 onDeleteClick = { onDeleteVehicleClick(vehicle.id) },
                 onEditClick = { onEditVehicleClick(vehicle) },
-                onSelectClick = { onSelectVehicleClick(vehicle) }
+                onSelectClick = { onSelectVehicleClick(vehicle.id) }
             )
         }
 
