@@ -27,8 +27,8 @@ class VehicleRepositoryImpl(
         vehicleDao.deleteVehicleById(id)
     }
 
-    override suspend fun getVehicleById(id: Int): Vehicle? {
-        return vehicleDao.getVehicleById(id.toLong())?.toVehicle()
+    override suspend fun getVehicleById(id: Long): Vehicle? {
+        return vehicleDao.getVehicleById(id)?.toVehicle()
     }
 
     override suspend fun getAllVehicles(): Flow<List<Vehicle>> {

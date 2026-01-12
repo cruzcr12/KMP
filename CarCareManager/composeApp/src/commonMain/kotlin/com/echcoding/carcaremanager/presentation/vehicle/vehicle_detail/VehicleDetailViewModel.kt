@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 class VehicleDetailViewModel(
     private val repository: VehicleRepository,
-    private val savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle //Automatically injected by Koin/Nav
 ): ViewModel() {
     private val _state = MutableStateFlow(VehicleDetailState())
     val state = _state
@@ -30,11 +30,18 @@ class VehicleDetailViewModel(
     init {
         val vehicleId: Long? = savedStateHandle.toRoute<Route.VehicleDetails>().vehicleId
         if (vehicleId != null && vehicleId != 0L) {
-            // Update isEditing status to show the corresponding title
-            _state.update { it.copy(isEditing = true)}
+            loadVehicle(vehicleId)
         } else {
-            // Initialize a blank vehicle for 'Add Vehicle' feature
-            _state.update { it.copy(
+            createNewVehicle()
+        }
+    }
+
+    /**
+     * Initialize a blank vehicle for 'Add Vehicle' feature
+     */
+    private fun createNewVehicle(){
+        _state.update {
+            it.copy(
                 vehicle = Vehicle(
                     id = null,
                     name = "",
@@ -50,7 +57,19 @@ class VehicleDetailViewModel(
                 isLoading = false,
                 isSaving = false,
                 isEditing = false
-            )}
+            )
+        }
+    }
+
+    /**
+     * Loads the vehicle from the repository and updates the state
+     */
+    private fun loadVehicle(vehicleId: Long){
+        viewModelScope.launch {
+            val vehicle = repository.getVehicleById(vehicleId)
+            _state.update {
+                it.copy(vehicle = vehicle, isEditing = true, isLoading = false)
+            }
         }
     }
 

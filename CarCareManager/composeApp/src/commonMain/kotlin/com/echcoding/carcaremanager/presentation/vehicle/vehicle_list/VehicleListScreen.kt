@@ -57,6 +57,7 @@ import com.echcoding.carcaremanager.presentation.vehicle.vehicle_selected.compon
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.components.AddNewVehicleButton
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.components.EmptyVehicleList
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.components.VehicleList
+import com.echcoding.carcaremanager.presentation.vehicle.vehicle_selected.SelectedVehicleViewModel
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -64,11 +65,15 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun VehicleListScreenRoot(
     viewModel: VehicleListViewModel = koinViewModel(),
+    selectedVehicleViewModel: SelectedVehicleViewModel = koinViewModel(),
     onAddVehicle: () -> Unit,
     onEditVehicle: (Vehicle) -> Unit
 ){
     // This automatically reacts to the Flow in the VM
     val state by viewModel.state.collectAsStateWithLifecycle()
+    // Collect the active vehicle state
+    val activeVehicle by selectedVehicleViewModel.selectedVehicle.collectAsStateWithLifecycle()
+
     val snackbarHostState  = remember { SnackbarHostState() }
 
     // Listen for the Delete Success side effect
@@ -91,6 +96,7 @@ fun VehicleListScreenRoot(
     ){
         VehicleListScreen(
             state = state,
+            activeVehicle = activeVehicle,
             onAction = { action ->
                 when(action){
                     is VehicleListAction.OnAddVehicleClick -> onAddVehicle()
@@ -108,6 +114,7 @@ fun VehicleListScreenRoot(
 @Composable
 private fun VehicleListScreen(
     state: VehicleListState,
+    activeVehicle: Vehicle?,
     onAction: (VehicleListAction) -> Unit,
     modifier: Modifier = Modifier
 ){
@@ -179,9 +186,9 @@ private fun VehicleListScreen(
 
                 // Active Vehicle Selector (Dropdown style)
                 VehicleSelector(
-                    vehicle = state.selectedVehicle,
+                    vehicle = activeVehicle,
                     onClick = {
-                        //onAction(VehicleListAction.OnSelectVehicleClick(it) ),
+                        onAction(VehicleListAction.OnTabSelected(2))
                     },
                     modifier = modifier
                 )
@@ -271,26 +278,6 @@ private fun VehicleListScreen(
                                     }
                                 }
                                 else -> {
-                                    // Confirmation dialog to delete the vehicle
-                                    if(state.showDeleteConfirmationDialog){
-                                        AlertDialog(
-                                            onDismissRequest = { onAction(VehicleListAction.OnDismissDeleteDialog) },
-                                            title = { Text(text = stringResource(Res.string.delete_vehicle)) },
-                                            text = { Text(text = stringResource(Res.string.delete_vehicle_confirmation)) },
-                                            confirmButton = {
-                                                TextButton(
-                                                    onClick = { onAction(VehicleListAction.OnConfirmDeleteVehicle) },
-                                                    colors = ButtonDefaults.textButtonColors(contentColor = Color.Red)
-                                                ) { Text(stringResource(Res.string.delete)) }
-                                            },
-                                            dismissButton = {
-                                                TextButton(onClick = { onAction(VehicleListAction.OnDismissDeleteDialog) }) {
-                                                    Text(stringResource(Res.string.cancel))
-                                                }
-                                            }
-                                        )
-                                    }
-
                                     Column(
                                         modifier = Modifier
                                             .fillMaxWidth(),
@@ -311,6 +298,26 @@ private fun VehicleListScreen(
                                             scrollState = vehiclesListState
                                         )
                                     }
+                                    // Confirmation dialog to delete the vehicle
+                                    if(state.showDeleteConfirmationDialog){
+                                        AlertDialog(
+                                            onDismissRequest = { onAction(VehicleListAction.OnDismissDeleteDialog) },
+                                            title = { Text(text = stringResource(Res.string.delete_vehicle)) },
+                                            text = { Text(text = stringResource(Res.string.delete_vehicle_confirmation)) },
+                                            confirmButton = {
+                                                TextButton(onClick = { onAction(VehicleListAction.OnConfirmDeleteVehicle) }) {
+                                                    Text(text = stringResource(Res.string.delete),
+                                                        color = MaterialTheme.colorScheme.error)
+                                                }
+                                            },
+                                            dismissButton = {
+                                                TextButton(onClick = { onAction(VehicleListAction.OnDismissDeleteDialog) }) {
+                                                    Text(stringResource(Res.string.cancel))
+                                                }
+                                            }
+                                        )
+                                    }
+
                                 }
                             }
                         }
@@ -332,6 +339,7 @@ fun VehicleListScreenPreview(){
             errorMessage = null,
             selectedTabIndex = 2,
         ),
+        activeVehicle = vehicles.firstOrNull(),
         onAction = {},
     )
 }

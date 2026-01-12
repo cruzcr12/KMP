@@ -1,18 +1,24 @@
 package com.echcoding.carcaremanager.presentation.vehicle.vehicle_selected
 
 import androidx.lifecycle.ViewModel
-import com.echcoding.carcaremanager.domain.model.Vehicle
-import kotlinx.coroutines.flow.MutableStateFlow
+import androidx.lifecycle.viewModelScope
+import com.echcoding.carcaremanager.domain.repository.VehicleRepository
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 
 /**
- * ViewModel used to share data between several views and avoid passing data through parameters
- * in navigation components.
+ * ViewModel used to share the currently active vehicle across different screens.
+ * Instead of manually setting the value, it observes the repository's active vehicle flow.
  */
-class SelectedVehicleViewModel: ViewModel() {
-    private val _selectedVehicle = MutableStateFlow<Vehicle?>(null)
-    val selectedVehicle = _selectedVehicle
-
-    fun onSelectVehicle(vehicle: Vehicle?) {
-        _selectedVehicle.value = vehicle
-    }
+class SelectedVehicleViewModel(
+    private val repository: VehicleRepository
+) : ViewModel() {
+    // Automatically syncs with the database state.
+    // Whenever the database changes (upsert or setActiveVehicle), the state is updated
+    val selectedVehicle = repository.getActiveVehicle()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000L),
+            initialValue = null
+        )
 }

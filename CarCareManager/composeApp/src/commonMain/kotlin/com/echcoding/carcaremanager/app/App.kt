@@ -6,19 +6,16 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import com.echcoding.carcaremanager.presentation.vehicle.vehicle_detail.VehicleDetailAction
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_detail.VehicleDetailScreenRoot
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_detail.VehicleDetailViewModel
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.VehicleListScreenRoot
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.VehicleListViewModel
-import com.echcoding.carcaremanager.presentation.vehicle.vehicle_selected.SelectedVehicleViewModel
 import com.echcoding.carcaremanager.theme.AppTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -46,25 +43,14 @@ fun App() {
                 ) {
                     // Fetches a VM scoped to this screen. When you leave the screen, the VM is cleared
                     val viewModel = koinViewModel<VehicleListViewModel>()
-                    // Fetches a VM scoped to the parent graph. This allows the data to persist across screens
-                    val selectedVehicleViewModel = it.sharedKoinViewModel<SelectedVehicleViewModel>(navController)
-                    // Resets the selected vehicle when navigating to this screen
-                    LaunchedEffect(true){
-                        selectedVehicleViewModel.onSelectVehicle(null)
-                    }
 
                     VehicleListScreenRoot(
                         viewModel = viewModel,
                         onAddVehicle = {
-                            navController.navigate(
-                                Route.VehicleDetails(vehicleId = null)
-                            )
+                            navController.navigate(Route.VehicleDetails(vehicleId = null))
                         },
                         onEditVehicle = { vehicle ->
-                            selectedVehicleViewModel.onSelectVehicle(vehicle)
-                            navController.navigate(
-                                Route.VehicleDetails(vehicleId = vehicle.id)
-                            )
+                            navController.navigate(Route.VehicleDetails(vehicleId = vehicle.id))
                         }
                     )
                 }
@@ -76,20 +62,11 @@ fun App() {
                 ){ it ->
                     // Fetches a VM scoped to this screen. When you leave the screen, the VM is cleared
                     val viewModel = koinViewModel<VehicleDetailViewModel>()
-                    // Retrieves the exact same instance of SelectedVehicleViewModel that the list screen used
-                    val selectedVehicleViewModel = it.sharedKoinViewModel<SelectedVehicleViewModel>(navController)
-                    val selectedVehicle by selectedVehicleViewModel.selectedVehicle.collectAsStateWithLifecycle()
-
-                    LaunchedEffect(selectedVehicle){
-                        selectedVehicle?.let {
-                            viewModel.onAction(VehicleDetailAction.OnSelectedVehicleChange(vehicle = it))
-                        }
-                    }
 
                     VehicleDetailScreenRoot(
                         viewModel = viewModel,
                         onBackClick = {
-                            navController.navigateUp() //.popBackStack()
+                            navController.navigateUp()
                         }
                     )
                 }
