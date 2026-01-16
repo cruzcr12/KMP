@@ -46,13 +46,14 @@ import carcaremanager.composeapp.generated.resources.delete
 import carcaremanager.composeapp.generated.resources.delete_vehicle
 import carcaremanager.composeapp.generated.resources.delete_vehicle_confirmation
 import carcaremanager.composeapp.generated.resources.history
+import carcaremanager.composeapp.generated.resources.maintenance
 import carcaremanager.composeapp.generated.resources.services
 import carcaremanager.composeapp.generated.resources.vehicles
 import com.echcoding.carcaremanager.domain.model.Vehicle
 import com.echcoding.carcaremanager.presentation.core.AthensGray
-import com.echcoding.carcaremanager.presentation.core.vehicles
 import com.echcoding.carcaremanager.presentation.core.components.TabMenuItem
 import com.echcoding.carcaremanager.presentation.core.components.TitleBarHeader
+import com.echcoding.carcaremanager.presentation.core.mocks.vehicles
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_selected.components.VehicleSelector
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.components.AddNewVehicleButton
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.components.EmptyVehicleList
@@ -209,7 +210,7 @@ private fun VehicleListScreen(
             ){ pageIndex ->
                 when(pageIndex){
                     0 -> {
-                        // Services
+                        // Maintenance
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center,
@@ -217,7 +218,7 @@ private fun VehicleListScreen(
                                 .fillMaxSize()
                         ) {
                             Text(
-                                text = stringResource(Res.string.services),
+                                text = stringResource(Res.string.maintenance),
                                 textAlign = TextAlign.Center,
                                 style = MaterialTheme.typography.headlineSmall,
                             )

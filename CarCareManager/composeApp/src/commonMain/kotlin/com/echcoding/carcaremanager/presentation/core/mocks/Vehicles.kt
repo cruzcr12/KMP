@@ -1,4 +1,4 @@
-package com.echcoding.carcaremanager.presentation.core
+package com.echcoding.carcaremanager.presentation.core.mocks
 
 import com.echcoding.carcaremanager.domain.model.FuelType
 import com.echcoding.carcaremanager.domain.model.OdometerUnit
@@ -29,7 +29,6 @@ val vehicles = listOf(
         odometerUnit = OdometerUnit.MILES,
         active = false
     ),
-    /*
     Vehicle(
         id = 3,
         name = "Family Hauler",
@@ -41,5 +40,5 @@ val vehicles = listOf(
         odometer = 32500,
         odometerUnit = OdometerUnit.MILES,
         active = false
-    )*/
+    )
 )

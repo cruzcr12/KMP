@@ -14,7 +14,7 @@ data class VehicleListState(
     val selectedTabIndex: Int = 0,
     val isLoading: Boolean = false, // Determine if the list of vehicles is being fetched
     val errorMessage: String? = null, // To display any error when displaying the list of vehicles
-    val vehicleToDeleteId: Long? = null, // When this is not null, show confirmation dialog
+    val vehicleToDeleteId: Int? = null, // When this is not null, show confirmation dialog
     val showDeleteConfirmationDialog: Boolean = false, // When this is true, show the confirmation dialog
     val snackbarMessage: String? = null // To display any informating messages
 

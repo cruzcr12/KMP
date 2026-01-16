@@ -66,7 +66,7 @@ class VehicleListViewModel(
         }
     }
 
-    private fun executeDelete(id: Long){
+    private fun executeDelete(id: Int){
         viewModelScope.launch {
             // Clear previous errors and reset the confirmation dialog and show loading
             _state.update { it.copy(isLoading = true, showDeleteConfirmationDialog = false, errorMessage = null) }

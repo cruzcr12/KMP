@@ -28,8 +28,8 @@ class VehicleDetailViewModel(
     val effects = _effects.receiveAsFlow()
 
     init {
-        val vehicleId: Long? = savedStateHandle.toRoute<Route.VehicleDetails>().vehicleId
-        if (vehicleId != null && vehicleId != 0L) {
+        val vehicleId: Int? = savedStateHandle.toRoute<Route.VehicleDetails>().vehicleId
+        if (vehicleId != null && vehicleId != 0) {
             loadVehicle(vehicleId)
         } else {
             createNewVehicle()
@@ -64,7 +64,7 @@ class VehicleDetailViewModel(
     /**
      * Loads the vehicle from the repository and updates the state
      */
-    private fun loadVehicle(vehicleId: Long){
+    private fun loadVehicle(vehicleId: Int){
         viewModelScope.launch {
             val vehicle = repository.getVehicleById(vehicleId)
             _state.update {

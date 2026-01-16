@@ -14,13 +14,13 @@ interface VehicleDao {
     suspend fun upsertVehicle(vehicle: VehicleEntity)
 
     @Query("DELETE FROM vehicles WHERE id = :id")
-    suspend fun deleteVehicleById(id: Long)
+    suspend fun deleteVehicleById(id: Int)
 
     @Query("SELECT * FROM vehicles")
     fun getAllVehicles(): Flow<List<VehicleEntity>>
 
     @Query("SELECT * FROM vehicles WHERE id = :id")
-    suspend fun getVehicleById(id: Long): VehicleEntity?
+    suspend fun getVehicleById(id: Int): VehicleEntity?
 
     @Query("SELECT * FROM vehicles WHERE active = 1 LIMIT 1")
     fun getActiveVehicle(): Flow<VehicleEntity?>
@@ -29,10 +29,10 @@ interface VehicleDao {
     suspend fun deactivateAllVehicles()
 
     @Query("UPDATE vehicles SET active = 1 WHERE id = :id")
-    suspend fun activateVehicle(id: Long)
+    suspend fun activateVehicle(id: Int)
 
     @Transaction
-    suspend fun selectVehicle(id: Long) {
+    suspend fun selectVehicle(id: Int) {
         deactivateAllVehicles()
         activateVehicle(id)
     }

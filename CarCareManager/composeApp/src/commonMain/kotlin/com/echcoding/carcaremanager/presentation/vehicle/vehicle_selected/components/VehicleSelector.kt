@@ -36,8 +36,8 @@ import com.echcoding.carcaremanager.presentation.core.GrayChateau
 import com.echcoding.carcaremanager.presentation.core.PaleSky
 import com.echcoding.carcaremanager.presentation.core.RoyalBlue
 import com.echcoding.carcaremanager.presentation.core.Zumthor
-import com.echcoding.carcaremanager.presentation.core.formattedOdometer
-import com.echcoding.carcaremanager.presentation.core.vehicles
+import com.echcoding.carcaremanager.presentation.core.extensions.formattedOdometer
+import com.echcoding.carcaremanager.presentation.core.mocks.vehicles
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 

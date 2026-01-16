@@ -1,7 +1,6 @@
 package com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,14 +13,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -44,8 +41,8 @@ import com.echcoding.carcaremanager.presentation.core.Ebony
 import com.echcoding.carcaremanager.presentation.core.PaleSky
 import com.echcoding.carcaremanager.presentation.core.RiverBed
 import com.echcoding.carcaremanager.presentation.core.RoyalBlue
-import com.echcoding.carcaremanager.presentation.core.formattedOdometer
-import com.echcoding.carcaremanager.presentation.core.vehicles
+import com.echcoding.carcaremanager.presentation.core.extensions.formattedOdometer
+import com.echcoding.carcaremanager.presentation.core.mocks.vehicles
 import com.echcoding.carcaremanager.theme.AppTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview

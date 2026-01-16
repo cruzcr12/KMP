@@ -12,11 +12,10 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.echcoding.carcaremanager.domain.model.Vehicle
-import com.echcoding.carcaremanager.presentation.core.vehicles
+import com.echcoding.carcaremanager.presentation.core.mocks.vehicles
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -24,8 +23,8 @@ fun VehicleList(
     vehicles: List<Vehicle>,
     onAddVehicleClick: () -> Unit,
     onEditVehicleClick: (Vehicle) -> Unit,
-    onDeleteVehicleClick: (Long?) -> Unit,
-    onSelectVehicleClick: (Long?) -> Unit,
+    onDeleteVehicleClick: (Int?) -> Unit,
+    onSelectVehicleClick: (Int?) -> Unit,
     padding: PaddingValues = PaddingValues(0.dp),
     modifier: Modifier = Modifier,
     scrollState: LazyListState = rememberLazyListState(),

@@ -1,4 +1,4 @@
-package com.echcoding.carcaremanager.presentation.core
+package com.echcoding.carcaremanager.presentation.core.extensions
 
 import com.echcoding.carcaremanager.domain.model.OdometerUnit
 import com.echcoding.carcaremanager.domain.model.Vehicle

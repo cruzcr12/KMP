@@ -23,11 +23,11 @@ class VehicleRepositoryImpl(
         vehicleDao.upsertVehicle(vehicle.toVehicleEntity())
     }
 
-    override suspend fun deleteVehicleById(id: Long) {
+    override suspend fun deleteVehicleById(id: Int) {
         vehicleDao.deleteVehicleById(id)
     }
 
-    override suspend fun getVehicleById(id: Long): Vehicle? {
+    override suspend fun getVehicleById(id: Int): Vehicle? {
         return vehicleDao.getVehicleById(id)?.toVehicle()
     }
 
@@ -42,7 +42,7 @@ class VehicleRepositoryImpl(
         return vehicleDao.getActiveVehicle().map { it?.toVehicle() }
     }
 
-    override suspend fun setActiveVehicle(vehicleId: Long) {
+    override suspend fun setActiveVehicle(vehicleId: Int) {
         // Uses the database transaction to ensure that the active vehicle is updated atomically
         vehicleDao.selectVehicle(vehicleId)
     }
