@@ -56,3 +56,4 @@ fun Maintenance.generateSubtitle(currentOdometer: Int): String {
         else -> "Due now"
     }
 }
+

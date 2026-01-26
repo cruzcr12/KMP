@@ -8,7 +8,6 @@ import com.echcoding.carcaremanager.domain.model.Vehicle
  * It bundles the state with all the actions that can be made in the View
  */
 data class VehicleListState(
-    val selectedVehicle: Vehicle? = null,
     val vehicles: List<Vehicle> = emptyList(),
     val isActive: Boolean = false,
     val selectedTabIndex: Int = 0,

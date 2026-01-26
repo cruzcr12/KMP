@@ -58,11 +58,6 @@ class VehicleListViewModel(
                 _state.update { it.copy(showDeleteConfirmationDialog = false, vehicleToDeleteId = null) }
             }
             is VehicleListAction.OnAddVehicleClick -> { }
-            is VehicleListAction.OnTabSelected -> {
-                _state.update {
-                    it.copy(selectedTabIndex = action.index)
-                }
-            }
         }
     }
 
@@ -105,7 +100,7 @@ class VehicleListViewModel(
                         vehicles = vehicles,
                         isLoading = false,
                         // Select the first vehicle if none is selected
-                        selectedVehicle = it.selectedVehicle ?: vehicles.firstOrNull()
+                        //selectedVehicle = it.selectedVehicle ?: vehicles.firstOrNull()
                     )}
                 }
         }

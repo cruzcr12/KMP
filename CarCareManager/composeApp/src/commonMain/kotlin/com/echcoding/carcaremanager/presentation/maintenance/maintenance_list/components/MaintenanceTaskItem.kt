@@ -28,7 +28,8 @@ import androidx.compose.ui.unit.dp
 import com.echcoding.carcaremanager.domain.model.Maintenance
 import com.echcoding.carcaremanager.presentation.core.extensions.calculateStatus
 import com.echcoding.carcaremanager.presentation.core.extensions.generateSubtitle
-import com.echcoding.carcaremanager.presentation.core.mocks.maintenances
+import com.echcoding.carcaremanager.presentation.core.mocks.getMockMaintenances
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.text.uppercase
 
@@ -36,7 +37,7 @@ import kotlin.text.uppercase
 fun MaintenanceTaskItem(
     maintenance: Maintenance,
     currentOdometer: Int,
-    onSelectClick:() -> Unit,
+    onSelectClick:(Long?) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val status: MaintenanceStatus = maintenance.calculateStatus(currentOdometer)
@@ -87,7 +88,7 @@ fun MaintenanceTaskItem(
                         shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp)
                     ) {
                         Text(
-                            text = status.label.toString().uppercase(),
+                            text = stringResource(status.label).uppercase(),
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold,
@@ -120,8 +121,8 @@ fun MaintenanceTaskItem(
 @Composable
 fun MaintenanceTaskItemPreview() {
     MaintenanceTaskItem(
-        maintenances[1],
-        30000,
+        maintenance =  getMockMaintenances()[0],
+        currentOdometer = 300000,
         onSelectClick = {}
     )
 }

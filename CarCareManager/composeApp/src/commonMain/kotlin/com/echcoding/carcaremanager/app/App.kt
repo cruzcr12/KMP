@@ -4,18 +4,25 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.echcoding.carcaremanager.presentation.maintenance.maintenance_list.MaintenanceListScreenRoot
+import com.echcoding.carcaremanager.presentation.maintenance.maintenance_list.MaintenanceListViewModel
+import com.echcoding.carcaremanager.presentation.navigation.NavigationScreen
+import com.echcoding.carcaremanager.presentation.navigation.NavigationViewModel
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_detail.VehicleDetailScreenRoot
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_detail.VehicleDetailViewModel
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.VehicleListScreenRoot
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.VehicleListViewModel
+import com.echcoding.carcaremanager.presentation.vehicle.vehicle_selected.SelectedVehicleViewModel
 import com.echcoding.carcaremanager.theme.AppTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -36,22 +43,50 @@ fun App() {
             navigation<Route.CarAppGraph>(
                 startDestination = Route.VehicleList
             ) {
-                // Define the route for Vehicle List screen
+
+                // Define Vehicle List Route which also contains the Maintenance and History list routes
                 composable<Route.VehicleList>(
                     exitTransition = { slideOutHorizontally() + fadeOut() },
                     popEnterTransition = { slideInHorizontally() + fadeIn() }
-                ) {
-                    // Fetches a VM scoped to this screen. When you leave the screen, the VM is cleared
-                    val viewModel = koinViewModel<VehicleListViewModel>()
+                ) { entry ->
+                    // Shared ViewModels
+                    // Using the sharedKoinViewModel to get the same instance shared with the parent graph
+                    val sharedSelectedVehicleViewModel = entry.sharedKoinViewModel<SelectedVehicleViewModel>(navController)
+                    val navigationViewModel = koinViewModel<NavigationViewModel>()
 
-                    VehicleListScreenRoot(
-                        viewModel = viewModel,
-                        onAddVehicle = {
-                            navController.navigate(Route.VehicleDetails(vehicleId = null))
+                    // Feature ViewModels
+                    val vehicleViewModel = koinViewModel<VehicleListViewModel>()
+                    val maintenanceViewModel = koinViewModel<MaintenanceListViewModel>()
+
+                    // Get the active vehicle from the shared view model
+                    val activeVehicle by sharedSelectedVehicleViewModel.selectedVehicle.collectAsStateWithLifecycle()
+
+                    NavigationScreen(
+                        navigationViewModel = navigationViewModel,
+                        activeVehicle = activeVehicle,
+                        maintenanceListContent = {
+                            MaintenanceListScreenRoot(
+                                viewModel = maintenanceViewModel,
+                                selectedVehicleViewModel = sharedSelectedVehicleViewModel,
+                                onAddMaintenance = { /*TODO - Add Maintenance event */ }
+                            )
                         },
-                        onEditVehicle = { vehicle ->
-                            navController.navigate(Route.VehicleDetails(vehicleId = vehicle.id))
+                        historyListContent = {
+                            Text("History Screen Placeholder")
+                        },
+                        vehicleListContent = {
+                            VehicleListScreenRoot(
+                                viewModel = vehicleViewModel,
+                                selectedVehicleViewModel = sharedSelectedVehicleViewModel,
+                                onAddVehicle = {
+                                    navController.navigate(Route.VehicleDetails(vehicleId = null))
+                                },
+                                onEditVehicle = { vehicle ->
+                                    navController.navigate(Route.VehicleDetails(vehicleId = vehicle.id))
+                                }
+                            )
                         }
+
                     )
                 }
 

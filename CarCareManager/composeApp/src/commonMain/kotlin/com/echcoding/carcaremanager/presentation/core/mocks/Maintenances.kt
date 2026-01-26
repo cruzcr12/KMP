@@ -4,14 +4,14 @@ import com.echcoding.carcaremanager.domain.model.ControlType
 import com.echcoding.carcaremanager.domain.model.Maintenance
 import kotlinx.datetime.LocalDate
 
-val maintenances = listOf(
+fun getMockMaintenances() = listOf(
     Maintenance(
         id = 1,
         vehicleId = 1,
         name = "Oil Change",
         description = "Replace oil and filter.",
         initialOdometer = 130000,
-        initialDate = LocalDate(2023, 8, 15),
+        initialDate = LocalDate(2026, 1, 1),
         odometerInterval = 2000,
         dateInterval = 120,
         controlType = ControlType.MILEAGE
@@ -22,7 +22,7 @@ val maintenances = listOf(
         name = "Tire Rotation",
         description = "Rotate tires and align them. Due in 500 miles",
         initialOdometer = 130000,
-        initialDate = LocalDate(2023, 8, 15),
+        initialDate = LocalDate(2023, 8, 1),
         odometerInterval = 500,
         dateInterval = 120,
         controlType = ControlType.TIME
@@ -33,7 +33,7 @@ val maintenances = listOf(
         name = "Brake Inspection",
         description = "Inspect brakes and apply brake fluid",
         initialOdometer = 128000,
-        initialDate = LocalDate(2023, 4, 10),
+        initialDate = LocalDate(2025, 8, 10),
         odometerInterval = 2000,
         dateInterval = 90,
         controlType = ControlType.BOTH
@@ -44,7 +44,7 @@ val maintenances = listOf(
         name = "Cabin Air Filter",
         description = "Replace cabin air filter. Due in 2500 miles",
         initialOdometer = 128000,
-        initialDate = LocalDate(2023, 4, 10),
+        initialDate = LocalDate(2025, 4, 10),
         odometerInterval = 2500,
         dateInterval = 500,
         controlType = ControlType.BOTH
@@ -54,8 +54,8 @@ val maintenances = listOf(
         vehicleId = 1,
         name = "Tire Pressure Check",
         description = "Maintains fuel efficiency and prevents premature wear or blowouts.",
-        initialOdometer = 130000,
-        initialDate = LocalDate(2025, 12, 150),
+        initialOdometer = 285000,
+        initialDate = LocalDate(2025, 1, 1),
         odometerInterval = 200,
         dateInterval = 30,
         controlType = ControlType.TIME

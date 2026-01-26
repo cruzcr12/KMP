@@ -4,11 +4,13 @@ import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.echcoding.carcaremanager.data.database.dao.MaintenanceDao
 import com.echcoding.carcaremanager.data.database.dao.VehicleDao
+import com.echcoding.carcaremanager.data.database.entity.MaintenanceEntity
 import com.echcoding.carcaremanager.data.database.entity.VehicleEntity
 
 @Database(
-    entities = [VehicleEntity::class],
+    entities = [VehicleEntity::class, MaintenanceEntity::class],
     version = 1, // When you change the schema, you'll have to increase the version number
     exportSchema = false
 )
@@ -18,6 +20,8 @@ import com.echcoding.carcaremanager.data.database.entity.VehicleEntity
 @ConstructedBy(CarCareManagerDatabaseConstructor::class)
 abstract class CarCareManagerDatabase : RoomDatabase(){
     abstract val vehicleDao: VehicleDao
+    abstract val maintenanceDao: MaintenanceDao
+
 
     companion object{
         const val DATABASE_NAME = "car_care_manager_db"

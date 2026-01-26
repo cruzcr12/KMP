@@ -3,7 +3,7 @@ package com.echcoding.carcaremanager.domain.model
 import kotlinx.datetime.LocalDate
 
 data class Maintenance(
-    val id: Int?,
+    val id: Long?,
     val vehicleId: Int,
     val name: String,
     val description: String?,

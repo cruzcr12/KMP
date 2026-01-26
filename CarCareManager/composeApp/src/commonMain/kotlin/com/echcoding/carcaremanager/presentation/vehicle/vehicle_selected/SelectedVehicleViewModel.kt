@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.stateIn
 class SelectedVehicleViewModel(
     private val repository: VehicleRepository
 ) : ViewModel() {
-    // Automatically syncs with the database state.
+    // The stateIn allows to automatically syncs with the database state.
     // Whenever the database changes (upsert or setActiveVehicle), the state is updated
     val selectedVehicle = repository.getActiveVehicle()
         .stateIn(

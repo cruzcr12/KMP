@@ -5,6 +5,9 @@ package com.echcoding.carcaremanager.presentation.maintenance.maintenance_list
  * The intent represents an user action or event that triggers a state change
  */
 sealed interface MaintenanceListAction {
-    data class OnSelectMaintenanceClick(val maintenanceId: Int) : MaintenanceListAction
+    data class OnSelectMaintenanceClick(val maintenanceId: Long?) : MaintenanceListAction
     data object OnAddMaintenanceClick : MaintenanceListAction
+    data class OnDeleteMaintenanceClick(val maintenanceId: Long) : MaintenanceListAction
+    data object OnConfirmDeleteMaintenance: MaintenanceListAction
+    data object OnDismissDeleteDialog: MaintenanceListAction
 }

@@ -10,15 +10,11 @@ sealed interface Route {
     data object VehicleList : Route
 
     @Serializable
-    data object AddVehicle : Route
-
-    @Serializable
     data class VehicleDetails(val vehicleId: Int?) : Route
 
+    @Serializable
+    data object MaintenanceList : Route
 
     @Serializable
-    data object ServiceList : Route
-
-    @Serializable
-    data object AddService : Route
+    data class MaintenanceDetails(val maintenanceId: Long?) : Route
 }

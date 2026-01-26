@@ -13,5 +13,4 @@ sealed interface VehicleListAction {
     data class OnDeleteVehicle(val vehicleId: Int) : VehicleListAction
     data object OnConfirmDeleteVehicle : VehicleListAction
     data object OnDismissDeleteDialog: VehicleListAction
-    data class OnTabSelected(val index: Int) : VehicleListAction
 }
