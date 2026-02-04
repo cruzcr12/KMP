@@ -37,6 +37,7 @@ import carcaremanager.composeapp.generated.resources.delete
 import carcaremanager.composeapp.generated.resources.delete_maintenance
 import carcaremanager.composeapp.generated.resources.delete_maintenance_confirmation
 import com.echcoding.carcaremanager.domain.model.Vehicle
+import com.echcoding.carcaremanager.presentation.core.mocks.getMockMaintenances
 import com.echcoding.carcaremanager.presentation.core.mocks.vehicles
 import com.echcoding.carcaremanager.presentation.maintenance.maintenance_list.components.EmptyMaintenanceList
 import com.echcoding.carcaremanager.presentation.maintenance.maintenance_list.components.MaintenanceList
@@ -188,7 +189,9 @@ fun MaintenanceListScreen(
 @Composable
 fun MaintenanceScreenPreview() {
     MaintenanceListScreen(
-        state = MaintenanceListState(),
+        state = MaintenanceListState(
+            tasks = getMockMaintenances()
+        ),
         onAction = {}
     )
 }

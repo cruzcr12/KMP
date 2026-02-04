@@ -15,6 +15,7 @@
     <string name="edit_vehicle">Edit Vehicle</string>
     <string name="new_vehicle">New Vehicle</string>
     <string name="back">Back</string>
+    <string name="save">Save</string>
     <string name="vehicle_name">Vehicle Nickname</string>
     <string name="vehicle_name_placeholder">e.g. My Daily Driver</string>
     <string name="year">Year</string>
@@ -26,9 +27,11 @@
     <string name="license_plate">License Plate</string>
     <string name="license_plate_placeholder">e.g. ABC-123</string>
     <string name="fuel_type">Fuel Type</string>
+    <string name="save_vehicle">Save Vehicle</string>
     <string name="delete_vehicle">Delete Vehicle</string>
     <string name="delete_vehicle_confirmation">Are you sure you want to delete this vehicle? This action cannot be undone.</string>
     <string name="delete">Delete</string>
+    <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
     <string name="overdue">Overdue</string>
     <string name="due_soon">Due Soon</string>
@@ -44,5 +47,24 @@
     <string name="add_maintenance_task">Add Maintenance Task</string>
     <string name="delete_maintenance">Delete Maintenance Task</string>
     <string name="delete_maintenance_confirmation">Are you sure you want to delete this task? This action cannot be undone.</string>
-
+    <string name="edit_task">Edit Task</string>
+    <string name="new_task">New Task</string>
+    <string name="delete_task">Delete Task</string>
+    <string name="save_task">Save Task</string>
+    <string name="task_name">Task Name</string>
+    <string name="task_name_placeholder">e.g. Oil Change</string>
+    <string name="task_description">Task Description</string>
+    <string name="task_description_placeholder">e.g. Change oil and filter</string>
+    <string name="maintenance_intervals">Maintenance Intervals</string>
+    <string name="initial_odometer">Initial Odometer</string>
+    <string name="initial_odometer_placeholder">e.g. 12345</string>
+    <string name="initial_date">Initial Date</string>
+    <string name="mileage_interval">Mileage Interval</string>
+    <string name="date_interval">Date Interval (Days)</string>
+    <string name="date_interval_placeholder">e.g. 1200</string>
+    <string name="control_type">Control Type</string>
+    <string name="odometer_interval_placeholder">e.g. 1000</string>
+    <string name="select_date">Select a date</string>
+    <string name="date_picker_date_format">MM/DD/YYYY</string>
+    <string name="maintenance_control_type">Maintenance Type</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.echcoding.carcaremanager.presentation.vehicle.vehicle_detail.components
+package com.echcoding.carcaremanager.presentation.core.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -22,6 +24,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.echcoding.carcaremanager.presentation.core.GrayChateau
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun DetailField(
@@ -30,6 +33,8 @@ fun DetailField(
     onValueChange: (String) -> Unit,
     placeholder: String,
     icon: ImageVector,
+    singleLine: Boolean = true,
+    maxLines: Int = 1,
     modifier: Modifier = Modifier,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Done
@@ -48,6 +53,8 @@ fun DetailField(
             value = value?: "",
             onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth(),
+            singleLine = singleLine,
+            maxLines = maxLines,
             leadingIcon = {
                 Icon(icon, contentDescription = null, tint = GrayChateau, modifier = Modifier.size(20.dp))
             },
@@ -69,4 +76,17 @@ fun DetailField(
             )
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DetailFieldPreview()
+{
+    DetailField(
+        label = "Label",
+        value = "Value",
+        onValueChange = {},
+        placeholder = "Placeholder",
+        icon = Icons.Default.Settings
+    )
 }

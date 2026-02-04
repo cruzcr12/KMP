@@ -7,6 +7,7 @@ import com.echcoding.carcaremanager.data.repository.MaintenanceRepositoryImpl
 import com.echcoding.carcaremanager.data.repository.VehicleRepositoryImpl
 import com.echcoding.carcaremanager.domain.repository.MaintenanceRepository
 import com.echcoding.carcaremanager.domain.repository.VehicleRepository
+import com.echcoding.carcaremanager.presentation.maintenance.maintenance_detail.MaintenanceDetailViewModel
 import com.echcoding.carcaremanager.presentation.maintenance.maintenance_list.MaintenanceListViewModel
 import com.echcoding.carcaremanager.presentation.navigation.NavigationViewModel
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_detail.VehicleDetailViewModel
@@ -50,5 +51,6 @@ val sharedModule = module {
     viewModelOf(::VehicleDetailViewModel)
     viewModelOf(::SelectedVehicleViewModel)
     viewModelOf(::MaintenanceListViewModel)
+    viewModelOf(::MaintenanceDetailViewModel)
     viewModelOf(::NavigationViewModel)
 }

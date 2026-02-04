@@ -14,6 +14,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.echcoding.carcaremanager.presentation.maintenance.maintenance_detail.MaintenanceDetailScreenRoot
+import com.echcoding.carcaremanager.presentation.maintenance.maintenance_detail.MaintenanceDetailViewModel
 import com.echcoding.carcaremanager.presentation.maintenance.maintenance_list.MaintenanceListScreenRoot
 import com.echcoding.carcaremanager.presentation.maintenance.maintenance_list.MaintenanceListViewModel
 import com.echcoding.carcaremanager.presentation.navigation.NavigationScreen
@@ -68,7 +70,9 @@ fun App() {
                             MaintenanceListScreenRoot(
                                 viewModel = maintenanceViewModel,
                                 selectedVehicleViewModel = sharedSelectedVehicleViewModel,
-                                onAddMaintenance = { /*TODO - Add Maintenance event */ }
+                                onAddMaintenance = { navController.navigate(
+                                    Route.MaintenanceDetails(maintenanceId = null,
+                                        selectedVehicleId = activeVehicle?.id ?: 0)) }
                             )
                         },
                         historyListContent = {
@@ -99,6 +103,21 @@ fun App() {
                     val viewModel = koinViewModel<VehicleDetailViewModel>()
 
                     VehicleDetailScreenRoot(
+                        viewModel = viewModel,
+                        onBackClick = {
+                            navController.navigateUp()
+                        }
+                    )
+                }
+
+                // Maintenance Details screen route
+                composable<Route.MaintenanceDetails>(
+                    enterTransition = { slideInHorizontally{ initialOffset -> initialOffset } },
+                    exitTransition = { slideOutHorizontally { initialOffset -> initialOffset } }
+                ) { it ->
+                    val viewModel = koinViewModel<MaintenanceDetailViewModel>()
+
+                    MaintenanceDetailScreenRoot(
                         viewModel = viewModel,
                         onBackClick = {
                             navController.navigateUp()

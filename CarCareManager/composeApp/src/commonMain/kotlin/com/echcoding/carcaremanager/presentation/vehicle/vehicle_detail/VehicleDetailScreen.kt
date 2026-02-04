@@ -64,6 +64,7 @@ import carcaremanager.composeapp.generated.resources.model
 import carcaremanager.composeapp.generated.resources.model_placeholder
 import carcaremanager.composeapp.generated.resources.new_vehicle
 import carcaremanager.composeapp.generated.resources.odometer
+import carcaremanager.composeapp.generated.resources.save_vehicle
 import carcaremanager.composeapp.generated.resources.vehicle_name
 import carcaremanager.composeapp.generated.resources.vehicle_name_placeholder
 import carcaremanager.composeapp.generated.resources.year
@@ -72,7 +73,9 @@ import com.echcoding.carcaremanager.domain.model.FuelType
 import com.echcoding.carcaremanager.domain.model.OdometerUnit
 import com.echcoding.carcaremanager.presentation.core.AthensGray
 import com.echcoding.carcaremanager.presentation.core.Ebony
-import com.echcoding.carcaremanager.presentation.vehicle.vehicle_detail.components.DetailField
+import com.echcoding.carcaremanager.presentation.core.components.DetailBottomBar
+import com.echcoding.carcaremanager.presentation.core.components.DetailField
+import com.echcoding.carcaremanager.presentation.core.components.DetailTopBar
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -138,29 +141,20 @@ fun VehicleDetailScreen(
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = if (state.isEditing) stringResource(Res.string.edit_vehicle) else stringResource(Res.string.new_vehicle),
-                        fontWeight = FontWeight.Bold,
-                        color = Ebony
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = { onAction(VehicleDetailAction.OnBackClick) } ) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(Res.string.back),
-                            tint = Ebony
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.White
-                )
+            DetailTopBar(
+                title = if (state.isEditing) Res.string.edit_vehicle else Res.string.new_vehicle,
+                onBackClick = { onAction(VehicleDetailAction.OnBackClick) },
+                actions = {}
             )
         },
-        containerColor = AthensGray
+        containerColor = AthensGray,
+        bottomBar = {
+            DetailBottomBar(
+                onSaveButtonClick = { onAction(VehicleDetailAction.OnSaveVehicleClick) },
+                isSaving = state.isSaving,
+                saveButtonText = stringResource(Res.string.save_vehicle)
+            )
+        }
     ) { padding ->
         Column(
             modifier = modifier
@@ -234,7 +228,9 @@ fun VehicleDetailScreen(
                             colors = SegmentedButtonDefaults.colors(
                                 activeContainerColor = Color(0xFF2563EB),
                                 activeContentColor = Color.White,
-                                inactiveContainerColor = Color.White
+                                inactiveContainerColor = Color.White,
+                                activeBorderColor = Color(0xFFE5E7EB),
+                                inactiveBorderColor = Color(0xFFE5E7EB)
                             )
                         ) {
                             Text(fuelType.name.lowercase().replaceFirstChar { it.uppercase() })
@@ -288,7 +284,9 @@ fun VehicleDetailScreen(
                                 colors = SegmentedButtonDefaults.colors(
                                     activeContainerColor = Color(0xFF2563EB),
                                     activeContentColor = Color.White,
-                                    inactiveContainerColor = Color.White
+                                    inactiveContainerColor = Color.White,
+                                    activeBorderColor = Color(0xFFE5E7EB),
+                                    inactiveBorderColor = Color(0xFFE5E7EB)
                                 )
                             ) {
                                 Text(if (unit == OdometerUnit.MILES) "mi" else "km")
@@ -298,25 +296,6 @@ fun VehicleDetailScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.weight(1f))
-
-            Button(
-                onClick = { onAction(VehicleDetailAction.OnSaveVehicleClick) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF2563EB)
-                ),
-                enabled = !state.isSaving
-            ) {
-                Text(
-                    text = if (state.isSaving) "Saving..." else "Save Vehicle",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
         }
     }
 }
