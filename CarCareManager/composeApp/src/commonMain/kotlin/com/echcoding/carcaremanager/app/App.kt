@@ -66,18 +66,6 @@ fun App() {
                     NavigationScreen(
                         navigationViewModel = navigationViewModel,
                         activeVehicle = activeVehicle,
-                        maintenanceListContent = {
-                            MaintenanceListScreenRoot(
-                                viewModel = maintenanceViewModel,
-                                selectedVehicleViewModel = sharedSelectedVehicleViewModel,
-                                onAddMaintenance = { navController.navigate(
-                                    Route.MaintenanceDetails(maintenanceId = null,
-                                        selectedVehicleId = activeVehicle?.id ?: 0)) }
-                            )
-                        },
-                        historyListContent = {
-                            Text("History Screen Placeholder")
-                        },
                         vehicleListContent = {
                             VehicleListScreenRoot(
                                 viewModel = vehicleViewModel,
@@ -89,8 +77,26 @@ fun App() {
                                     navController.navigate(Route.VehicleDetails(vehicleId = vehicle.id))
                                 }
                             )
+                        },
+                        maintenanceListContent = {
+                            MaintenanceListScreenRoot(
+                                viewModel = maintenanceViewModel,
+                                selectedVehicleViewModel = sharedSelectedVehicleViewModel,
+                                onAddMaintenance = { navController.navigate(
+                                    Route.MaintenanceDetails(maintenanceId = null,
+                                        selectedVehicleId = activeVehicle?.id ?: 0,
+                                        selectedVehicleOdometer = activeVehicle?.odometer ?: 0
+                                    )) },
+                                onEditMaintenance = { maintenance ->
+                                    navController.navigate(Route.MaintenanceDetails(maintenanceId = maintenance.id,
+                                        selectedVehicleId = activeVehicle?.id ?: 0,
+                                        selectedVehicleOdometer = activeVehicle?.odometer ?: 0))
+                                }
+                            )
+                        },
+                        historyListContent = {
+                            Text("History Screen Placeholder")
                         }
-
                     )
                 }
 

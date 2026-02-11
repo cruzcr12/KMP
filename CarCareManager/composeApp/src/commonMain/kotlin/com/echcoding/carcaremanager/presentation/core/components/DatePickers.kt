@@ -6,7 +6,6 @@ import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -15,7 +14,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.Icon
@@ -41,7 +39,6 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import carcaremanager.composeapp.generated.resources.Res
@@ -50,14 +47,11 @@ import carcaremanager.composeapp.generated.resources.date_picker_date_format
 import carcaremanager.composeapp.generated.resources.ok
 import carcaremanager.composeapp.generated.resources.select_date
 import com.echcoding.carcaremanager.presentation.core.GrayChateau
-import io.ktor.http.HttpHeaders.Date
+import com.echcoding.carcaremanager.presentation.core.PaleSky
+import com.echcoding.carcaremanager.presentation.core.convertMillisToLocalDate
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import kotlin.time.ExperimentalTime
-import kotlin.time.Instant
 
 @Composable
 fun DatePickerDocked(
@@ -139,9 +133,7 @@ fun DatePickerFieldToModal(
     value: String?,
     onSelectedDate: (LocalDate?) -> Unit,
     placeholder: String = "",
-    modifier: Modifier = Modifier,
-    keyboardType: KeyboardType = KeyboardType.Text,
-    imeAction: ImeAction = ImeAction.Done
+    modifier: Modifier = Modifier
 ) {
     var selectedDate by remember { mutableStateOf<Long?>(null) }
     var showModal by remember { mutableStateOf(false) }
@@ -150,8 +142,8 @@ fun DatePickerFieldToModal(
     val focusManager = LocalFocusManager.current
 
     OutlinedTextField(
-        value = value ?: "", //selectedDate?.let { convertMillisToLocalDate(it).toString() } ?: "",
-        enabled = false,
+        value = value ?: "",
+        //enabled = false,
         readOnly = true,
         onValueChange = { },
         //label = { Text(stringResource(Res.string.select_date)) },
@@ -159,7 +151,7 @@ fun DatePickerFieldToModal(
         trailingIcon = {
             Icon(Icons.Default.DateRange,
                 contentDescription = stringResource(Res.string.select_date),
-                tint = Color(0xFF6B7280),
+                tint = PaleSky,
                 modifier = Modifier.size(24.dp)
             )
         },
@@ -178,10 +170,6 @@ fun DatePickerFieldToModal(
                 }
             },
 
-        keyboardOptions = KeyboardOptions(
-            keyboardType = keyboardType,
-            imeAction = imeAction
-        ),
         // Clear focus when the keyboard action is pressed
         keyboardActions = KeyboardActions(
             onDone = { focusManager.clearFocus() },
@@ -197,7 +185,7 @@ fun DatePickerFieldToModal(
 
     if (showModal) {
         DatePickerModal(
-            onDateSelected = { onSelectedDate },
+            onDateSelected = onSelectedDate ,
             onDismiss = { showModal = false }
         )
     }
@@ -214,7 +202,7 @@ fun DatePickerModal(
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(onClick = {
-                datePickerState.selectedDateMillis?.let {millis ->
+                datePickerState.selectedDateMillis?.let { millis ->
                     val newDate = convertMillisToLocalDate(millis)
                     onDateSelected(newDate)
                 }
@@ -231,15 +219,6 @@ fun DatePickerModal(
     ) {
         DatePicker(state = datePickerState)
     }
-}
-
-
-@OptIn(ExperimentalTime::class)
-fun convertMillisToLocalDate(millis: Long): LocalDate {
-    // Create an instant from the timestamp in milliseconds
-    val instant = Instant.fromEpochMilliseconds(millis)
-    // Convert the instant to a LocalDate in the specific timezone
-    return instant.toLocalDateTime(TimeZone.currentSystemDefault()).date
 }
 
 

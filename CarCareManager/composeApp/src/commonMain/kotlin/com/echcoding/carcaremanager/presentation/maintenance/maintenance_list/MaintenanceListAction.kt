@@ -1,13 +1,15 @@
 package com.echcoding.carcaremanager.presentation.maintenance.maintenance_list
 
-/***
+import com.echcoding.carcaremanager.domain.model.Maintenance
+import com.echcoding.carcaremanager.domain.model.Vehicle
+
+/**
  * This interface represents the intent in the MVI architecture.
  * The intent represents an user action or event that triggers a state change
  */
 sealed interface MaintenanceListAction {
-    data class OnSelectMaintenanceClick(val maintenanceId: Long?) : MaintenanceListAction
     data object OnAddMaintenanceClick : MaintenanceListAction
-    data class OnDeleteMaintenanceClick(val maintenanceId: Long) : MaintenanceListAction
-    data object OnConfirmDeleteMaintenance: MaintenanceListAction
-    data object OnDismissDeleteDialog: MaintenanceListAction
+    data class OnEditMaintenanceClick(val maintenance: Maintenance) : MaintenanceListAction
+    data class OnActiveVehicleChanged(val vehicle: Vehicle?) : MaintenanceListAction
+
 }

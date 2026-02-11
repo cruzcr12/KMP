@@ -33,7 +33,7 @@ fun MaintenanceList(
     maintenanceTasks: List<Maintenance>,
     currentOdometer: Int,
     overdueTasks: Int? = null,
-    onSelectMaintenance: (Long?) -> Unit,
+    onEditMaintenanceClick: (Maintenance) -> Unit,
     modifier: Modifier = Modifier,
     padding: PaddingValues = PaddingValues(0.dp),
     scrollState: LazyListState = rememberLazyListState()
@@ -81,7 +81,7 @@ fun MaintenanceList(
             MaintenanceTaskItem(
                 maintenance = maintenance,
                 currentOdometer = currentOdometer,
-                onSelectClick = { onSelectMaintenance(maintenance.id ?: -1) }
+                onEditClick = { onEditMaintenanceClick(maintenance) }
             )
         }
     }
@@ -94,6 +94,6 @@ fun MaintenanceListPreview() {
         maintenanceTasks = getMockMaintenances(),
         overdueTasks = 4,
         currentOdometer = 130000,
-        onSelectMaintenance = {}
+        onEditMaintenanceClick = {}
     )
 }

@@ -167,7 +167,7 @@ fun VehicleDetailScreen(
             DetailField(
                 label = stringResource(Res.string.vehicle_name),
                 value = state.vehicle?.name,
-                onValueChange = { onAction(VehicleDetailAction.OnStateChange(vehicle = state.vehicle?.copy(name = it)) ) }, //    onStateChange(state.copy(vehicle = state.vehicle?.copy(name = it))) },
+                onValueChange = { onAction(VehicleDetailAction.OnStateChange(vehicle = state.vehicle?.copy(name = it)) ) }, 
                 placeholder = stringResource(Res.string.vehicle_name_placeholder),
                 icon = Icons.Default.DirectionsCar
             )
@@ -176,7 +176,7 @@ fun VehicleDetailScreen(
                 DetailField(
                     label = stringResource(Res.string.year),
                     value = state.vehicle?.year?.toString(),
-                    onValueChange = { onAction(VehicleDetailAction.OnStateChange(vehicle = state.vehicle?.copy(year = it.toIntOrNull() ?: 0))) },   //onStateChange(state.copy(vehicle = state.vehicle?.copy(year = it.toIntOrNull() ?: 0))) },
+                    onValueChange = { onAction(VehicleDetailAction.OnStateChange(vehicle = state.vehicle?.copy(year = it.toIntOrNull() ?: 0))) }, 
                     placeholder = stringResource(Res.string.year_placeholder),
                     icon = Icons.Default.Numbers,
                     keyboardType = KeyboardType.Number,
@@ -186,7 +186,6 @@ fun VehicleDetailScreen(
                     label = stringResource(Res.string.license_plate),
                     value = state.vehicle?.licensePlate,
                     onValueChange = { onAction(VehicleDetailAction.OnStateChange(vehicle = state.vehicle?.copy(licensePlate = it))) },
-                        //onStateChange(state.copy(vehicle = state.vehicle?.copy(licensePlate = it))) },
                     placeholder = stringResource(Res.string.license_plate_placeholder),
                     icon = Icons.Default.Pin,
                     modifier = Modifier.weight(1.5f)
@@ -197,7 +196,6 @@ fun VehicleDetailScreen(
                 label = stringResource(Res.string.make),
                 value = state.vehicle?.maker,
                 onValueChange = { onAction(VehicleDetailAction.OnStateChange(vehicle = state.vehicle?.copy(maker = it))) },
-                    //onStateChange(state.copy(vehicle = state.vehicle?.copy(maker = it))) },
                 placeholder = stringResource(Res.string.make_placeholder),
                 icon = Icons.Default.Settings
             )
@@ -206,7 +204,6 @@ fun VehicleDetailScreen(
                 label = stringResource(Res.string.model),
                 value = state.vehicle?.model,
                 onValueChange = { onAction(VehicleDetailAction.OnStateChange(vehicle = state.vehicle?.copy(model = it))) },
-                    //onStateChange(state.copy(vehicle = state.vehicle?.copy(model = it))) },
                 placeholder = stringResource(Res.string.model_placeholder),
                 icon = Icons.Default.DirectionsCar
             )
@@ -223,7 +220,6 @@ fun VehicleDetailScreen(
                         SegmentedButton(
                             shape = SegmentedButtonDefaults.itemShape(index = index, count = FuelType.entries.size),
                             onClick = { onAction(VehicleDetailAction.OnStateChange(vehicle = state.vehicle?.copy(fuelType = fuelType))) },
-                                //onStateChange(state.copy(vehicle = state.vehicle?.copy(fuelType = fuelType))) },
                             selected = state.vehicle?.fuelType == fuelType,
                             colors = SegmentedButtonDefaults.colors(
                                 activeContainerColor = Color(0xFF2563EB),
@@ -253,10 +249,9 @@ fun VehicleDetailScreen(
                     OutlinedTextField(
                         value = state.vehicle?.odometer?.toString() ?: "",
                         onValueChange = { newValue ->
-                            // 2. Filter out non-numeric characters if necessary, or just use toIntOrNull
+                            // Filter out non-numeric characters if necessary, or just use toIntOrNull
                             val intValue = newValue.filter { it.isDigit() }.toIntOrNull() ?: 0
                             onAction(VehicleDetailAction.OnStateChange(vehicle = state.vehicle?.copy(odometer = intValue)))
-                            //onStateChange(state.copy(vehicle = state.vehicle?.copy(odometer = intValue)))
                         },
                         modifier = Modifier.weight(1f),
                         leadingIcon = {
@@ -278,7 +273,6 @@ fun VehicleDetailScreen(
                                 shape = SegmentedButtonDefaults.itemShape(index = index, count = 2),
                                 onClick = {
                                     onAction(VehicleDetailAction.OnStateChange(vehicle = state.vehicle?.copy(odometerUnit = unit)))
-                                    //onStateChange(state.copy(vehicle = state.vehicle?.copy(odometerUnit = unit)))
                                 },
                                 selected = state.vehicle?.odometerUnit == unit,
                                 colors = SegmentedButtonDefaults.colors(

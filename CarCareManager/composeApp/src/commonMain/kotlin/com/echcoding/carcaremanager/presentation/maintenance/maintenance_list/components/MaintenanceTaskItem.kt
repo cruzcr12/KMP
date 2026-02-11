@@ -37,7 +37,7 @@ import kotlin.text.uppercase
 fun MaintenanceTaskItem(
     maintenance: Maintenance,
     currentOdometer: Int,
-    onSelectClick:(Long?) -> Unit,
+    onEditClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val status: MaintenanceStatus = maintenance.calculateStatus(currentOdometer)
@@ -46,7 +46,8 @@ fun MaintenanceTaskItem(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        onClick = onEditClick
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -123,6 +124,6 @@ fun MaintenanceTaskItemPreview() {
     MaintenanceTaskItem(
         maintenance =  getMockMaintenances()[0],
         currentOdometer = 300000,
-        onSelectClick = {}
+        onEditClick = {}
     )
 }

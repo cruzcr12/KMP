@@ -6,6 +6,7 @@ import carcaremanager.composeapp.generated.resources.Res
 import carcaremanager.composeapp.generated.resources.maintenance_deleted
 import carcaremanager.composeapp.generated.resources.maintenance_deleted_error
 import carcaremanager.composeapp.generated.resources.unknown_error
+import com.echcoding.carcaremanager.domain.model.Vehicle
 import com.echcoding.carcaremanager.domain.repository.MaintenanceRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,52 +40,25 @@ class MaintenanceListViewModel(
 
     fun onAction(action: MaintenanceListAction){
         when(action){
-            is MaintenanceListAction.OnSelectMaintenanceClick -> {
+            is MaintenanceListAction.OnEditMaintenanceClick -> {
 
             }
             is MaintenanceListAction.OnAddMaintenanceClick -> {
 
             }
-            is MaintenanceListAction.OnDeleteMaintenanceClick -> {
-                // Show confirmation dialog instead of deleting the task immediately
-                _state.update { it.copy(
-                    maintenanceToDeleteId = action.maintenanceId,
-                    showDeleteConfirmationDialog = true
-                )}
-            }
-            is MaintenanceListAction.OnConfirmDeleteMaintenance -> {
-                val idToDelete = _state.value.maintenanceToDeleteId ?: return
-                executeDelete(idToDelete)
-
-            }
-            is MaintenanceListAction.OnDismissDeleteDialog -> {
-                _state.update { it.copy(showDeleteConfirmationDialog = false, maintenanceToDeleteId = null) }
+            is MaintenanceListAction.OnActiveVehicleChanged -> {
+                setActiveVehicle(action.vehicle)
             }
         }
     }
 
-    private fun executeDelete(id: Long) {
-        viewModelScope.launch {
-            // Clear previous errors and reset the confirmation dialog and show loading
-            _state.update {
-                it.copy(
-                    isLoading = true,
-                    showDeleteConfirmationDialog = false,
-                    errorMessage = null
-                )
-            }
-            try {
-                repository.deleteMaintenanceById(id)
-                _state.update { it.copy(isLoading = false, maintenanceToDeleteId = null) }
-                // Send one-time event to show the Toast
-                _events.send(MaintenanceListSideEffect.ShowSnackbar(getString(Res.string.maintenance_deleted)))
-            } catch (e: Exception) {
-                // Catch any error and update state accordingly
-                _state.update { it.copy(
-                    isLoading = false,
-                    errorMessage = getString(Res.string.maintenance_deleted_error, (e.message ?: Res.string.unknown_error))
-                )}
-            }
+    /**
+     * Set or update the active vehicle and start observing the maintenance list
+     */
+    private fun setActiveVehicle(vehicle: Vehicle?){
+        _state.update { it.copy(selectedVehicle = vehicle) }
+        if(vehicle != null){
+            observeMaintenanceList()
         }
     }
 

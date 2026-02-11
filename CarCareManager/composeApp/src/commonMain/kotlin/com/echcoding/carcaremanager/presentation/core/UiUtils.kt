@@ -1,8 +1,10 @@
 package com.echcoding.carcaremanager.presentation.core
 
-
+import kotlin.time.Instant
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
 import kotlinx.datetime.TimeZone.Companion.currentSystemDefault
+import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.todayIn
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
@@ -24,4 +26,13 @@ fun getCurrentLocalDate(): LocalDate {
     // Get today's date in the time zone
     val today = Clock.System.todayIn(timeZone)
     return today
+}
+
+@OptIn(ExperimentalTime::class)
+fun convertMillisToLocalDate(milliseconds: Long): LocalDate {
+    // Create an instant from epoch milliseconds
+    val instant = Instant.fromEpochMilliseconds(milliseconds)
+
+    // Convert the instant to a LocalDate using the UTC time zone
+    return instant.toLocalDateTime(TimeZone.UTC).date
 }

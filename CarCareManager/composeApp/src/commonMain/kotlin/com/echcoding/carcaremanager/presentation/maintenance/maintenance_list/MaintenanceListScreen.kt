@@ -36,9 +36,8 @@ import carcaremanager.composeapp.generated.resources.cancel
 import carcaremanager.composeapp.generated.resources.delete
 import carcaremanager.composeapp.generated.resources.delete_maintenance
 import carcaremanager.composeapp.generated.resources.delete_maintenance_confirmation
-import com.echcoding.carcaremanager.domain.model.Vehicle
+import com.echcoding.carcaremanager.domain.model.Maintenance
 import com.echcoding.carcaremanager.presentation.core.mocks.getMockMaintenances
-import com.echcoding.carcaremanager.presentation.core.mocks.vehicles
 import com.echcoding.carcaremanager.presentation.maintenance.maintenance_list.components.EmptyMaintenanceList
 import com.echcoding.carcaremanager.presentation.maintenance.maintenance_list.components.MaintenanceList
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_selected.SelectedVehicleViewModel
@@ -51,13 +50,17 @@ fun MaintenanceListScreenRoot(
     viewModel: MaintenanceListViewModel = koinViewModel(),
     selectedVehicleViewModel: SelectedVehicleViewModel,
     onAddMaintenance: () -> Unit,
+    onEditMaintenance: (Maintenance) -> Unit,
     modifier: Modifier = Modifier
 ) {
     // This automatically reacts to the Flow in the VM
     val state by viewModel.state.collectAsStateWithLifecycle()
     // Collect the active vehicle state
     val activeVehicle by selectedVehicleViewModel.selectedVehicle.collectAsStateWithLifecycle()
-    state.selectedVehicle = activeVehicle
+    // Notify the viewModel when the active vehicle changes so it can update the maintenance list
+    LaunchedEffect(activeVehicle){
+        viewModel.onAction(MaintenanceListAction.OnActiveVehicleChanged(activeVehicle))
+    }
 
     val snackbarHostState  = remember { SnackbarHostState() }
 
@@ -70,6 +73,7 @@ fun MaintenanceListScreenRoot(
             onAction = { action ->
                 when(action){
                     is MaintenanceListAction.OnAddMaintenanceClick -> onAddMaintenance()
+                    is MaintenanceListAction.OnEditMaintenanceClick -> onEditMaintenance(action.maintenance)
                     else -> Unit
                 }
                 // Forward action to ViewModel
@@ -95,7 +99,6 @@ fun MaintenanceListScreen(
             maintenanceListState.animateScrollToItem(0)
         }
     }
-
 
     Scaffold(
         floatingActionButton = {
@@ -151,7 +154,7 @@ fun MaintenanceListScreen(
                             maintenanceTasks = state.tasks,
                             currentOdometer = state.selectedVehicle?.odometer ?: 0,
                             overdueTasks = state.overdueTasks ?: 0,
-                            onSelectMaintenance = { onAction(MaintenanceListAction.OnSelectMaintenanceClick(it))},
+                            onEditMaintenanceClick = { onAction(MaintenanceListAction.OnEditMaintenanceClick(it)) },
                             padding = padding,
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -159,25 +162,7 @@ fun MaintenanceListScreen(
                             scrollState = maintenanceListState
                         )
                     }
-                    // Confirmation dialog to delete the vehicle
-                    if(state.showDeleteConfirmationDialog){
-                        AlertDialog(
-                            onDismissRequest = { onAction(MaintenanceListAction.OnDismissDeleteDialog) },
-                            title = { Text(text = stringResource(Res.string.delete_maintenance)) },
-                            text = { Text(text = stringResource(Res.string.delete_maintenance_confirmation)) },
-                            confirmButton = {
-                                TextButton(onClick = { onAction(MaintenanceListAction.OnConfirmDeleteMaintenance) }) {
-                                    Text(text = stringResource(Res.string.delete),
-                                        color = MaterialTheme.colorScheme.error)
-                                }
-                            },
-                            dismissButton = {
-                                TextButton(onClick = { onAction(MaintenanceListAction.OnDismissDeleteDialog) }) {
-                                    Text(stringResource(Res.string.cancel))
-                                }
-                            }
-                        )
-                    }
+                    
                 }
             }
         }
