@@ -16,4 +16,5 @@ interface VehicleRepository {
 
     fun getActiveVehicle(): Flow<Vehicle?>
     suspend fun setActiveVehicle(vehicleId: Int)
+    suspend fun getLastVehicleAdded(): Vehicle?
 }

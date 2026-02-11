@@ -23,8 +23,12 @@ class MaintenanceRepositoryImpl(
         maintenanceDao.deleteMaintenanceById(id)
     }
 
-    override suspend fun getMaintenanceById(id: Long): Maintenance? {
-        return maintenanceDao.getMaintenanceById(id)?.toMaintenance()
+    override suspend fun insertMultipleMaintenances(maintenances: List<Maintenance>) {
+        maintenanceDao.insertMultipleMaintenances(maintenances.map { it.toMaintenanceEntity() })
+    }
+
+    override suspend fun getMaintenanceById(id: Long): Maintenance {
+        return maintenanceDao.getMaintenanceById(id).toMaintenance()
     }
 
     override fun getMaintenancesForVehicle(vehicleId: Int): Flow<List<Maintenance>> {

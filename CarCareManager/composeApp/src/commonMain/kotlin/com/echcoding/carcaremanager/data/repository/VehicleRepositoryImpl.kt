@@ -24,7 +24,7 @@ class VehicleRepositoryImpl(
     }
 
     override suspend fun deleteVehicleById(id: Int) {
-        vehicleDao.deleteVehicleById(id)
+        vehicleDao.deleteAllByVehicle(id)
     }
 
     override suspend fun getVehicleById(id: Int): Vehicle? {
@@ -45,5 +45,10 @@ class VehicleRepositoryImpl(
     override suspend fun setActiveVehicle(vehicleId: Int) {
         // Uses the database transaction to ensure that the active vehicle is updated atomically
         vehicleDao.selectVehicle(vehicleId)
+    }
+
+    // Gets the last vehicle added to the database
+    override suspend fun getLastVehicleAdded(): Vehicle? {
+        return vehicleDao.getLastVehicleAdded()?.toVehicle()
     }
 }

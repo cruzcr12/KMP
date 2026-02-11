@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
  */
 interface MaintenanceRepository {
     suspend fun upsertMaintenance(maintenance: Maintenance)
+    suspend fun insertMultipleMaintenances(maintenances: List<Maintenance>)
     suspend fun deleteMaintenanceById(id: Long)
     suspend fun getMaintenanceById(id: Long): Maintenance?
 

@@ -4,8 +4,13 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
@@ -32,103 +37,118 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 @Preview
 fun App() {
-    AppTheme {
-        // Create the controller to handle the app navigation
-        val navController = rememberNavController()
-        // The NavHost is a container that displays the current screen based on the navigation state
-        NavHost(
-            navController = navController,
-            startDestination = Route.CarAppGraph
-        ) {
-            // Group related screens in a navigation graph
-            // This is important for shared view models between the screens
-            navigation<Route.CarAppGraph>(
-                startDestination = Route.VehicleList
+    Scaffold(
+        modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing),
+    ) { innerPadding ->
+        AppTheme {
+            // Create the controller to handle the app navigation
+            val navController = rememberNavController()
+            // The NavHost is a container that displays the current screen based on the navigation state
+            NavHost(
+                navController = navController,
+                startDestination = Route.CarAppGraph
             ) {
+                // Group related screens in a navigation graph
+                // This is important for shared view models between the screens
+                navigation<Route.CarAppGraph>(
+                    startDestination = Route.VehicleList
+                ) {
 
-                // Define Vehicle List Route which also contains the Maintenance and History list routes
-                composable<Route.VehicleList>(
-                    exitTransition = { slideOutHorizontally() + fadeOut() },
-                    popEnterTransition = { slideInHorizontally() + fadeIn() }
-                ) { entry ->
-                    // Shared ViewModels
-                    // Using the sharedKoinViewModel to get the same instance shared with the parent graph
-                    val sharedSelectedVehicleViewModel = entry.sharedKoinViewModel<SelectedVehicleViewModel>(navController)
-                    val navigationViewModel = koinViewModel<NavigationViewModel>()
+                    // Define Vehicle List Route which also contains the Maintenance and History list routes
+                    composable<Route.VehicleList>(
+                        exitTransition = { slideOutHorizontally() + fadeOut() },
+                        popEnterTransition = { slideInHorizontally() + fadeIn() }
+                    ) { entry ->
+                        // Shared ViewModels
+                        // Using the sharedKoinViewModel to get the same instance shared with the parent graph
+                        val sharedSelectedVehicleViewModel =
+                            entry.sharedKoinViewModel<SelectedVehicleViewModel>(navController)
+                        val navigationViewModel = koinViewModel<NavigationViewModel>()
 
-                    // Feature ViewModels
-                    val vehicleViewModel = koinViewModel<VehicleListViewModel>()
-                    val maintenanceViewModel = koinViewModel<MaintenanceListViewModel>()
+                        // Feature ViewModels
+                        val vehicleViewModel = koinViewModel<VehicleListViewModel>()
+                        val maintenanceViewModel = koinViewModel<MaintenanceListViewModel>()
 
-                    // Get the active vehicle from the shared view model
-                    val activeVehicle by sharedSelectedVehicleViewModel.selectedVehicle.collectAsStateWithLifecycle()
+                        // Get the active vehicle from the shared view model
+                        val activeVehicle by sharedSelectedVehicleViewModel.selectedVehicle.collectAsStateWithLifecycle()
 
-                    NavigationScreen(
-                        navigationViewModel = navigationViewModel,
-                        activeVehicle = activeVehicle,
-                        vehicleListContent = {
-                            VehicleListScreenRoot(
-                                viewModel = vehicleViewModel,
-                                selectedVehicleViewModel = sharedSelectedVehicleViewModel,
-                                onAddVehicle = {
-                                    navController.navigate(Route.VehicleDetails(vehicleId = null))
-                                },
-                                onEditVehicle = { vehicle ->
-                                    navController.navigate(Route.VehicleDetails(vehicleId = vehicle.id))
-                                }
-                            )
-                        },
-                        maintenanceListContent = {
-                            MaintenanceListScreenRoot(
-                                viewModel = maintenanceViewModel,
-                                selectedVehicleViewModel = sharedSelectedVehicleViewModel,
-                                onAddMaintenance = { navController.navigate(
-                                    Route.MaintenanceDetails(maintenanceId = null,
-                                        selectedVehicleId = activeVehicle?.id ?: 0,
-                                        selectedVehicleOdometer = activeVehicle?.odometer ?: 0
-                                    )) },
-                                onEditMaintenance = { maintenance ->
-                                    navController.navigate(Route.MaintenanceDetails(maintenanceId = maintenance.id,
-                                        selectedVehicleId = activeVehicle?.id ?: 0,
-                                        selectedVehicleOdometer = activeVehicle?.odometer ?: 0))
-                                }
-                            )
-                        },
-                        historyListContent = {
-                            Text("History Screen Placeholder")
-                        }
-                    )
-                }
+                        NavigationScreen(
+                            navigationViewModel = navigationViewModel,
+                            activeVehicle = activeVehicle,
+                            vehicleListContent = {
+                                VehicleListScreenRoot(
+                                    viewModel = vehicleViewModel,
+                                    selectedVehicleViewModel = sharedSelectedVehicleViewModel,
+                                    onAddVehicle = {
+                                        navController.navigate(Route.VehicleDetails(vehicleId = null))
+                                    },
+                                    onEditVehicle = { vehicle ->
+                                        navController.navigate(Route.VehicleDetails(vehicleId = vehicle.id))
+                                    }
+                                )
+                            },
+                            maintenanceListContent = {
+                                MaintenanceListScreenRoot(
+                                    viewModel = maintenanceViewModel,
+                                    selectedVehicleViewModel = sharedSelectedVehicleViewModel,
+                                    onAddMaintenance = {
+                                        navController.navigate(
+                                            Route.MaintenanceDetails(
+                                                maintenanceId = null,
+                                                selectedVehicleId = activeVehicle?.id ?: 0,
+                                                selectedVehicleOdometer = activeVehicle?.odometer
+                                                    ?: 0
+                                            )
+                                        )
+                                    },
+                                    onEditMaintenance = { maintenance ->
+                                        navController.navigate(
+                                            Route.MaintenanceDetails(
+                                                maintenanceId = maintenance.id,
+                                                selectedVehicleId = activeVehicle?.id ?: 0,
+                                                selectedVehicleOdometer = activeVehicle?.odometer
+                                                    ?: 0
+                                            )
+                                        )
+                                    }
+                                )
+                            },
+                            historyListContent = {
+                                Text("History Screen Placeholder")
+                            }
+                        )
+                    }
 
-                // Vehicle Details screen route
-                composable<Route.VehicleDetails>(
-                    enterTransition = { slideInHorizontally{ initialOffset -> initialOffset } },
-                    exitTransition = { slideOutHorizontally { initialOffset -> initialOffset } }
-                ){ it ->
-                    // Fetches a VM scoped to this screen. When you leave the screen, the VM is cleared
-                    val viewModel = koinViewModel<VehicleDetailViewModel>()
+                    // Vehicle Details screen route
+                    composable<Route.VehicleDetails>(
+                        enterTransition = { slideInHorizontally { initialOffset -> initialOffset } },
+                        exitTransition = { slideOutHorizontally { initialOffset -> initialOffset } }
+                    ) { it ->
+                        // Fetches a VM scoped to this screen. When you leave the screen, the VM is cleared
+                        val viewModel = koinViewModel<VehicleDetailViewModel>()
 
-                    VehicleDetailScreenRoot(
-                        viewModel = viewModel,
-                        onBackClick = {
-                            navController.navigateUp()
-                        }
-                    )
-                }
+                        VehicleDetailScreenRoot(
+                            viewModel = viewModel,
+                            onBackClick = {
+                                navController.navigateUp()
+                            }
+                        )
+                    }
 
-                // Maintenance Details screen route
-                composable<Route.MaintenanceDetails>(
-                    enterTransition = { slideInHorizontally{ initialOffset -> initialOffset } },
-                    exitTransition = { slideOutHorizontally { initialOffset -> initialOffset } }
-                ) { it ->
-                    val viewModel = koinViewModel<MaintenanceDetailViewModel>()
+                    // Maintenance Details screen route
+                    composable<Route.MaintenanceDetails>(
+                        enterTransition = { slideInHorizontally { initialOffset -> initialOffset } },
+                        exitTransition = { slideOutHorizontally { initialOffset -> initialOffset } }
+                    ) { it ->
+                        val viewModel = koinViewModel<MaintenanceDetailViewModel>()
 
-                    MaintenanceDetailScreenRoot(
-                        viewModel = viewModel,
-                        onBackClick = {
-                            navController.navigateUp()
-                        }
-                    )
+                        MaintenanceDetailScreenRoot(
+                            viewModel = viewModel,
+                            onBackClick = {
+                                navController.navigateUp()
+                            }
+                        )
+                    }
                 }
             }
         }

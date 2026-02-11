@@ -114,7 +114,7 @@ fun NavigationScreen(
 fun NavigationScreenPreview()
 {
     NavigationScreen(
-        navigationViewModel = koinViewModel(),
+        navigationViewModel = koinViewModel<NavigationViewModel>(),
         activeVehicle = vehicles.first(),
         maintenanceListContent = {},
         historyListContent = {},

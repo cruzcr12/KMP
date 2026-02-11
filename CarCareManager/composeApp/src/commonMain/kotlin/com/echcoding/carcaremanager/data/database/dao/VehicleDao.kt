@@ -16,6 +16,9 @@ interface VehicleDao {
     @Query("DELETE FROM vehicles WHERE id = :id")
     suspend fun deleteVehicleById(id: Int)
 
+    @Query("DELETE FROM maintenance WHERE vehicleId = :vehicleId")
+    suspend fun deleteMaintenanceByVehicleId(vehicleId: Int)
+
     @Query("SELECT * FROM vehicles")
     fun getAllVehicles(): Flow<List<VehicleEntity>>
 
@@ -31,9 +34,19 @@ interface VehicleDao {
     @Query("UPDATE vehicles SET active = 1 WHERE id = :id")
     suspend fun activateVehicle(id: Int)
 
+    @Query("SELECT * FROM vehicles ORDER BY id DESC LIMIT 1")
+    suspend fun getLastVehicleAdded(): VehicleEntity?
+
     @Transaction
     suspend fun selectVehicle(id: Int) {
         deactivateAllVehicles()
         activateVehicle(id)
+    }
+
+    // Deletes the vehicle and its associated maintenance tasks
+    @Transaction
+    suspend fun deleteAllByVehicle(id: Int) {
+        deleteMaintenanceByVehicleId(id)
+        deleteVehicleById(id)
     }
 }

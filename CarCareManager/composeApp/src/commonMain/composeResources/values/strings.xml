@@ -67,4 +67,32 @@
     <string name="select_date">Select a date</string>
     <string name="date_picker_date_format">MM/DD/YYYY</string>
     <string name="maintenance_control_type">Maintenance Type</string>
+    <!-- Default Maintenance Types -->
+    <string name="oil_change">Oil &amp; Filter Change</string>
+    <string name="oil_change_description">Lubricates moving parts, reduces friction, and prevents engine sludge.</string>
+    <string name="tire_pressure_check">Tire Pressure Check</string>
+    <string name="tire_pressure_check_description">Maintains fuel efficiency and prevents premature wear or blowouts.</string>
+    <string name="tire_rotation">Tire Rotation</string>
+    <string name="tire_rotation_description">Moving tires from front to back to ensure even tread wear across all four</string>
+    <string name="engine_air_filter">Engine Air Filter</string>
+    <string name="engine_air_filter_description">Regulates airflow to the engine while filtering out dust and debris.</string>
+    <string name="cabin_air_filter">Cabin Air Filter</string>
+    <string name="cabin_air_filter_description">Cleans air entering the passenger cabin; essential for HVAC efficiency.</string>
+    <string name="brake_pad_inspection">Brake Pad Inspection</string>
+    <string name="brake_pad_inspection_description">Visually checking pads to ensure they have enough thickness for safe stopping.</string>
+    <string name="brake_fluid_check">Brake Fluid Flush</string>
+    <string name="brake_fluid_check_description">Removing old fluid that has absorbed moisture to prevent system corrosion.</string>
+    <string name="wiper_blade_check">Wiper Blades</string>
+    <string name="wiper_blade_check_description">Replacing worn rubber to ensure clear visibility during rain or snow.</string>
+    <string name="coolant_flush">Coolant Flush</string>
+    <string name="coolant_flush_description">Exchanges old coolant to remove contaminants and prevent engine overheating.</string>
+    <string name="transmission_fluid">Transmission Fluid</string>
+    <string name="transmission_fluid_description">Lubricates gears and keeps the transmission operating smoothly."></string>
+    <string name="battery_check">Battery Check</string>
+    <string name="battery_check_description">Testing voltage to ensure the battery can reliably start the engine.</string>
+    <string name="spark_plug_change">Spark Plug Change</string>
+    <string name="spark_plug_change_description">Replacing worn spark plugs to ensure smooth operation"></string>
+    <string name="wheel_alignment">Wheel Alignment</string>
+    <string name="wheel_alignment_description">Adjusting the angle of tires to prevent steering pull and uneven wear.</string>
+
 </resources>
