@@ -48,7 +48,7 @@ import carcaremanager.composeapp.generated.resources.ok
 import carcaremanager.composeapp.generated.resources.select_date
 import com.echcoding.carcaremanager.presentation.core.GrayChateau
 import com.echcoding.carcaremanager.presentation.core.PaleSky
-import com.echcoding.carcaremanager.presentation.core.convertMillisToLocalDate
+import com.echcoding.carcaremanager.presentation.core.utils.convertMillisToLocalDate
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview

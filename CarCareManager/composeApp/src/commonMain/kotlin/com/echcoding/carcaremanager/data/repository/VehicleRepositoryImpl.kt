@@ -31,7 +31,7 @@ class VehicleRepositoryImpl(
         return vehicleDao.getVehicleById(id)?.toVehicle()
     }
 
-    override suspend fun getAllVehicles(): Flow<List<Vehicle>> {
+    override fun getAllVehicles(): Flow<List<Vehicle>> {
         return vehicleDao.getAllVehicles()
             .map { entities ->
                 entities.map { it.toVehicle() }

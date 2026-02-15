@@ -9,4 +9,4 @@ val AthensGray = Color(0xFFF3F4F6)
 val RiverBed = Color(0xFF4B5563)
 val Zumthor = Color(0xFFEFF6FF)
 val GrayChateau = Color(0xFF9CA3AF)
-
+val OrangePeel = Color(0xFFFFA000)

@@ -20,7 +20,7 @@ fun MaintenanceEntity.toMaintenance(): Maintenance {
         initialOdometer = initialOdometer,
         // Convert Long (Millis) back to LocalDate
         initialDate = Instant.fromEpochMilliseconds(initialDate)
-            .toLocalDateTime(TimeZone.currentSystemDefault()).date,
+            .toLocalDateTime(TimeZone.UTC).date,
         odometerInterval = odometerInterval,
         dateInterval = dateInterval,
         controlType = ControlType.valueOf(controlType)

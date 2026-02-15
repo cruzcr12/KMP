@@ -67,6 +67,12 @@
     <string name="select_date">Select a date</string>
     <string name="date_picker_date_format">MM/DD/YYYY</string>
     <string name="maintenance_control_type">Maintenance Type</string>
+    <string name="no_expenses_found">No expenses found"></string>
+    <string name="add_first_expense">Add the first expense for your maintenance tasks</string>
+    <string name="add_expense">Add Expense</string>
+    <string name="expenses">Expenses"></string>
+    <string name="delete_expense">Delete Expense</string>
+    <string name="expense_name">Expense Name"></string>
     <!-- Default Maintenance Types -->
     <string name="oil_change">Oil &amp; Filter Change</string>
     <string name="oil_change_description">Lubricates moving parts, reduces friction, and prevents engine sludge.</string>

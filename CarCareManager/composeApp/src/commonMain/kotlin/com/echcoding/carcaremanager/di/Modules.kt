@@ -3,10 +3,13 @@ package com.echcoding.carcaremanager.di
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.echcoding.carcaremanager.data.database.CarCareManagerDatabase
 import com.echcoding.carcaremanager.data.database.DatabaseFactory
+import com.echcoding.carcaremanager.data.repository.ExpenseRepositoryImpl
 import com.echcoding.carcaremanager.data.repository.MaintenanceRepositoryImpl
 import com.echcoding.carcaremanager.data.repository.VehicleRepositoryImpl
+import com.echcoding.carcaremanager.domain.repository.ExpenseRepository
 import com.echcoding.carcaremanager.domain.repository.MaintenanceRepository
 import com.echcoding.carcaremanager.domain.repository.VehicleRepository
+import com.echcoding.carcaremanager.presentation.expense.expense_list.ExpenseListViewModel
 import com.echcoding.carcaremanager.presentation.maintenance.maintenance_detail.MaintenanceDetailViewModel
 import com.echcoding.carcaremanager.presentation.maintenance.maintenance_list.MaintenanceListViewModel
 import com.echcoding.carcaremanager.presentation.navigation.NavigationViewModel
@@ -32,9 +35,9 @@ val sharedModule = module {
     // Create a Singleton instance of HttpClientFactory. The get method resolves the dependency.
     ///single { HttpClientFactory.create(get()) }
     // A shorthand to create the Singleton. The bind method allows to bind the implementation to the interface
-    //singleOf(::KtorRemoteBookDataSource).bind<RemoteBookDataSource>()
     singleOf(::VehicleRepositoryImpl).bind<VehicleRepository>()
     singleOf(::MaintenanceRepositoryImpl).bind<MaintenanceRepository>()
+    singleOf(::ExpenseRepositoryImpl).bind<ExpenseRepository>()
 
     // Inject the database instance using koin
     single {
@@ -44,7 +47,8 @@ val sharedModule = module {
     }
     // DAOs
     single { get<CarCareManagerDatabase>().vehicleDao }
-    single { get<CarCareManagerDatabase>().maintenanceDao  }
+    single { get<CarCareManagerDatabase>().maintenanceDao }
+    single { get<CarCareManagerDatabase>().expenseDao }
 
     // ViewModels
     viewModelOf(::VehicleListViewModel)
@@ -52,5 +56,6 @@ val sharedModule = module {
     viewModelOf(::SelectedVehicleViewModel)
     viewModelOf(::MaintenanceListViewModel)
     viewModelOf(::MaintenanceDetailViewModel)
+    viewModelOf(::ExpenseListViewModel)
     viewModelOf(::NavigationViewModel)
 }

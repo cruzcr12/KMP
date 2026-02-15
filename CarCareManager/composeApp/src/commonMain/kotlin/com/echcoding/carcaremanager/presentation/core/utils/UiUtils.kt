@@ -1,4 +1,4 @@
-package com.echcoding.carcaremanager.presentation.core
+package com.echcoding.carcaremanager.presentation.core.utils
 
 import kotlin.time.Instant
 import kotlinx.datetime.LocalDate

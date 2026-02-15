@@ -39,15 +39,14 @@ import com.echcoding.carcaremanager.domain.model.OdometerUnit
 import com.echcoding.carcaremanager.domain.model.Vehicle
 import com.echcoding.carcaremanager.domain.repository.MaintenanceRepository
 import com.echcoding.carcaremanager.domain.repository.VehicleRepository
-import com.echcoding.carcaremanager.presentation.core.getCurrentLocalDate
-import com.echcoding.carcaremanager.presentation.core.getCurrentYear
+import com.echcoding.carcaremanager.presentation.core.utils.getCurrentLocalDate
+import com.echcoding.carcaremanager.presentation.core.utils.getCurrentYear
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
-import org.jetbrains.compose.resources.stringResource
 
 class VehicleDetailViewModel(
     private val repository: VehicleRepository,

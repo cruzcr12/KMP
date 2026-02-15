@@ -12,7 +12,7 @@ interface VehicleRepository {
     suspend fun upsertVehicle(vehicle: Vehicle)
     suspend fun deleteVehicleById(id: Int)
     suspend fun getVehicleById(id: Int): Vehicle?
-    suspend fun getAllVehicles(): Flow<List<Vehicle>>
+    fun getAllVehicles(): Flow<List<Vehicle>>
 
     fun getActiveVehicle(): Flow<Vehicle?>
     suspend fun setActiveVehicle(vehicleId: Int)

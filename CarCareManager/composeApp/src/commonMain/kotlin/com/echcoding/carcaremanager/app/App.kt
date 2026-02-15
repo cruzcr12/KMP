@@ -19,6 +19,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.echcoding.carcaremanager.domain.model.OdometerUnit
+import com.echcoding.carcaremanager.presentation.expense.expense_list.ExpenseListScreenRoot
+import com.echcoding.carcaremanager.presentation.expense.expense_list.ExpenseListViewModel
 import com.echcoding.carcaremanager.presentation.maintenance.maintenance_detail.MaintenanceDetailScreenRoot
 import com.echcoding.carcaremanager.presentation.maintenance.maintenance_detail.MaintenanceDetailViewModel
 import com.echcoding.carcaremanager.presentation.maintenance.maintenance_list.MaintenanceListScreenRoot
@@ -68,6 +71,7 @@ fun App() {
                         // Feature ViewModels
                         val vehicleViewModel = koinViewModel<VehicleListViewModel>()
                         val maintenanceViewModel = koinViewModel<MaintenanceListViewModel>()
+                        val expenseViewModel = koinViewModel<ExpenseListViewModel>()
 
                         // Get the active vehicle from the shared view model
                         val activeVehicle by sharedSelectedVehicleViewModel.selectedVehicle.collectAsStateWithLifecycle()
@@ -114,7 +118,33 @@ fun App() {
                                 )
                             },
                             historyListContent = {
-                                Text("History Screen Placeholder")
+                                ExpenseListScreenRoot(
+                                    viewModel = expenseViewModel,
+                                    selectedVehicleViewModel = sharedSelectedVehicleViewModel,
+                                    onAddExpense = {
+                                        navController.navigate(
+                                            Route.ExpenseDetails(
+                                                expenseId = null,
+                                                selectedVehicleId = activeVehicle?.id ?: 0,
+                                                selectedMaintenance = "",
+                                                selectedVehicleOdometer = activeVehicle?.odometer
+                                                    ?: 0,
+                                                selectedVehicleOdometerUnit = activeVehicle?.odometerUnit?.name ?: OdometerUnit.MILES.name
+                                            )
+                                        )
+                                    },
+                                    onEditExpense = { expense ->
+                                        navController.navigate(
+                                            Route.ExpenseDetails(
+                                                expenseId = expense.id,
+                                                selectedVehicleId = activeVehicle?.id ?: 0,
+                                                selectedMaintenance = expense.maintenanceName,
+                                                selectedVehicleOdometer = expense.mileage,
+                                                selectedVehicleOdometerUnit = expense.mileageUnit
+                                            )
+                                        )
+                                    }
+                                )
                             }
                         )
                     }

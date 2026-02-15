@@ -14,7 +14,4 @@ data class MaintenanceListState(
     val overdueTasks: Int? = null, // The amount of tasks that need to be taken care
     val isLoading: Boolean = false, // Whether the list of tasks is being loaded or not
     val errorMessage: String? = null, // Error message if any error occurs
-    val maintenanceToDeleteId: Long? = null, // When this is not null, show confirmation dialog
-    val showDeleteConfirmationDialog: Boolean = false, // When this is true, show the confirmation dialog
-    val snackbarMessage: String? = null // To display any informating messages to the user
 )

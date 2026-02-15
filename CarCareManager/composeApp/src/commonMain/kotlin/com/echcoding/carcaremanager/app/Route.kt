@@ -17,4 +17,12 @@ sealed interface Route {
 
     @Serializable
     data class MaintenanceDetails(val maintenanceId: Long?, val selectedVehicleId: Int, val selectedVehicleOdometer: Int) : Route
+
+    @Serializable
+    data class ExpenseDetails(val expenseId: Long?,
+                              val selectedVehicleId: Int,
+                              val selectedMaintenance: String,
+                              val selectedVehicleOdometer: Int,
+                              val selectedVehicleOdometerUnit: String): Route
+
 }

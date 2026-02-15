@@ -5,15 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import carcaremanager.composeapp.generated.resources.Res
-import carcaremanager.composeapp.generated.resources.maintenance_deleted
 import carcaremanager.composeapp.generated.resources.maintenance_deleted_error
 import carcaremanager.composeapp.generated.resources.unknown_error
 import com.echcoding.carcaremanager.app.Route
 import com.echcoding.carcaremanager.domain.model.ControlType
 import com.echcoding.carcaremanager.domain.model.Maintenance
 import com.echcoding.carcaremanager.domain.repository.MaintenanceRepository
-import com.echcoding.carcaremanager.presentation.core.getCurrentLocalDate
-import com.echcoding.carcaremanager.presentation.maintenance.maintenance_list.MaintenanceListSideEffect
+import com.echcoding.carcaremanager.presentation.core.utils.getCurrentLocalDate
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
