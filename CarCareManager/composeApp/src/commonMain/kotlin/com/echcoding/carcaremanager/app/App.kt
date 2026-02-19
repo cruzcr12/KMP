@@ -20,6 +20,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.echcoding.carcaremanager.domain.model.OdometerUnit
+import com.echcoding.carcaremanager.presentation.expense.expense_detail.ExpenseDetailScreenRoot
+import com.echcoding.carcaremanager.presentation.expense.expense_detail.ExpenseDetailViewModel
 import com.echcoding.carcaremanager.presentation.expense.expense_list.ExpenseListScreenRoot
 import com.echcoding.carcaremanager.presentation.expense.expense_list.ExpenseListViewModel
 import com.echcoding.carcaremanager.presentation.maintenance.maintenance_detail.MaintenanceDetailScreenRoot
@@ -126,7 +128,6 @@ fun App() {
                                             Route.ExpenseDetails(
                                                 expenseId = null,
                                                 selectedVehicleId = activeVehicle?.id ?: 0,
-                                                selectedMaintenance = "",
                                                 selectedVehicleOdometer = activeVehicle?.odometer
                                                     ?: 0,
                                                 selectedVehicleOdometerUnit = activeVehicle?.odometerUnit?.name ?: OdometerUnit.MILES.name
@@ -138,7 +139,6 @@ fun App() {
                                             Route.ExpenseDetails(
                                                 expenseId = expense.id,
                                                 selectedVehicleId = activeVehicle?.id ?: 0,
-                                                selectedMaintenance = expense.maintenanceName,
                                                 selectedVehicleOdometer = expense.mileage,
                                                 selectedVehicleOdometerUnit = expense.mileageUnit
                                             )
@@ -173,6 +173,21 @@ fun App() {
                         val viewModel = koinViewModel<MaintenanceDetailViewModel>()
 
                         MaintenanceDetailScreenRoot(
+                            viewModel = viewModel,
+                            onBackClick = {
+                                navController.navigateUp()
+                            }
+                        )
+                    }
+
+                    // Expense Details screen route
+                    composable<Route.ExpenseDetails>(
+                        enterTransition = { slideInHorizontally { initialOffset -> initialOffset } },
+                        exitTransition = { slideOutHorizontally { initialOffset -> initialOffset } }
+                    ){ it ->
+                        val viewModel = koinViewModel<ExpenseDetailViewModel>()
+
+                        ExpenseDetailScreenRoot(
                             viewModel = viewModel,
                             onBackClick = {
                                 navController.navigateUp()

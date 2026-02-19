@@ -32,9 +32,9 @@ class ExpenseRepositoryImpl(
 
     override fun getExpensesByMaintenance(
         vehicleId: Int,
-        maintenanceName: String
+        maintenanceId: Long
     ): Flow<List<Expense>> {
-        return expenseDao.getExpensesByMaintenance(vehicleId, maintenanceName)
+        return expenseDao.getExpensesByMaintenance(vehicleId, maintenanceId)
             .map { entities ->
                 entities.map { it.toExpense() }
             }

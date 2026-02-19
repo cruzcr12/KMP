@@ -1,52 +1,49 @@
-package com.echcoding.carcaremanager.presentation.core.components
+package com.echcoding.carcaremanager.presentation.expense.expense_detail.components
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.echcoding.carcaremanager.presentation.core.GrayChateau
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun DetailField(
+fun ClickableOutlinedTextField(
     label: String,
     value: String?,
-    onValueChange: (String) -> Unit,
+    enabled: Boolean = true,
+    readOnly: Boolean = false,
+    onClick: () -> Unit,
     icon: ImageVector,
     placeholder: String = "",
-    enabled: Boolean = true,
-    showLeadingIcon: Boolean = true,
-    showTrailingIcon: Boolean = false,
-    readOnly: Boolean = false,
-    singleLine: Boolean = true,
-    minLines: Int = 1,
-    maxLines: Int = 1,
+    onValueChange: (String) -> Unit = {},
     modifier: Modifier = Modifier,
-    keyboardType: KeyboardType = KeyboardType.Text,
-    imeAction: ImeAction = ImeAction.Done
-) {
-    // Get the FocusManager
-    val focusManager = LocalFocusManager.current
+){
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+
+    // Trigger the onClick callback when a press interaction is detected
+    LaunchedEffect(isPressed){
+        if(isPressed) onClick()
+    }
 
     Column(modifier = modifier) {
         Text(
@@ -60,31 +57,12 @@ fun DetailField(
             onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
-            singleLine = singleLine,
-            minLines = minLines,
-            maxLines = maxLines,
             readOnly = readOnly,
-            leadingIcon = {
-                if(showLeadingIcon) {
-                    Icon(icon, contentDescription = null, tint = GrayChateau, modifier = Modifier.size(20.dp)
-                    )
-                }
-            },
+            interactionSource = interactionSource,
             trailingIcon = {
-                if(showTrailingIcon){
-                    Icon(icon, contentDescription = null, tint = GrayChateau, modifier = Modifier.size(20.dp))
-                }
+                Icon(icon, contentDescription = null, tint = GrayChateau, modifier = Modifier.size(20.dp))
             },
             placeholder = { Text(placeholder, color = GrayChateau) },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = keyboardType,
-                imeAction = imeAction
-            ),
-            // Clear focus when the keyboard action is pressed
-            keyboardActions = KeyboardActions(
-                onDone = { focusManager.clearFocus() },
-                onNext = { focusManager.moveFocus(FocusDirection.Down) }
-            ),
             shape = RoundedCornerShape(12.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedContainerColor = Color.White,
@@ -97,13 +75,14 @@ fun DetailField(
 
 @Preview(showBackground = true)
 @Composable
-fun DetailFieldPreview()
-{
-    DetailField(
+fun ClickableOutlinedTextFieldPreview() {
+    ClickableOutlinedTextField(
         label = "Label",
         value = "Value",
         onValueChange = {},
         placeholder = "Placeholder",
-        icon = Icons.Default.Settings
+        icon = Icons.Default.ArrowDownward,
+        onClick = {}
     )
+
 }

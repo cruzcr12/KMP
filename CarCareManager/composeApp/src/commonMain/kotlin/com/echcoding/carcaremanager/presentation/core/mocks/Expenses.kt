@@ -8,7 +8,7 @@ fun getMockExpenses() = listOf(
     Expense(
         id = 1,
         vehicleId = 1,
-        maintenanceName = "Oil Change",
+        maintenanceId = 1,
         date = LocalDate(2026, 1, 1),
         mileage = 125000,
         mileageUnit = "mi",
@@ -19,7 +19,7 @@ fun getMockExpenses() = listOf(
     Expense(
         id = 2,
         vehicleId = 1,
-        maintenanceName = "Tire Rotation",
+        maintenanceId = 2,
         date = LocalDate(2025, 10, 15),
         mileage = 130000,
         mileageUnit = "mi",
@@ -30,12 +30,12 @@ fun getMockExpenses() = listOf(
     Expense(
         id = 3,
         vehicleId = 1,
-        maintenanceName = "Brake Inspection",
+        maintenanceId = 3,
         date = LocalDate(2025, 12, 15),
         mileage = 10000,
         mileageUnit = "mi",
         amount = 35.0,
-        typeOfService = TypeOfService.REPAIR,
+        typeOfService = TypeOfService.REPAIRMENT,
         note = "Brake inspection was done at a 20% of discount"
     ),
 )

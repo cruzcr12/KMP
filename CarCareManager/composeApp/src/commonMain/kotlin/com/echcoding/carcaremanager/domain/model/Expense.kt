@@ -5,7 +5,7 @@ import kotlinx.datetime.LocalDate
 data class Expense(
     val id: Long?,
     val vehicleId: Int,
-    val maintenanceName: String,
+    val maintenanceId: Long,
     val date: LocalDate,
     val mileage: Int,
     val mileageUnit: String,
@@ -14,4 +14,4 @@ data class Expense(
     val note: String?
 )
 
-enum class TypeOfService { MAINTENANCE, REPAIR, OTHER }
+enum class TypeOfService { MAINTENANCE, REPAIRMENT, OTHER }

@@ -98,7 +98,7 @@ fun ExpenseListItem(
                         fontWeight = FontWeight.Bold)
                     Text(text = CurrencyFormatter().formatCurrency(expense.amount ?: 0.0), fontWeight = FontWeight.Bold)
                 }
-                Text(text = expense.maintenanceName, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                //Text(text = expense.maintenanceName, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 Row(verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(vertical = 8.dp)) {
                     Surface(color = Color.LightGray, shape = RoundedCornerShape(4.dp)) {

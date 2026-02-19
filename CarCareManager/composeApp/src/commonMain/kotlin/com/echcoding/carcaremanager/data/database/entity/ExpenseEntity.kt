@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey
 data class ExpenseEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val vehicleId: Int,
-    val maintenanceName: String,
+    val maintenanceId: Long,
     val date: Long,
     val mileage: Int,
     val mileageUnit: String,

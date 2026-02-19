@@ -21,7 +21,7 @@ interface ExpenseDao {
     @Query("SELECT * FROM expense WHERE id = :id")
     suspend fun getExpenseById(id: Long): ExpenseEntity
 
-    @Query("SELECT * FROM expense WHERE vehicleId= :vehicleId AND maintenanceName LIKE :maintenanceName")
-    fun getExpensesByMaintenance(vehicleId: Int, maintenanceName: String): Flow<List<ExpenseEntity>>
+    @Query("SELECT * FROM expense WHERE vehicleId= :vehicleId AND maintenanceId= :maintenanceId")
+    fun getExpensesByMaintenance(vehicleId: Int, maintenanceId: Long): Flow<List<ExpenseEntity>>
 
 }

@@ -14,7 +14,7 @@ fun ExpenseEntity.toExpense(): Expense {
     return Expense(
         id = id,
         vehicleId = vehicleId,
-        maintenanceName = maintenanceName,
+        maintenanceId = maintenanceId,
         date = Instant.fromEpochMilliseconds(date)
             .toLocalDateTime(TimeZone.UTC).date,
         mileage = mileage,
@@ -30,7 +30,7 @@ fun Expense.toExpenseEntity(): ExpenseEntity {
     return ExpenseEntity(
         id = id ?: 0,
         vehicleId = vehicleId,
-        maintenanceName = maintenanceName,
+        maintenanceId = maintenanceId,
         // Convert LocalDate to Long (Millis) for storage
         date = date.atStartOfDayIn(TimeZone.currentSystemDefault()).toEpochMilliseconds(),
         mileage = mileage,

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import carcaremanager.composeapp.generated.resources.Res
 import carcaremanager.composeapp.generated.resources.maintenance_deleted_error
+import carcaremanager.composeapp.generated.resources.maintenance_saving_error
 import carcaremanager.composeapp.generated.resources.unknown_error
 import com.echcoding.carcaremanager.app.Route
 import com.echcoding.carcaremanager.domain.model.ControlType
@@ -84,9 +85,9 @@ class MaintenanceDetailViewModel(
             is MaintenanceDetailAction.OnSaveMaintenanceClick -> {
                 saveMaintenance()
             }
-            is MaintenanceDetailAction.OnSelectedMaintenanceChange -> {
+            /*is MaintenanceDetailAction.OnSelectedMaintenanceChange -> {
                 _state.update { it.copy(maintenance = action.maintenance) }
-            }
+            }*/
             is MaintenanceDetailAction.OnStateChange -> {
                 _state.update { it.copy(maintenance = action.maintenance) }
             }
@@ -127,7 +128,7 @@ class MaintenanceDetailViewModel(
                     // Catch any errors and update state accordingly
                     _state.update { it.copy(
                         isSaving = false,
-                        errorMessage = "There was a problem saving the maintenance task: ${e.message ?: "Unknown error"}"
+                        errorMessage = getString(Res.string.maintenance_saving_error, (e.message ?: Res.string.unknown_error))
                     )}
                 }
             }
