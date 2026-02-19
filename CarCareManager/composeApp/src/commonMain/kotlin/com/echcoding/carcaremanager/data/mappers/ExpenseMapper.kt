@@ -1,6 +1,7 @@
 package com.echcoding.carcaremanager.data.mappers
 
 import com.echcoding.carcaremanager.data.database.entity.ExpenseEntity
+import com.echcoding.carcaremanager.data.database.model.ExpenseWithMaintenance
 import com.echcoding.carcaremanager.domain.model.Expense
 import com.echcoding.carcaremanager.domain.model.TypeOfService
 import kotlinx.datetime.TimeZone
@@ -10,18 +11,19 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 @OptIn(ExperimentalTime::class)
-fun ExpenseEntity.toExpense(): Expense {
+fun ExpenseWithMaintenance.toExpense(): Expense {
     return Expense(
-        id = id,
-        vehicleId = vehicleId,
-        maintenanceId = maintenanceId,
-        date = Instant.fromEpochMilliseconds(date)
+        id = expense.id,
+        vehicleId = expense.vehicleId,
+        maintenanceId = expense.maintenanceId,
+        maintenanceName = maintenanceName,
+        date = Instant.fromEpochMilliseconds(expense.date)
             .toLocalDateTime(TimeZone.UTC).date,
-        mileage = mileage,
-        mileageUnit = mileageUnit,
-        amount = amount,
-        typeOfService = TypeOfService.valueOf(typeOfService),
-        note = note
+        mileage = expense.mileage,
+        mileageUnit = expense.mileageUnit,
+        amount = expense.amount,
+        typeOfService = TypeOfService.valueOf(expense.typeOfService),
+        note = expense.note
     )
 }
 

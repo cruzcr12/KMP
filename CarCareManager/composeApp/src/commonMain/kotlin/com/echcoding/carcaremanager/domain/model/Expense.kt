@@ -6,6 +6,7 @@ data class Expense(
     val id: Long?,
     val vehicleId: Int,
     val maintenanceId: Long,
+    val maintenanceName: String?,
     val date: LocalDate,
     val mileage: Int,
     val mileageUnit: String,

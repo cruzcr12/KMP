@@ -246,6 +246,7 @@ fun ExpenseDetailScreen(
 
             // Try to select the specific maintenance from the list of maintenances
             val selectedMaintenance = state.maintenances.find { it.id == state.expense?.maintenanceId }
+            val isMaintenanceMissing = state.errorMessage != null && (state.expense?.maintenanceId == 0L || state.expense?.maintenanceId == null)
             // Expense Maintenance Name will be displayed when editing, but cannot be changed
             ClickableOutlinedTextField(
                 label = stringResource(Res.string.maintenance_performed),
@@ -255,9 +256,10 @@ fun ExpenseDetailScreen(
                 onClick = {
                     if(!state.isEditing) { onAction(ExpenseDetailAction.OnShowMaintenancePicker) }
                 },
-                icon = Icons.Default.ArrowDropDown
+                icon = Icons.Default.ArrowDropDown,
+                isError = isMaintenanceMissing
             )
-            
+
             Box(
                 contentAlignment = Alignment.BottomEnd,
             ) {

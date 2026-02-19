@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import carcaremanager.composeapp.generated.resources.Res
+import carcaremanager.composeapp.generated.resources.error_select_a_maintenance
 import carcaremanager.composeapp.generated.resources.expense_deleted_error
 import carcaremanager.composeapp.generated.resources.expense_saving_error
 import carcaremanager.composeapp.generated.resources.unknown_error
@@ -83,10 +84,11 @@ class ExpenseDetailViewModel(
                     id = null,
                     vehicleId = vehicleId,
                     maintenanceId = 0,
+                    maintenanceName = "",
                     date = getCurrentLocalDate(),
                     mileage = vehicleOdometer,
                     mileageUnit = vehicleOdometerUnit,
-                    amount = 0.0,
+                    amount = null,
                     typeOfService = TypeOfService.MAINTENANCE,
                     note = ""
                 ),
@@ -111,6 +113,16 @@ class ExpenseDetailViewModel(
     fun onAction(action: ExpenseDetailAction){
         when(action){
             is ExpenseDetailAction.OnSaveExpenseClick -> {
+                val currentExpense = _state.value.expense
+                // Validate the expense before saving it
+                if(currentExpense == null || currentExpense.maintenanceId == 0L) {
+                    viewModelScope.launch {
+                        _state.update {
+                            it.copy(errorMessage = getString(Res.string.error_select_a_maintenance))
+                        }
+                    }
+                    return
+                }
                 saveExpense()
             }
             is ExpenseDetailAction.OnStateChange -> {
@@ -139,6 +151,7 @@ class ExpenseDetailViewModel(
             is ExpenseDetailAction.OnMaintenanceSelected -> {
                 _state.update { it.copy(
                     showMaintenancePicker = false,
+                    errorMessage = null,
                     // Update the maintenanceId with the one selected by the user
                     expense = it.expense?.copy(maintenanceId = action.maintenance.id ?: 0L)
                 )}

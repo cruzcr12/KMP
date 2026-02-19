@@ -74,8 +74,6 @@ fun ExpenseListItem(
                 }
                 // Vertical Line
                 Box(modifier = Modifier.width(2.dp)
-                    //.fillMaxHeight()
-                    //.height(intrinsicSize = IntrinsicSize.Max)
                     .height(132.dp)
                     .background(Color.Gray))
             //}
@@ -86,7 +84,8 @@ fun ExpenseListItem(
             colors = CardDefaults.cardColors(containerColor = Color.White),
             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
             modifier = Modifier.fillMaxWidth()
-                .padding(bottom = 8.dp)
+                .padding(bottom = 8.dp),
+            onClick = onEditClick
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(horizontalArrangement = Arrangement.SpaceBetween,
@@ -98,7 +97,7 @@ fun ExpenseListItem(
                         fontWeight = FontWeight.Bold)
                     Text(text = CurrencyFormatter().formatCurrency(expense.amount ?: 0.0), fontWeight = FontWeight.Bold)
                 }
-                //Text(text = expense.maintenanceName, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                Text(text = expense.maintenanceName ?: "", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 Row(verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(vertical = 8.dp)) {
                     Surface(color = Color.LightGray, shape = RoundedCornerShape(4.dp)) {

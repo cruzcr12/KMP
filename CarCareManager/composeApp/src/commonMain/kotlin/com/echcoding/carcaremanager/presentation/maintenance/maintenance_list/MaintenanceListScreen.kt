@@ -100,7 +100,8 @@ fun MaintenanceListScreen(
                 onClick = { onAction(MaintenanceListAction.OnAddMaintenanceClick) },
                 containerColor = Color(0xFF2563EB),
                 contentColor = Color.White,
-                shape = CircleShape
+                shape = CircleShape,
+
             ) {
                 Icon(Icons.Default.Build,
                     contentDescription = stringResource(Res.string.add_maintenance_task ))

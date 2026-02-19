@@ -34,6 +34,7 @@ fun ClickableOutlinedTextField(
     onClick: () -> Unit,
     icon: ImageVector,
     placeholder: String = "",
+    isError: Boolean = false,
     onValueChange: (String) -> Unit = {},
     modifier: Modifier = Modifier,
 ){
@@ -63,12 +64,14 @@ fun ClickableOutlinedTextField(
                 Icon(icon, contentDescription = null, tint = GrayChateau, modifier = Modifier.size(20.dp))
             },
             placeholder = { Text(placeholder, color = GrayChateau) },
+            isError = isError,
             shape = RoundedCornerShape(12.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedContainerColor = Color.White,
                 focusedContainerColor = Color.White,
                 unfocusedBorderColor = Color(0xFFE5E7EB)
-            )
+            ),
+            //isError = false
         )
     }
 }
