@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -31,6 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import carcaremanager.composeapp.generated.resources.Res
 import carcaremanager.composeapp.generated.resources.add_maintenance_task
 import com.echcoding.carcaremanager.domain.model.Maintenance
+import com.echcoding.carcaremanager.presentation.core.RoyalBlue
 import com.echcoding.carcaremanager.presentation.core.mocks.getMockMaintenances
 import com.echcoding.carcaremanager.presentation.maintenance.maintenance_list.components.EmptyMaintenanceList
 import com.echcoding.carcaremanager.presentation.maintenance.maintenance_list.components.MaintenanceList
@@ -96,15 +97,19 @@ fun MaintenanceListScreen(
 
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = { onAction(MaintenanceListAction.OnAddMaintenanceClick) },
-                containerColor = Color(0xFF2563EB),
-                contentColor = Color.White,
-                shape = CircleShape,
+            if(state.selectedVehicle != null) {
+                FloatingActionButton(
+                    onClick = { onAction(MaintenanceListAction.OnAddMaintenanceClick) },
+                    containerColor = RoyalBlue,
+                    contentColor = Color.White,
+                    shape = CircleShape,
 
-            ) {
-                Icon(Icons.Default.Build,
-                    contentDescription = stringResource(Res.string.add_maintenance_task ))
+                    ) {
+                    Icon(
+                        Icons.Default.Add,
+                        contentDescription = stringResource(Res.string.add_maintenance_task)
+                    )
+                }
             }
         }
     ) { padding ->

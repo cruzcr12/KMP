@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AddTask
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Money
 import androidx.compose.material3.CircularProgressIndicator
@@ -31,6 +33,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import carcaremanager.composeapp.generated.resources.Res
 import carcaremanager.composeapp.generated.resources.add_expense
 import com.echcoding.carcaremanager.domain.model.Expense
+import com.echcoding.carcaremanager.presentation.core.RoyalBlue
 import com.echcoding.carcaremanager.presentation.core.mocks.getMockExpenses
 import com.echcoding.carcaremanager.presentation.expense.expense_list.components.EmptyExpenseList
 import com.echcoding.carcaremanager.presentation.expense.expense_list.components.ExpenseList
@@ -94,15 +97,18 @@ fun ExpenseListScreen(
 
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = { onAction(ExpenseListAction.OnAddExpenseClick) },
-                containerColor = Color(0xFF2563EB),
-                contentColor = Color.White,
-                shape = CircleShape
-            ) {
-                Icon(
-                    Icons.Default.History,
-                    contentDescription = stringResource(Res.string.add_expense ))
+            if(state.selectedVehicle != null) {
+                FloatingActionButton(
+                    onClick = { onAction(ExpenseListAction.OnAddExpenseClick) },
+                    containerColor = RoyalBlue,
+                    contentColor = Color.White,
+                    shape = CircleShape
+                ) {
+                    Icon(
+                        Icons.Default.Add,
+                        contentDescription = stringResource(Res.string.add_expense)
+                    )
+                }
             }
         }
     ){ padding ->

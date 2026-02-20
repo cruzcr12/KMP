@@ -1,5 +1,8 @@
 package com.echcoding.carcaremanager.presentation.navigation
 
+import androidx.annotation.FloatRange
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
@@ -16,6 +19,7 @@ import androidx.compose.material3.Tab
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -30,6 +34,7 @@ import com.echcoding.carcaremanager.presentation.core.components.TitleBarHeader
 import com.echcoding.carcaremanager.presentation.core.mocks.vehicles
 import com.echcoding.carcaremanager.presentation.navigation.components.TabMenuItem
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_selected.components.VehicleSelector
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -44,14 +49,23 @@ fun NavigationScreen(
     ){
 
     val state by navigationViewModel.state.collectAsStateWithLifecycle()
-    val pagerState = rememberPagerState { 3 }
+    val pagerState = rememberPagerState( pageCount = { 3 })
+    val coroutineScope = rememberCoroutineScope()
 
-    // Sync pager with navigationViewModel
-    LaunchedEffect(state.selectedTabIndex){
-        pagerState.animateScrollToPage(state.selectedTabIndex)
+
+    // Sync pager with the navigationViewModel
+    // Update the tab selected when the pager is settled (when the swipe is finished)
+    LaunchedEffect(pagerState.settledPage) {
+        navigationViewModel.onTabSelected(pagerState.settledPage)
     }
-    LaunchedEffect(pagerState.currentPage) {
-        navigationViewModel.onTabSelected(pagerState.currentPage)
+
+    // Sync pager with navigationViewModel.
+    // Triggers an animation if the state is different from the pager is going
+    LaunchedEffect(state.selectedTabIndex){
+        if(state.selectedTabIndex != pagerState.currentPage) {
+            pagerState.animateScrollToPage(page = state.selectedTabIndex,
+                animationSpec = tween(durationMillis = 300, easing = LinearOutSlowInEasing))
+        }
     }
 
     Scaffold(

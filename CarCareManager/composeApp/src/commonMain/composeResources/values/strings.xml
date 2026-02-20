@@ -40,7 +40,7 @@
     <string name="maintenance_tasks">Maintenance Tasks</string>
     <string name="actions_count">%d Actions</string>
     <string name="no_maintenance_tasks">No maintenance tasks found</string>
-    <string name="add_first_maintenance">Add the first maintenance task for your vehicle</string>
+    <string name="add_first_maintenance">Select or add a vehicle and add the first maintenance task</string>
     <string name="maintenance_deleted">Maintenance task deleted successfully</string>
     <string name="maintenance_deleted_error">There was a problem deleting the maintenance task: %s"</string>
     <string name="maintenance_saving_error">There was a problem saving the maintenance task: %s"</string>
@@ -69,7 +69,7 @@
     <string name="date_picker_date_format">MM/DD/YYYY</string>
     <string name="maintenance_control_type">Maintenance Type</string>
     <string name="no_expenses_found">No expenses found</string>
-    <string name="add_first_expense">Add the first expense for your maintenance tasks</string>
+    <string name="add_first_expense">Select or add a vehicle and add the first expense for your maintenance tasks</string>
     <string name="add_expense">Add Expense</string>
     <string name="expenses">Expenses</string>
     <string name="delete_expense">Delete Expense</string>

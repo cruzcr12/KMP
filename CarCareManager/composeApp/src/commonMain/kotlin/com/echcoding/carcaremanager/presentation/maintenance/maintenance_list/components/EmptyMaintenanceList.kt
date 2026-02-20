@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import carcaremanager.composeapp.generated.resources.Res
 import carcaremanager.composeapp.generated.resources.add_first_maintenance
@@ -42,7 +43,8 @@ fun EmptyMaintenanceList(modifier: Modifier = Modifier) {
         )
         Text(
             stringResource(Res.string.add_first_maintenance),
-            color = Color.Gray
+            color = Color.Gray,
+            textAlign = TextAlign.Center
         )
     }
 }
