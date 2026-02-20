@@ -11,7 +11,6 @@ import com.echcoding.carcaremanager.domain.model.Vehicle
 data class MaintenanceListState(
     var selectedVehicle: Vehicle? = null, // The selected vehicle to show the maintenance tasks for
     val tasks: List<Maintenance> = emptyList(), // The list of maintenance tasks for the selected vehicle
-    val overdueTasks: Int? = null, // The amount of tasks that need to be taken care
     val isLoading: Boolean = false, // Whether the list of tasks is being loaded or not
     val errorMessage: String? = null, // Error message if any error occurs
 )

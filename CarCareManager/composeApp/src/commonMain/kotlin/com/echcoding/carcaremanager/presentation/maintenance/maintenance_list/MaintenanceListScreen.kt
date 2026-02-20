@@ -153,7 +153,6 @@ fun MaintenanceListScreen(
                         MaintenanceList(
                             maintenanceTasks = state.tasks,
                             currentOdometer = state.selectedVehicle?.odometer ?: 0,
-                            overdueTasks = state.overdueTasks ?: 0,
                             onEditMaintenanceClick = { onAction(MaintenanceListAction.OnEditMaintenanceClick(it)) },
                             padding = padding,
                             modifier = Modifier
