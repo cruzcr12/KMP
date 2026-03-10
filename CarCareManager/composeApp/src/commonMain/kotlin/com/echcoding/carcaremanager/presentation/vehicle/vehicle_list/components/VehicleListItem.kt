@@ -28,7 +28,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,14 +35,9 @@ import carcaremanager.composeapp.generated.resources.Res
 import carcaremanager.composeapp.generated.resources.active
 import carcaremanager.composeapp.generated.resources.odometer
 import com.echcoding.carcaremanager.domain.model.Vehicle
-import com.echcoding.carcaremanager.presentation.core.AthensGray
-import com.echcoding.carcaremanager.presentation.core.Ebony
-import com.echcoding.carcaremanager.presentation.core.PaleSky
-import com.echcoding.carcaremanager.presentation.core.RiverBed
-import com.echcoding.carcaremanager.presentation.core.RoyalBlue
 import com.echcoding.carcaremanager.presentation.core.extensions.formattedOdometer
 import com.echcoding.carcaremanager.presentation.core.mocks.vehicles
-import com.echcoding.carcaremanager.theme.AppTheme
+import com.echcoding.carcaremanager.themes.customapp.CustomAppTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -56,9 +50,12 @@ fun VehicleListItem(
     modifier: Modifier = Modifier
 ) {
     val isActive:Boolean = vehicle.active
-    val backgroundColor = if (isActive) MaterialTheme.colorScheme.primary else Color.White
-    val contentColor = if (isActive) Color.White else Ebony
-    val secondaryContentColor = if (isActive) Color.White.copy(alpha = 0.7f) else PaleSky
+    val backgroundColor = if (isActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onPrimary
+    val contentColor = if (isActive) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
+    val secondaryContentColor = if (isActive) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+    val buttonsBackgroundColor = if (isActive) MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.2f) else MaterialTheme.colorScheme.onTertiaryContainer
+    val buttonsIconColor = if (isActive) MaterialTheme.colorScheme.onTertiary else MaterialTheme.colorScheme.tertiary
+
 
     Card(
         shape = RoundedCornerShape(16.dp),
@@ -79,13 +76,13 @@ fun VehicleListItem(
                     modifier = Modifier
                         .size(44.dp)
                         .clip(RoundedCornerShape(12.dp))
-                        .background(if (isActive) Color.White.copy(alpha = 0.2f) else AthensGray),
+                        .background(buttonsBackgroundColor),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = Icons.Default.DirectionsCar,
                         contentDescription = null,
-                        tint = if (isActive) Color.White else RiverBed,
+                        tint = buttonsIconColor,
                         modifier = Modifier.size(24.dp)
                     )
                 }
@@ -105,14 +102,14 @@ fun VehicleListItem(
                 }
                 if (isActive) {
                     Surface(
-                        color = Color.White.copy(alpha = 0.2f),
+                        color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.2f),
                         shape = RoundedCornerShape(6.dp)
                     ) {
                         Text(
                             text = stringResource(Res.string.active),
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                             style = MaterialTheme.typography.labelSmall,
-                            color = Color.White,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -144,30 +141,37 @@ fun VehicleListItem(
                     )
                 }
                 // Right side: Action buttons
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
                     // Delete button
                     IconButton(
                         onClick = onDeleteClick,
-                        modifier = Modifier.size(36.dp).background(Color.Red.copy(alpha = 0.1f), RoundedCornerShape(8.dp))
+                        modifier = Modifier.size(36.dp)
+                            .background(buttonsBackgroundColor,
+                                RoundedCornerShape(8.dp))
                     ) {
-                        Icon(Icons.Default.Delete, contentDescription = "Delete", tint = if(isActive) Color.White else Color.Red, modifier = Modifier.size(20.dp))
+                        Icon(Icons.Default.Delete,
+                            contentDescription = "Delete",
+                            tint = buttonsIconColor,
+                            modifier = Modifier.size(20.dp))
                     }
 
                     // Edit button
                     IconButton(
                         onClick = onEditClick,
-                        modifier = Modifier.size(36.dp).background(Color.Black.copy(alpha = 0.05f), RoundedCornerShape(8.dp))
+                        modifier = Modifier.size(36.dp)
+                            .background(buttonsBackgroundColor,RoundedCornerShape(8.dp))
                     ) {
-                        Icon(Icons.Default.Edit, contentDescription = "Edit", tint = contentColor, modifier = Modifier.size(20.dp))
+                        Icon(Icons.Default.Edit, contentDescription = "Edit", tint = buttonsIconColor, modifier = Modifier.size(20.dp))
                     }
 
                     // Select/Active Button (Only show if NOT active)
                     if (!isActive) {
                         IconButton(
                             onClick = onSelectClick,
-                            modifier = Modifier.size(36.dp).background(RoyalBlue.copy(alpha = 0.1f), RoundedCornerShape(8.dp))
+                            modifier = Modifier.size(36.dp)
+                                .background(buttonsBackgroundColor,RoundedCornerShape(8.dp))
                         ) {
-                            Icon(Icons.Default.CheckCircle, contentDescription = "Select", tint = RoyalBlue, modifier = Modifier.size(20.dp))
+                            Icon(Icons.Default.CheckCircle, contentDescription = "Select", tint = buttonsIconColor, modifier = Modifier.size(20.dp))
                         }
                     }
                 }
@@ -180,8 +184,7 @@ fun VehicleListItem(
 @Preview
 @Composable
 private fun VehicleListItemPreview() {
-    AppTheme {
-
+    CustomAppTheme {
         VehicleListItem(
             vehicle = vehicles[0],
             onDeleteClick = {},
@@ -194,7 +197,7 @@ private fun VehicleListItemPreview() {
 @Preview
 @Composable
 private fun VehicleListItemActivePreview() {
-    AppTheme {
+    CustomAppTheme {
         VehicleListItem(
             vehicle = vehicles[1],
             onDeleteClick = {},

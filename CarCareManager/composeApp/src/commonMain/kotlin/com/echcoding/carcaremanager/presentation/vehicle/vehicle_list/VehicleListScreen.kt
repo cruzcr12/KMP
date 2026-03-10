@@ -1,5 +1,6 @@
 package com.echcoding.carcaremanager.presentation.vehicle.vehicle_list
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -34,6 +35,7 @@ import com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.components
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.components.EmptyVehicleList
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.components.VehicleList
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_selected.SelectedVehicleViewModel
+import com.echcoding.carcaremanager.themes.customapp.CustomAppTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -101,6 +103,7 @@ private fun VehicleListScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
             .padding(innerPadding),
         contentAlignment = Alignment.TopStart,
     ){
@@ -174,14 +177,16 @@ private fun VehicleListScreen(
 @Preview(showBackground = true)
 @Composable
 fun VehicleListScreenPreview(){
-    VehicleListScreen(
-        state = VehicleListState(
-            vehicles = vehicles,
-            isLoading = false,
-            errorMessage = null,
-            selectedTabIndex = 2,
-        ),
-        onAction = {},
-        innerPadding = PaddingValues(0.dp)
-    )
+    CustomAppTheme {
+        VehicleListScreen(
+            state = VehicleListState(
+                vehicles = vehicles,
+                isLoading = false,
+                errorMessage = null,
+                selectedTabIndex = 2,
+            ),
+            onAction = {},
+            innerPadding = PaddingValues(0.dp)
+        )
+    }
 }

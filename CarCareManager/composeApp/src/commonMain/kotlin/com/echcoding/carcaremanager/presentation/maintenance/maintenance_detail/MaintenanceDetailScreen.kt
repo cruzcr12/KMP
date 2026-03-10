@@ -35,7 +35,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.backhandler.BackHandler
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -63,13 +62,13 @@ import carcaremanager.composeapp.generated.resources.task_description_placeholde
 import carcaremanager.composeapp.generated.resources.task_name
 import carcaremanager.composeapp.generated.resources.task_name_placeholder
 import com.echcoding.carcaremanager.domain.model.ControlType
-import com.echcoding.carcaremanager.presentation.core.AthensGray
 import com.echcoding.carcaremanager.presentation.core.components.DetailBottomBar
 import com.echcoding.carcaremanager.presentation.core.components.DetailDateField
 import com.echcoding.carcaremanager.presentation.core.components.DetailDateFieldType
 import com.echcoding.carcaremanager.presentation.core.components.DetailTopBar
 import com.echcoding.carcaremanager.presentation.core.mocks.getMockMaintenances
 import com.echcoding.carcaremanager.presentation.core.components.DetailField
+import com.echcoding.carcaremanager.themes.customapp.CustomAppTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -165,13 +164,13 @@ fun MaintenanceDetailScreen(
                 actions = {
                     if(state.isEditing){
                         IconButton(onClick = { onAction(MaintenanceDetailAction.OnDeleteMaintenanceClick(state.maintenance?.id)) }){
-                            Icon(imageVector = Icons.Default.Delete, contentDescription = stringResource(Res.string.delete_task), tint = Color.Red)
+                            Icon(imageVector = Icons.Default.Delete, contentDescription = stringResource(Res.string.delete_task), tint = MaterialTheme.colorScheme.error)
                         }
                     }
                 }
             )
         },
-        containerColor = AthensGray,
+        //containerColor = AthensGray,
         bottomBar = {
             DetailBottomBar(
                 onSaveButtonClick = { onAction(MaintenanceDetailAction.OnSaveMaintenanceClick) },
@@ -209,11 +208,10 @@ fun MaintenanceDetailScreen(
                 icon = Icons.Default.ModeComment
             )
 
-            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp), color = Color.LightGray)
+            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp), color = MaterialTheme.colorScheme.outlineVariant)
             Text(
                 text = stringResource(Res.string.maintenance_intervals),
-                style = MaterialTheme.typography.titleSmall,
-                color = Color.Gray
+                style = MaterialTheme.typography.titleMedium,
             )
 
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
@@ -225,7 +223,7 @@ fun MaintenanceDetailScreen(
                     placeholder = stringResource(Res.string.odometer_interval_placeholder),
                     keyboardType = KeyboardType.Number,
                     icon =  Icons.Default.Speed,
-                    modifier = Modifier.weight(1.5f)
+                    modifier = Modifier.weight(1f)
                 )
 
                 // Odometer interval
@@ -257,7 +255,7 @@ fun MaintenanceDetailScreen(
                     onValueChange = { },  //{ onAction(MaintenanceDetailAction.OnStateChange(maintenance = state.maintenance?.copy(initialDate = it.toLocalDate()))) },
                     type = DetailDateFieldType.MODAL,
                     placeholder = stringResource(Res.string.select_date),
-                    modifier = Modifier.weight(1.5f)
+                    modifier = Modifier.weight(1f)
                 )
 
                 // Date interval
@@ -277,7 +275,6 @@ fun MaintenanceDetailScreen(
                 Text(
                     text = stringResource(Res.string.maintenance_control_type),
                     style = MaterialTheme.typography.labelLarge,
-                    color = Color(0xFF6B7280),
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
                 SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
@@ -287,11 +284,11 @@ fun MaintenanceDetailScreen(
                             onClick = { onAction(MaintenanceDetailAction.OnStateChange(maintenance = state.maintenance?.copy(controlType = controlType))) },
                             selected = state.maintenance?.controlType == controlType,
                             colors = SegmentedButtonDefaults.colors(
-                                activeContainerColor = Color(0xFF2563EB),
-                                activeContentColor = Color.White,
-                                inactiveContainerColor = Color.White,
-                                activeBorderColor = Color(0xFFE5E7EB),
-                                inactiveBorderColor = Color(0xFFE5E7EB)
+                                activeContainerColor = MaterialTheme.colorScheme.primary,
+                                activeContentColor = MaterialTheme.colorScheme.onPrimary,
+                                inactiveContainerColor = MaterialTheme.colorScheme.onPrimary,
+                                activeBorderColor = MaterialTheme.colorScheme.outlineVariant,
+                                inactiveBorderColor = MaterialTheme.colorScheme.outlineVariant
                             )
                         ) {
                             Text(controlType.name.lowercase().replaceFirstChar { it.uppercase() })
@@ -309,12 +306,14 @@ fun MaintenanceDetailScreen(
 @Preview(showBackground = true)
 @Composable
 fun MaintenanceDetailScreenPreview(){
-    MaintenanceDetailScreen(
-        state = MaintenanceDetailState(
-            maintenance = getMockMaintenances()[0],
-            isEditing = false,
-            isSaving = false,
-        ),
-        onAction = {}
-    )
+    CustomAppTheme {
+        MaintenanceDetailScreen(
+            state = MaintenanceDetailState(
+                maintenance = getMockMaintenances()[0],
+                isEditing = false,
+                isSaving = false,
+            ),
+            onAction = {}
+        )
+    }
 }

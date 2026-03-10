@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.echcoding.carcaremanager.domain.model.Expense
 import com.echcoding.carcaremanager.presentation.core.mocks.getMockExpenses
+import com.echcoding.carcaremanager.themes.customapp.CustomAppTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -46,8 +47,10 @@ fun ExpenseList(
 @Preview(showBackground = true)
 @Composable
 fun ExpenseListPreview(){
-    ExpenseList(
-        expenses = getMockExpenses(),
-        onEditExpenseClick = {},
-    )
+    CustomAppTheme {
+        ExpenseList(
+            expenses = getMockExpenses(),
+            onEditExpenseClick = {},
+        )
+    }
 }

@@ -19,8 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import carcaremanager.composeapp.generated.resources.Res
 import carcaremanager.composeapp.generated.resources.app_name
-import com.echcoding.carcaremanager.presentation.core.AthensGray
-import com.echcoding.carcaremanager.presentation.core.Ebony
+import com.echcoding.carcaremanager.themes.customapp.CustomAppTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -30,6 +29,7 @@ fun TitleBarHeader(){
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .background(color = MaterialTheme.colorScheme.surfaceContainer)
             .padding(horizontal = 20.dp, vertical = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
@@ -38,14 +38,14 @@ fun TitleBarHeader(){
             text = stringResource(Res.string.app_name),
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
-            color = Ebony
+            color = MaterialTheme.colorScheme.onSurface
         )
-        // Profile Image placeholder (Avatar)
+        // Profile Image
         Box(
             modifier = Modifier
                 .size(36.dp)
                 .clip(CircleShape)
-                .background(AthensGray),
+                .background(MaterialTheme.colorScheme.surfaceContainerLowest),
             contentAlignment = Alignment.Center
         ) {
             // Using a simple text icon to represent the avatar in the screenshot
@@ -57,5 +57,7 @@ fun TitleBarHeader(){
 @Preview(showBackground = true)
 @Composable
 fun TitleBarHeaderPreview() {
-    TitleBarHeader()
+    CustomAppTheme {
+        TitleBarHeader()
+    }
 }

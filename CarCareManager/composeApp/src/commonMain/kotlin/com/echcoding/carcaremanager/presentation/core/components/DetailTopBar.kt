@@ -1,9 +1,9 @@
 package com.echcoding.carcaremanager.presentation.core.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -13,12 +13,11 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import carcaremanager.composeapp.generated.resources.Res
 import carcaremanager.composeapp.generated.resources.back
 import carcaremanager.composeapp.generated.resources.edit_vehicle
-import com.echcoding.carcaremanager.presentation.core.Ebony
+import com.echcoding.carcaremanager.themes.customapp.CustomAppTheme
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -40,23 +39,23 @@ fun DetailTopBar(
             Text(
                 text = stringResource(title),
                 fontWeight = FontWeight.Bold,
-                color = Ebony
+                color = MaterialTheme.colorScheme.onSurface
             )
         },
-        //modifier = modifier,
+        modifier = Modifier.background(color = MaterialTheme.colorScheme.surfaceContainer),
         navigationIcon = {
             IconButton(onClick = onBackClick){
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(Res.string.back),
-                    tint = Ebony
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
             }
         },
         actions = actions,
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = Color.White,
-            scrolledContainerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.surfaceContainer,
+            scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer
         )
     )
 }
@@ -64,9 +63,11 @@ fun DetailTopBar(
 @Preview(showBackground = true)
 @Composable
 fun DetailTopBarPreview(){
-    DetailTopBar(
-        title = Res.string.edit_vehicle,
-        onBackClick = {},
-        modifier = Modifier
-    )
+    CustomAppTheme {
+        DetailTopBar(
+            title = Res.string.edit_vehicle,
+            onBackClick = {},
+            modifier = Modifier
+        )
+    }
 }

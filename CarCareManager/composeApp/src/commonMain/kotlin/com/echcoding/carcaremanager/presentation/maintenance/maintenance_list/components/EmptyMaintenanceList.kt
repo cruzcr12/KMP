@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import carcaremanager.composeapp.generated.resources.Res
 import carcaremanager.composeapp.generated.resources.add_first_maintenance
 import carcaremanager.composeapp.generated.resources.no_maintenance_tasks
+import com.echcoding.carcaremanager.themes.customapp.CustomAppTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -34,16 +35,17 @@ fun EmptyMaintenanceList(modifier: Modifier = Modifier) {
             Icons.Default.Build,
             contentDescription = null,
             modifier = Modifier.size(64.dp),
-            tint = Color.Gray
+            tint = MaterialTheme.colorScheme.tertiaryContainer
         )
         Spacer(Modifier.height(16.dp))
         Text(
             stringResource(Res.string.no_maintenance_tasks),
+            color = MaterialTheme.colorScheme.secondary,
             style = MaterialTheme.typography.titleMedium
         )
         Text(
             stringResource(Res.string.add_first_maintenance),
-            color = Color.Gray,
+            color = MaterialTheme.colorScheme.tertiaryContainer,
             textAlign = TextAlign.Center
         )
     }
@@ -52,5 +54,7 @@ fun EmptyMaintenanceList(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun EmptyMaintenanceListPreview() {
-    EmptyMaintenanceList()
+    CustomAppTheme {
+        EmptyMaintenanceList()
+    }
 }

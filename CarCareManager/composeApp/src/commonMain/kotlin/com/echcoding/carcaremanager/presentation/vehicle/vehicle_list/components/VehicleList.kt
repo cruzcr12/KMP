@@ -3,7 +3,6 @@ package com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -16,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.echcoding.carcaremanager.domain.model.Vehicle
 import com.echcoding.carcaremanager.presentation.core.mocks.vehicles
+import com.echcoding.carcaremanager.themes.customapp.CustomAppTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -65,11 +65,13 @@ fun VehicleList(
 @Preview(showBackground = true)
 @Composable
 fun VehicleListPreview() {
-    VehicleList(
-        vehicles = vehicles,
-        onAddVehicleClick = {},
-        onEditVehicleClick = {},
-        onDeleteVehicleClick = {},
-        onSelectVehicleClick = {}
-    )
+    CustomAppTheme {
+        VehicleList(
+            vehicles = vehicles,
+            onAddVehicleClick = {},
+            onEditVehicleClick = {},
+            onDeleteVehicleClick = {},
+            onSelectVehicleClick = {}
+        )
+    }
 }

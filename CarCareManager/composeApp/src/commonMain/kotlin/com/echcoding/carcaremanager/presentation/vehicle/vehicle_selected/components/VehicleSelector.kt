@@ -17,27 +17,22 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import carcaremanager.composeapp.generated.resources.Res
 import carcaremanager.composeapp.generated.resources.no_vehicle_selected
 import com.echcoding.carcaremanager.domain.model.Vehicle
-import com.echcoding.carcaremanager.presentation.core.AthensGray
-import com.echcoding.carcaremanager.presentation.core.Ebony
-import com.echcoding.carcaremanager.presentation.core.GrayChateau
-import com.echcoding.carcaremanager.presentation.core.PaleSky
-import com.echcoding.carcaremanager.presentation.core.RoyalBlue
-import com.echcoding.carcaremanager.presentation.core.Zumthor
 import com.echcoding.carcaremanager.presentation.core.extensions.formattedOdometer
 import com.echcoding.carcaremanager.presentation.core.mocks.vehicles
+import com.echcoding.carcaremanager.themes.customapp.CustomAppTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -47,7 +42,7 @@ fun VehicleSelector(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ){
-    // Active Vehicle Selector (Dropdown style)
+    // Active Vehicle Selector
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -56,8 +51,8 @@ fun VehicleSelector(
     ) {
         Surface(
             shape = RoundedCornerShape(50.dp),
-            border = BorderStroke(1.dp, AthensGray),
-            color = Color.White,
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+            color = MaterialTheme.colorScheme.tertiaryContainer,
             modifier = modifier
                 .clickable(onClick = onClick)
         ) {
@@ -69,13 +64,13 @@ fun VehicleSelector(
                     modifier = Modifier
                         .size(32.dp)
                         .clip(CircleShape)
-                        .background(Zumthor),
+                        .background(MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.8f)),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         Icons.Default.DirectionsCar,
                         contentDescription = null,
-                        tint = RoyalBlue,
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(16.dp)
                     )
                 }
@@ -86,12 +81,12 @@ fun VehicleSelector(
                             vehicle.name,
                             fontWeight = FontWeight.Bold,
                             fontSize = 13.sp,
-                            color = Ebony
+                            color = MaterialTheme.colorScheme.onTertiaryContainer
                         )
                         Text(
                             vehicle.formattedOdometer,
                             fontSize = 11.sp,
-                            color = PaleSky
+                            color = MaterialTheme.colorScheme.onTertiaryContainer
                         )
                     }
                 }else{
@@ -100,7 +95,7 @@ fun VehicleSelector(
                             stringResource(Res.string.no_vehicle_selected),
                             fontWeight = FontWeight.Bold,
                             fontSize = 13.sp,
-                            color = Ebony
+                            color = MaterialTheme.colorScheme.onTertiaryContainer
                         )
                     }
                 }
@@ -109,7 +104,7 @@ fun VehicleSelector(
                 Icon(
                     Icons.Default.KeyboardArrowDown,
                     contentDescription = null,
-                    tint = GrayChateau,
+                    tint = MaterialTheme.colorScheme.onTertiaryContainer,
                     modifier = Modifier.size(20.dp)
                 )
             }
@@ -120,8 +115,10 @@ fun VehicleSelector(
 @Preview(showBackground = true)
 @Composable
 fun VehicleSelectorPreview(){
-    VehicleSelector(
-        vehicle = vehicles.first(),
-        onClick = {}
-    )
+    CustomAppTheme {
+        VehicleSelector(
+            vehicle = vehicles.first(),
+            onClick = {}
+        )
+    }
 }

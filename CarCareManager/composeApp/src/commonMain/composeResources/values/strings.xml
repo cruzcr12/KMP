@@ -24,6 +24,7 @@
     <string name="make_placeholder">e.g. Toyota</string>
     <string name="model">Model</string>
     <string name="model_placeholder">e.g. Rav4</string>
+    <string name="odometer_placeholder">e.g. 12345</string>
     <string name="license_plate">License Plate</string>
     <string name="license_plate_placeholder">e.g. ABC-123</string>
     <string name="fuel_type">Fuel Type</string>

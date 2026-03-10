@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import carcaremanager.composeapp.generated.resources.Res
 import carcaremanager.composeapp.generated.resources.save
+import com.echcoding.carcaremanager.themes.customapp.CustomAppTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -35,7 +37,7 @@ fun DetailBottomBar(
             .padding(16.dp)
             .height(56.dp),
         shape = RoundedCornerShape(12.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2563EB)),
+        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
         enabled = !isSaving
     ){
         if(isSaving){
@@ -49,8 +51,10 @@ fun DetailBottomBar(
 @Preview(showBackground = true)
 @Composable
 fun DetailBottomBarPreview(){
-    DetailBottomBar(
-        onSaveButtonClick = {},
-        isSaving = false
-    )
+    CustomAppTheme {
+        DetailBottomBar(
+            onSaveButtonClick = {},
+            isSaving = false
+        )
+    }
 }

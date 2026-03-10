@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import carcaremanager.composeapp.generated.resources.Res
 import carcaremanager.composeapp.generated.resources.add_first_vehicle
 import carcaremanager.composeapp.generated.resources.no_vehicles_registered
+import com.echcoding.carcaremanager.themes.customapp.CustomAppTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -33,16 +34,17 @@ fun EmptyVehicleList(modifier: Modifier = Modifier) {
             Icons.Default.DirectionsCar,
             contentDescription = null,
             modifier = Modifier.size(64.dp),
-            tint = Color.Gray
+            tint = MaterialTheme.colorScheme.tertiaryContainer
         )
         Spacer(Modifier.height(16.dp))
         Text(
             stringResource(Res.string.no_vehicles_registered),
+            color = MaterialTheme.colorScheme.secondary,
             style = MaterialTheme.typography.titleMedium
         )
         Text(
             stringResource(Res.string.add_first_vehicle),
-            color = Color.Gray
+            color = MaterialTheme.colorScheme.tertiaryContainer
         )
     }
 }
@@ -50,5 +52,7 @@ fun EmptyVehicleList(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun EmptyVehicleStatePreview() {
-    EmptyVehicleList()
+    CustomAppTheme {
+        EmptyVehicleList()
+    }
 }

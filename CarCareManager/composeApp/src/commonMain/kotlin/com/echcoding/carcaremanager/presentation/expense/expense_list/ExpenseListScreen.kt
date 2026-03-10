@@ -9,9 +9,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.AddTask
-import androidx.compose.material.icons.filled.History
-import androidx.compose.material.icons.filled.Money
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -33,11 +30,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import carcaremanager.composeapp.generated.resources.Res
 import carcaremanager.composeapp.generated.resources.add_expense
 import com.echcoding.carcaremanager.domain.model.Expense
-import com.echcoding.carcaremanager.presentation.core.RoyalBlue
 import com.echcoding.carcaremanager.presentation.core.mocks.getMockExpenses
 import com.echcoding.carcaremanager.presentation.expense.expense_list.components.EmptyExpenseList
 import com.echcoding.carcaremanager.presentation.expense.expense_list.components.ExpenseList
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_selected.SelectedVehicleViewModel
+import com.echcoding.carcaremanager.themes.customapp.CustomAppTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -100,8 +97,8 @@ fun ExpenseListScreen(
             if(state.selectedVehicle != null) {
                 FloatingActionButton(
                     onClick = { onAction(ExpenseListAction.OnAddExpenseClick) },
-                    containerColor = RoyalBlue,
-                    contentColor = Color.White,
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
                     shape = CircleShape
                 ) {
                     Icon(
@@ -169,12 +166,14 @@ fun ExpenseListScreen(
 @Preview(showBackground = true)
 @Composable
 fun ExpenseScreenPreview() {
-    ExpenseListScreen(
-        state = ExpenseListState(
-            expenses = getMockExpenses()
-        ),
-        onAction = {}
-    )
+    CustomAppTheme {
+        ExpenseListScreen(
+            state = ExpenseListState(
+                expenses = getMockExpenses()
+            ),
+            onAction = {}
+        )
+    }
 }
 
 

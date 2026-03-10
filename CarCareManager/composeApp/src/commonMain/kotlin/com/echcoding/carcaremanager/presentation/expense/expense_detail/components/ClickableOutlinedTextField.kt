@@ -19,10 +19,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.echcoding.carcaremanager.presentation.core.GrayChateau
+import com.echcoding.carcaremanager.themes.customapp.CustomAppTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -50,7 +49,6 @@ fun ClickableOutlinedTextField(
         Text(
             text = label,
             style = MaterialTheme.typography.labelLarge,
-            color = Color(0xFF6B7280),
             modifier = Modifier.padding(bottom = 8.dp)
         )
         OutlinedTextField(
@@ -61,15 +59,15 @@ fun ClickableOutlinedTextField(
             readOnly = readOnly,
             interactionSource = interactionSource,
             trailingIcon = {
-                Icon(icon, contentDescription = null, tint = GrayChateau, modifier = Modifier.size(20.dp))
+                Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(20.dp))
             },
-            placeholder = { Text(placeholder, color = GrayChateau) },
+            placeholder = { Text(placeholder, color = MaterialTheme.colorScheme.surfaceDim) },
             isError = isError,
             shape = RoundedCornerShape(12.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                unfocusedContainerColor = Color.White,
-                focusedContainerColor = Color.White,
-                unfocusedBorderColor = Color(0xFFE5E7EB)
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant
             ),
             //isError = false
         )
@@ -79,13 +77,14 @@ fun ClickableOutlinedTextField(
 @Preview(showBackground = true)
 @Composable
 fun ClickableOutlinedTextFieldPreview() {
-    ClickableOutlinedTextField(
-        label = "Label",
-        value = "Value",
-        onValueChange = {},
-        placeholder = "Placeholder",
-        icon = Icons.Default.ArrowDownward,
-        onClick = {}
-    )
-
+    CustomAppTheme {
+        ClickableOutlinedTextField(
+            label = "Label",
+            value = "Value",
+            onValueChange = {},
+            placeholder = "Placeholder",
+            icon = Icons.Default.ArrowDownward,
+            onClick = {}
+        )
+    }
 }

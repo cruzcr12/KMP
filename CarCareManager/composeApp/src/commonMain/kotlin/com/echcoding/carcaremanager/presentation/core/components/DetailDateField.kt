@@ -6,9 +6,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.echcoding.carcaremanager.themes.customapp.CustomAppTheme
 import kotlinx.datetime.LocalDate
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun DetailDateField(
@@ -26,7 +27,6 @@ fun DetailDateField(
         Text(
             text = label,
             style = MaterialTheme.typography.labelLarge,
-            color = Color(0xFF6B7280),
             modifier = Modifier.padding(bottom = 8.dp)
         )
         if(type == DetailDateFieldType.DOCKED) {
@@ -47,5 +47,20 @@ fun DetailDateField(
 
 enum class DetailDateFieldType {
     DOCKED, MODAL
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DetailDateFieldPreview(){
+    CustomAppTheme {
+        DetailDateField(
+            label = "Date",
+            value = null,
+            type = DetailDateFieldType.DOCKED,
+            onSelectedDate = {},
+            onValueChange = {},
+            placeholder = "Placeholder"
+        )
+    }
 }
 

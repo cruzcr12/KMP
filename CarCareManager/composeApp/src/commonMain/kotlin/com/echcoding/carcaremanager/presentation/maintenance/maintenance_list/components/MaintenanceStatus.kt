@@ -12,6 +12,12 @@ import carcaremanager.composeapp.generated.resources.completed
 import carcaremanager.composeapp.generated.resources.due_soon
 import carcaremanager.composeapp.generated.resources.overdue
 import carcaremanager.composeapp.generated.resources.upcoming
+import com.echcoding.carcaremanager.themes.customapp.errorContainerLight
+import com.echcoding.carcaremanager.themes.customapp.informativeContainerLight
+import com.echcoding.carcaremanager.themes.customapp.informativeLight
+import com.echcoding.carcaremanager.themes.customapp.onErrorContainerLight
+import com.echcoding.carcaremanager.themes.customapp.onTertiaryContainerLight
+import com.echcoding.carcaremanager.themes.customapp.tertiaryContainerLight
 import org.jetbrains.compose.resources.StringResource
 
 
@@ -23,22 +29,22 @@ sealed class MaintenanceStatus(
 ) {
     data object Overdue : MaintenanceStatus(
         Res.string.overdue,
-        Color(0xFFEF4444),
-        Color(0xFFFEE2E2),
+        onErrorContainerLight,
+        errorContainerLight,
         Icons.Default.ErrorOutline)
     data object DueSoon : MaintenanceStatus(
         Res.string.due_soon,
-        Color(0xFFF59E0B),
-        Color(0xFFFEF3C7),
+        informativeLight,
+        informativeContainerLight,
         Icons.Default.Schedule)
     data object Completed : MaintenanceStatus(
         Res.string.completed,
-        Color(0xFF10B981),
-        Color(0xFFD1FAE5),
+        tertiaryContainerLight,
+        onTertiaryContainerLight,
         Icons.Default.CheckCircleOutline)
     data object Upcoming : MaintenanceStatus(
         Res.string.upcoming,
-        Color(0xFF9CA3AF),
-        Color(0xFFF3F4F6),
+        tertiaryContainerLight,
+        onTertiaryContainerLight,
         Icons.Default.CalendarToday)
 }

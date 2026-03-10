@@ -34,11 +34,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.echcoding.carcaremanager.domain.model.Expense
 import com.echcoding.carcaremanager.domain.model.TypeOfService
-import com.echcoding.carcaremanager.presentation.core.OrangePeel
-import com.echcoding.carcaremanager.presentation.core.RoyalBlue
 import com.echcoding.carcaremanager.presentation.core.extensions.formattedMileage
 import com.echcoding.carcaremanager.presentation.core.mocks.getMockExpenses
 import com.echcoding.carcaremanager.presentation.core.utils.CurrencyFormatter
+import com.echcoding.carcaremanager.themes.customapp.CustomAppTheme
+import com.echcoding.carcaremanager.themes.customapp.informativeLight
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.format
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -62,26 +62,26 @@ fun ExpenseListItem(
                 Box(
                     modifier = Modifier.size(28.dp)
                         .clip(CircleShape)
-                        .background(if (expense.typeOfService == TypeOfService.MAINTENANCE) RoyalBlue else OrangePeel),
+                        .background(if (expense.typeOfService == TypeOfService.MAINTENANCE) MaterialTheme.colorScheme.secondary else informativeLight ),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = if (expense.typeOfService == TypeOfService.MAINTENANCE) Icons.Default.Build else Icons.Default.FlashOn,
                         contentDescription = null,
-                        tint = Color.White,
+                        tint = MaterialTheme.colorScheme.onSecondary,
                         modifier = Modifier.size(16.dp)
                     )
                 }
                 // Vertical Line
                 Box(modifier = Modifier.width(2.dp)
                     .height(132.dp)
-                    .background(Color.Gray))
+                    .background(MaterialTheme.colorScheme.outlineVariant))
             //}
         }
         Spacer(modifier = Modifier.width(16.dp))
         Card(
             shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest),
             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
             modifier = Modifier.fillMaxWidth()
                 .padding(bottom = 8.dp),
@@ -93,31 +93,31 @@ fun ExpenseListItem(
                 {
                     Text(text = expense.date.format(LocalDate.Formats.ISO),
                         style = MaterialTheme.typography.bodySmall,
-                        color = Color.Gray,
+                        color = MaterialTheme.colorScheme.tertiary,
                         fontWeight = FontWeight.Bold)
                     Text(text = CurrencyFormatter().formatCurrency(expense.amount ?: 0.0), fontWeight = FontWeight.Bold)
                 }
                 Text(text = expense.maintenanceName ?: "", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 Row(verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(vertical = 8.dp)) {
-                    Surface(color = Color.LightGray, shape = RoundedCornerShape(4.dp)) {
+                    Surface(color = MaterialTheme.colorScheme.tertiaryContainer, shape = RoundedCornerShape(4.dp)) {
                         Text(expense.formattedMileage,
                             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                            color = MaterialTheme.colorScheme.onTertiaryContainer,
                             style = MaterialTheme.typography.labelSmall)
                     }
                     Spacer(modifier = Modifier.width(8.dp))
-                    Surface(color = Color.White,
-                        border = BorderStroke(1.dp, Color.Gray),
+                    Surface(color = MaterialTheme.colorScheme.onTertiary,
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.tertiary),
                         shape = RoundedCornerShape(4.dp)) {
                         Text(expense.typeOfService.toString(),
-                            color = Color.Gray,
+                            color = MaterialTheme.colorScheme.tertiary,
                             style = MaterialTheme.typography.labelSmall,
                             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp))
                     }
                 }
                 Text(text = expense.note ?: "",
                     style = MaterialTheme.typography.bodySmall,
-                    color = Color.DarkGray,
                     maxLines = 2,
                     modifier = Modifier.defaultMinSize(minHeight = 36.dp)
                 )
@@ -130,8 +130,10 @@ fun ExpenseListItem(
 @Preview(showBackground = true)
 @Composable
 fun ExpenseListItemPreview(){
-    ExpenseListItem(
-        expense = getMockExpenses()[1],
-        onEditClick = {}
-    )
+    CustomAppTheme {
+        ExpenseListItem(
+            expense = getMockExpenses()[1],
+            onEditClick = {}
+        )
+    }
 }

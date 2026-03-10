@@ -31,11 +31,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import carcaremanager.composeapp.generated.resources.Res
 import carcaremanager.composeapp.generated.resources.add_maintenance_task
 import com.echcoding.carcaremanager.domain.model.Maintenance
-import com.echcoding.carcaremanager.presentation.core.RoyalBlue
 import com.echcoding.carcaremanager.presentation.core.mocks.getMockMaintenances
 import com.echcoding.carcaremanager.presentation.maintenance.maintenance_list.components.EmptyMaintenanceList
 import com.echcoding.carcaremanager.presentation.maintenance.maintenance_list.components.MaintenanceList
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_selected.SelectedVehicleViewModel
+import com.echcoding.carcaremanager.themes.customapp.CustomAppTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -100,8 +100,8 @@ fun MaintenanceListScreen(
             if(state.selectedVehicle != null) {
                 FloatingActionButton(
                     onClick = { onAction(MaintenanceListAction.OnAddMaintenanceClick) },
-                    containerColor = RoyalBlue,
-                    contentColor = Color.White,
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
                     shape = CircleShape,
 
                     ) {
@@ -172,10 +172,12 @@ fun MaintenanceListScreen(
 @Preview(showBackground = true)
 @Composable
 fun MaintenanceScreenPreview() {
-    MaintenanceListScreen(
-        state = MaintenanceListState(
-            tasks = getMockMaintenances()
-        ),
-        onAction = {}
-    )
+    CustomAppTheme {
+        MaintenanceListScreen(
+            state = MaintenanceListState(
+                tasks = getMockMaintenances()
+            ),
+            onAction = {}
+        )
+    }
 }

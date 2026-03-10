@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
@@ -35,7 +34,7 @@ import com.echcoding.carcaremanager.presentation.vehicle.vehicle_detail.VehicleD
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.VehicleListScreenRoot
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_list.VehicleListViewModel
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_selected.SelectedVehicleViewModel
-import com.echcoding.carcaremanager.theme.AppTheme
+import com.echcoding.carcaremanager.themes.customapp.CustomAppTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -45,7 +44,7 @@ fun App() {
     Scaffold(
         modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing),
     ) { innerPadding ->
-        AppTheme {
+        CustomAppTheme {
             // Create the controller to handle the app navigation
             val navController = rememberNavController()
             // The NavHost is a container that displays the current screen based on the navigation state

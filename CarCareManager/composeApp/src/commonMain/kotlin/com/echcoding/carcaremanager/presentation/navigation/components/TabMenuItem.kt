@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,8 +21,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.echcoding.carcaremanager.presentation.core.PaleSky
-import com.echcoding.carcaremanager.presentation.core.RoyalBlue
+import com.echcoding.carcaremanager.themes.customapp.CustomAppTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -32,7 +32,7 @@ fun TabMenuItem(
     onClick: () -> Unit = {},
     modifier: Modifier = Modifier
     ) {
-    val color = if (isSelected) RoyalBlue else PaleSky
+    val color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary
     Column(
         modifier = Modifier.padding(top = 12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -64,5 +64,7 @@ fun TabMenuItem(
 @Preview(showBackground = true)
 @Composable
 fun TabMenuItemPreview(){
-    TabMenuItem("Services", Icons.Default.Build, true)
+    CustomAppTheme {
+        TabMenuItem("Services", Icons.Default.Build, true)
+    }
 }

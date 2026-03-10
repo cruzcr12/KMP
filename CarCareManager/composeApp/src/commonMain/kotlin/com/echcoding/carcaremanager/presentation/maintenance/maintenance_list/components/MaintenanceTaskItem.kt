@@ -29,6 +29,7 @@ import com.echcoding.carcaremanager.domain.model.Maintenance
 import com.echcoding.carcaremanager.presentation.core.extensions.calculateStatus
 import com.echcoding.carcaremanager.presentation.core.extensions.generateSubtitle
 import com.echcoding.carcaremanager.presentation.core.mocks.getMockMaintenances
+import com.echcoding.carcaremanager.themes.customapp.CustomAppTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.text.uppercase
@@ -45,7 +46,7 @@ fun MaintenanceTaskItem(
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         onClick = onEditClick
     ) {
@@ -80,7 +81,7 @@ fun MaintenanceTaskItem(
                         text = maintenance.name,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1F2937)
+                        color = MaterialTheme.colorScheme.onSurface
                     )
 
                     // Status Badge
@@ -110,7 +111,7 @@ fun MaintenanceTaskItem(
                     Text(
                         text = maintenance.description,
                         style = MaterialTheme.typography.bodySmall,
-                        color = Color.Gray
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
@@ -121,9 +122,11 @@ fun MaintenanceTaskItem(
 @Preview
 @Composable
 fun MaintenanceTaskItemPreview() {
-    MaintenanceTaskItem(
-        maintenance =  getMockMaintenances()[0],
-        currentOdometer = 300000,
-        onEditClick = {}
-    )
+    CustomAppTheme {
+        MaintenanceTaskItem(
+            maintenance = getMockMaintenances()[0],
+            currentOdometer = 300000,
+            onEditClick = {}
+        )
+    }
 }

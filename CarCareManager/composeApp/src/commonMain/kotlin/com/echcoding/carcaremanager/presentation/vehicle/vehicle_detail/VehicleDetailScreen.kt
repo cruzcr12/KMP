@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -14,17 +13,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.GasMeter
 import androidx.compose.material.icons.filled.Numbers
 import androidx.compose.material.icons.filled.Pin
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -35,8 +30,6 @@ import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -47,13 +40,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import carcaremanager.composeapp.generated.resources.Res
-import carcaremanager.composeapp.generated.resources.back
 import carcaremanager.composeapp.generated.resources.edit_vehicle
 import carcaremanager.composeapp.generated.resources.fuel_type
 import carcaremanager.composeapp.generated.resources.license_plate
@@ -64,6 +54,7 @@ import carcaremanager.composeapp.generated.resources.model
 import carcaremanager.composeapp.generated.resources.model_placeholder
 import carcaremanager.composeapp.generated.resources.new_vehicle
 import carcaremanager.composeapp.generated.resources.odometer
+import carcaremanager.composeapp.generated.resources.odometer_placeholder
 import carcaremanager.composeapp.generated.resources.save_vehicle
 import carcaremanager.composeapp.generated.resources.vehicle_name
 import carcaremanager.composeapp.generated.resources.vehicle_name_placeholder
@@ -71,11 +62,10 @@ import carcaremanager.composeapp.generated.resources.year
 import carcaremanager.composeapp.generated.resources.year_placeholder
 import com.echcoding.carcaremanager.domain.model.FuelType
 import com.echcoding.carcaremanager.domain.model.OdometerUnit
-import com.echcoding.carcaremanager.presentation.core.AthensGray
-import com.echcoding.carcaremanager.presentation.core.Ebony
 import com.echcoding.carcaremanager.presentation.core.components.DetailBottomBar
 import com.echcoding.carcaremanager.presentation.core.components.DetailField
 import com.echcoding.carcaremanager.presentation.core.components.DetailTopBar
+import com.echcoding.carcaremanager.themes.customapp.CustomAppTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -147,7 +137,6 @@ fun VehicleDetailScreen(
                 actions = {}
             )
         },
-        containerColor = AthensGray,
         bottomBar = {
             DetailBottomBar(
                 onSaveButtonClick = { onAction(VehicleDetailAction.OnSaveVehicleClick) },
@@ -180,7 +169,7 @@ fun VehicleDetailScreen(
                     placeholder = stringResource(Res.string.year_placeholder),
                     icon = Icons.Default.Numbers,
                     keyboardType = KeyboardType.Number,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1.2f)
                 )
                 DetailField(
                     label = stringResource(Res.string.license_plate),
@@ -188,7 +177,7 @@ fun VehicleDetailScreen(
                     onValueChange = { onAction(VehicleDetailAction.OnStateChange(vehicle = state.vehicle?.copy(licensePlate = it))) },
                     placeholder = stringResource(Res.string.license_plate_placeholder),
                     icon = Icons.Default.Pin,
-                    modifier = Modifier.weight(1.5f)
+                    modifier = Modifier.weight(1.3f)
                 )
             }
 
@@ -212,7 +201,6 @@ fun VehicleDetailScreen(
                 Text(
                     text = stringResource(Res.string.fuel_type),
                     style = MaterialTheme.typography.labelLarge,
-                    color = Color(0xFF6B7280),
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
                 SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
@@ -222,11 +210,11 @@ fun VehicleDetailScreen(
                             onClick = { onAction(VehicleDetailAction.OnStateChange(vehicle = state.vehicle?.copy(fuelType = fuelType))) },
                             selected = state.vehicle?.fuelType == fuelType,
                             colors = SegmentedButtonDefaults.colors(
-                                activeContainerColor = Color(0xFF2563EB),
-                                activeContentColor = Color.White,
-                                inactiveContainerColor = Color.White,
-                                activeBorderColor = Color(0xFFE5E7EB),
-                                inactiveBorderColor = Color(0xFFE5E7EB)
+                                activeContainerColor = MaterialTheme.colorScheme.primary,
+                                activeContentColor = MaterialTheme.colorScheme.onPrimary,
+                                inactiveContainerColor = MaterialTheme.colorScheme.onPrimary,
+                                activeBorderColor = MaterialTheme.colorScheme.outlineVariant,
+                                inactiveBorderColor = MaterialTheme.colorScheme.outlineVariant
                             )
                         ) {
                             Text(fuelType.name.lowercase().replaceFirstChar { it.uppercase() })
@@ -235,61 +223,47 @@ fun VehicleDetailScreen(
                 }
             }
 
-            Column {
-                Text(
-                    text = stringResource(Res.string.odometer),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = Color(0xFF6B7280),
-                    modifier = Modifier.padding(bottom = 8.dp)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.Bottom
+            ){
+                DetailField(
+                    label = stringResource(Res.string.odometer),
+                    value = state.vehicle?.odometer?.toString() ?: "",
+                    onValueChange = { newValue ->
+                        // Filter out non-numeric characters if necessary, or just use toIntOrNull
+                        val intValue = newValue.filter { it.isDigit() }.toIntOrNull() ?: 0
+                        onAction(VehicleDetailAction.OnStateChange(vehicle = state.vehicle?.copy(odometer = intValue)))
+                    },
+                    placeholder = stringResource(Res.string.odometer_placeholder),
+                    icon = Icons.Default.GasMeter,
+                    modifier = Modifier.weight(1.5f)
                 )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
+                Spacer(modifier = Modifier.width(12.dp))
+                SingleChoiceSegmentedButtonRow(
+                    modifier = Modifier.width(140.dp)
+                        .padding(bottom = 4.dp)
                 ) {
-                    OutlinedTextField(
-                        value = state.vehicle?.odometer?.toString() ?: "",
-                        onValueChange = { newValue ->
-                            // Filter out non-numeric characters if necessary, or just use toIntOrNull
-                            val intValue = newValue.filter { it.isDigit() }.toIntOrNull() ?: 0
-                            onAction(VehicleDetailAction.OnStateChange(vehicle = state.vehicle?.copy(odometer = intValue)))
-                        },
-                        modifier = Modifier.weight(1f),
-                        leadingIcon = {
-                            Icon(Icons.Default.GasMeter, contentDescription = null, tint = Color(0xFF9CA3AF))
-                        },
-                        placeholder = { Text("0") },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        shape = RoundedCornerShape(12.dp),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            unfocusedContainerColor = Color.White,
-                            focusedContainerColor = Color.White,
-                            unfocusedBorderColor = Color(0xFFE5E7EB)
-                        )
-                    )
-                    Spacer(modifier = Modifier.width(12.dp))
-                    SingleChoiceSegmentedButtonRow(modifier = Modifier.width(140.dp)) {
-                        OdometerUnit.entries.forEachIndexed { index, unit ->
-                            SegmentedButton(
-                                shape = SegmentedButtonDefaults.itemShape(index = index, count = 2),
-                                onClick = {
-                                    onAction(VehicleDetailAction.OnStateChange(vehicle = state.vehicle?.copy(odometerUnit = unit)))
-                                },
-                                selected = state.vehicle?.odometerUnit == unit,
-                                colors = SegmentedButtonDefaults.colors(
-                                    activeContainerColor = Color(0xFF2563EB),
-                                    activeContentColor = Color.White,
-                                    inactiveContainerColor = Color.White,
-                                    activeBorderColor = Color(0xFFE5E7EB),
-                                    inactiveBorderColor = Color(0xFFE5E7EB)
-                                )
-                            ) {
-                                Text(if (unit == OdometerUnit.MILES) "mi" else "km")
-                            }
+                    OdometerUnit.entries.forEachIndexed { index, unit ->
+                        SegmentedButton(
+                            shape = SegmentedButtonDefaults.itemShape(index = index, count = 2),
+                            onClick = {
+                                onAction(VehicleDetailAction.OnStateChange(vehicle = state.vehicle?.copy(odometerUnit = unit)))
+                            },
+                            selected = state.vehicle?.odometerUnit == unit,
+                            colors = SegmentedButtonDefaults.colors(
+                                activeContainerColor = MaterialTheme.colorScheme.primary,
+                                activeContentColor = MaterialTheme.colorScheme.onPrimary,
+                                inactiveContainerColor = MaterialTheme.colorScheme.onPrimary,
+                                activeBorderColor = MaterialTheme.colorScheme.outlineVariant,
+                                inactiveBorderColor = MaterialTheme.colorScheme.outlineVariant
+                            )
+                        ) {
+                            Text(if (unit == OdometerUnit.MILES) "mi" else "km")
                         }
                     }
                 }
             }
-
         }
     }
 }
@@ -299,8 +273,10 @@ fun VehicleDetailScreen(
 @Preview
 @Composable
 fun VehicleDetailScreenPreview() {
-    VehicleDetailScreen(
-        state = VehicleDetailState(),
-        onAction =  {},
-    )
+    CustomAppTheme {
+        VehicleDetailScreen(
+            state = VehicleDetailState(),
+            onAction = {},
+        )
+    }
 }

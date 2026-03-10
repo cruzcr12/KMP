@@ -1,6 +1,5 @@
 package com.echcoding.carcaremanager.presentation.core.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,13 +17,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.echcoding.carcaremanager.presentation.core.GrayChateau
+import com.echcoding.carcaremanager.themes.customapp.CustomAppTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -52,7 +50,6 @@ fun DetailField(
         Text(
             text = label,
             style = MaterialTheme.typography.labelLarge,
-            color = Color(0xFF6B7280),
             modifier = Modifier.padding(bottom = 8.dp)
         )
         OutlinedTextField(
@@ -66,16 +63,16 @@ fun DetailField(
             readOnly = readOnly,
             leadingIcon = {
                 if(showLeadingIcon) {
-                    Icon(icon, contentDescription = null, tint = GrayChateau, modifier = Modifier.size(20.dp)
+                    Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(20.dp)
                     )
                 }
             },
             trailingIcon = {
                 if(showTrailingIcon){
-                    Icon(icon, contentDescription = null, tint = GrayChateau, modifier = Modifier.size(20.dp))
+                    Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(20.dp))
                 }
             },
-            placeholder = { Text(placeholder, color = GrayChateau) },
+            placeholder = { Text(placeholder, color = MaterialTheme.colorScheme.surfaceDim ) },
             keyboardOptions = KeyboardOptions(
                 keyboardType = keyboardType,
                 imeAction = imeAction
@@ -87,9 +84,9 @@ fun DetailField(
             ),
             shape = RoundedCornerShape(12.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                unfocusedContainerColor = Color.White,
-                focusedContainerColor = Color.White,
-                unfocusedBorderColor = Color(0xFFE5E7EB)
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant
             )
         )
     }
@@ -99,11 +96,13 @@ fun DetailField(
 @Composable
 fun DetailFieldPreview()
 {
-    DetailField(
-        label = "Label",
-        value = "Value",
-        onValueChange = {},
-        placeholder = "Placeholder",
-        icon = Icons.Default.Settings
-    )
+    CustomAppTheme {
+        DetailField(
+            label = "Label",
+            value = "Value",
+            onValueChange = {},
+            placeholder = "Placeholder",
+            icon = Icons.Default.Settings
+        )
+    }
 }

@@ -1,22 +1,15 @@
 package com.echcoding.carcaremanager.presentation.expense.expense_detail
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -31,8 +24,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
@@ -50,7 +41,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.backhandler.BackHandler
-import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
@@ -65,7 +55,6 @@ import carcaremanager.composeapp.generated.resources.edit_expense
 import carcaremanager.composeapp.generated.resources.amount
 import carcaremanager.composeapp.generated.resources.amount_placeholder
 import carcaremanager.composeapp.generated.resources.date
-import carcaremanager.composeapp.generated.resources.expense_maintenance_name
 import carcaremanager.composeapp.generated.resources.mileage
 import carcaremanager.composeapp.generated.resources.mileage_placeholder
 import carcaremanager.composeapp.generated.resources.note
@@ -80,9 +69,6 @@ import carcaremanager.composeapp.generated.resources.save_expense
 import carcaremanager.composeapp.generated.resources.select_date
 import carcaremanager.composeapp.generated.resources.select_maintenance
 import com.echcoding.carcaremanager.domain.model.TypeOfService
-import com.echcoding.carcaremanager.presentation.core.AthensGray
-import com.echcoding.carcaremanager.presentation.core.GrayChateau
-import com.echcoding.carcaremanager.presentation.core.RiverBed
 import com.echcoding.carcaremanager.presentation.core.components.DetailBottomBar
 import com.echcoding.carcaremanager.presentation.core.components.DetailDateField
 import com.echcoding.carcaremanager.presentation.core.components.DetailDateFieldType
@@ -90,6 +76,7 @@ import com.echcoding.carcaremanager.presentation.core.components.DetailField
 import com.echcoding.carcaremanager.presentation.core.components.DetailTopBar
 import com.echcoding.carcaremanager.presentation.core.mocks.getMockExpenses
 import com.echcoding.carcaremanager.presentation.expense.expense_detail.components.ClickableOutlinedTextField
+import com.echcoding.carcaremanager.themes.customapp.CustomAppTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -186,13 +173,12 @@ fun ExpenseDetailScreen(
                 actions = {
                     if(state.isEditing){
                         IconButton(onClick = { onAction(ExpenseDetailAction.OnDeleteExpenseClick(state.expense?.id)) }){
-                            Icon(imageVector = Icons.Default.Delete, contentDescription = stringResource(Res.string.delete_expense), tint = Color.Red)
+                            Icon(imageVector = Icons.Default.Delete, contentDescription = stringResource(Res.string.delete_expense), tint = MaterialTheme.colorScheme.error)
                         }
                     }
                 }
             )
         },
-        containerColor = AthensGray,
         bottomBar = {
             DetailBottomBar(
                 onSaveButtonClick = { onAction(ExpenseDetailAction.OnSaveExpenseClick) },
@@ -285,7 +271,7 @@ fun ExpenseDetailScreen(
                 Text(
                     text = state.expense?.mileageUnit ?: "",
                     style = MaterialTheme.typography.titleMedium,
-                    color = RiverBed,
+                    color = MaterialTheme.colorScheme.secondary,
                     modifier = Modifier
                         .padding(horizontal = 24.dp, vertical = 16.dp)
                 )
@@ -296,7 +282,6 @@ fun ExpenseDetailScreen(
                 Text(
                     text = stringResource(Res.string.type_of_service),
                     style = MaterialTheme.typography.labelLarge,
-                    color = Color(0xFF6B7280),
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
                 SingleChoiceSegmentedButtonRow(modifier = Modifier.padding(0.dp)) {
@@ -317,11 +302,11 @@ fun ExpenseDetailScreen(
                             },
                             selected = state.expense?.typeOfService == type,
                             colors = SegmentedButtonDefaults.colors(
-                                activeContainerColor = Color(0xFF2563EB),
-                                activeContentColor = Color.White,
-                                inactiveContainerColor = Color.White,
-                                activeBorderColor = Color(0xFFE5E7EB),
-                                inactiveBorderColor = Color(0xFFE5E7EB)
+                                activeContainerColor = MaterialTheme.colorScheme.primary,
+                                activeContentColor = MaterialTheme.colorScheme.onPrimary,
+                                inactiveContainerColor = MaterialTheme.colorScheme.onPrimary,
+                                activeBorderColor = MaterialTheme.colorScheme.outlineVariant,
+                                inactiveBorderColor = MaterialTheme.colorScheme.outlineVariant
                             )
                         ) {
                             Text(
@@ -352,7 +337,7 @@ fun ExpenseDetailScreen(
             if(state.showMaintenancePicker){
                 ModalBottomSheet(
                     onDismissRequest = { onAction(ExpenseDetailAction.OnDismissMaintenancePicker) },
-                    containerColor = Color.White
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLowest
                 ){
                     LazyColumn(
                         modifier = Modifier
@@ -389,12 +374,14 @@ fun ExpenseDetailScreen(
 @Preview(showBackground = true)
 @Composable
 fun ExpenseDetailScreenPreview(){
-    ExpenseDetailScreen(
-        state = ExpenseDetailState(
-            expense = getMockExpenses()[1],
-            isEditing = true,
-            isSaving = false,
-        ),
-        onAction = {}
-    )
+    CustomAppTheme {
+        ExpenseDetailScreen(
+            state = ExpenseDetailState(
+                expense = getMockExpenses()[1],
+                isEditing = true,
+                isSaving = false,
+            ),
+            onAction = {}
+        )
+    }
 }

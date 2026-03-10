@@ -7,21 +7,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.History
-import androidx.compose.material.icons.filled.Money
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import carcaremanager.composeapp.generated.resources.Res
 import carcaremanager.composeapp.generated.resources.add_first_expense
 import carcaremanager.composeapp.generated.resources.no_expenses_found
+import com.echcoding.carcaremanager.themes.customapp.CustomAppTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -36,16 +34,17 @@ fun EmptyExpenseList(modifier: Modifier = Modifier) {
             Icons.Default.History,
             contentDescription = null,
             modifier = Modifier.size(64.dp),
-            tint = Color.Gray
+            tint = MaterialTheme.colorScheme.tertiaryContainer
         )
         Spacer(Modifier.height(16.dp))
         Text(
             stringResource(Res.string.no_expenses_found),
+            color = MaterialTheme.colorScheme.secondary,
             style = MaterialTheme.typography.titleMedium
         )
         Text(
             stringResource(Res.string.add_first_expense),
-            color = Color.Gray,
+            color = MaterialTheme.colorScheme.tertiaryContainer,
             textAlign = TextAlign.Center
         )
     }
@@ -54,5 +53,7 @@ fun EmptyExpenseList(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun EmptyExpenseListPreview() {
-    EmptyExpenseList()
+    CustomAppTheme {
+        EmptyExpenseList()
+    }
 }

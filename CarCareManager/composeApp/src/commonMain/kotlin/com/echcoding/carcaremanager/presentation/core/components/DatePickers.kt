@@ -33,7 +33,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
@@ -46,9 +45,8 @@ import carcaremanager.composeapp.generated.resources.cancel
 import carcaremanager.composeapp.generated.resources.date_picker_date_format
 import carcaremanager.composeapp.generated.resources.ok
 import carcaremanager.composeapp.generated.resources.select_date
-import com.echcoding.carcaremanager.presentation.core.GrayChateau
-import com.echcoding.carcaremanager.presentation.core.PaleSky
 import com.echcoding.carcaremanager.presentation.core.utils.convertMillisToLocalDate
+import com.echcoding.carcaremanager.themes.customapp.CustomAppTheme
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -99,9 +97,9 @@ fun DatePickerDocked(
             ),
             shape = RoundedCornerShape(12.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                unfocusedContainerColor = Color.White,
-                focusedContainerColor = Color.White,
-                unfocusedBorderColor = Color(0xFFE5E7EB)
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant
             )
         )
 
@@ -147,11 +145,11 @@ fun DatePickerFieldToModal(
         readOnly = true,
         onValueChange = { },
         //label = { Text(stringResource(Res.string.select_date)) },
-        placeholder = { Text(placeholder, color = GrayChateau) },
+        placeholder = { Text(placeholder, color = MaterialTheme.colorScheme.onSurfaceVariant) },
         trailingIcon = {
             Icon(Icons.Default.DateRange,
                 contentDescription = stringResource(Res.string.select_date),
-                tint = PaleSky,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(24.dp)
             )
         },
@@ -177,9 +175,9 @@ fun DatePickerFieldToModal(
         ),
         shape = RoundedCornerShape(12.dp),
         colors = OutlinedTextFieldDefaults.colors(
-            unfocusedContainerColor = Color.White,
-            focusedContainerColor = Color.White,
-            unfocusedBorderColor = Color(0xFFE5E7EB)
+            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+            focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+            unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant
         )
     )
 
@@ -225,9 +223,11 @@ fun DatePickerModal(
 @Preview(showBackground = true)
 @Composable
 fun DatePickerFieldToModalPreview(){
-    DatePickerFieldToModal(
-        value = null,
-        onSelectedDate = {},
-        placeholder = stringResource(Res.string.date_picker_date_format)
-    )
+    CustomAppTheme {
+        DatePickerFieldToModal(
+            value = null,
+            onSelectedDate = {},
+            placeholder = stringResource(Res.string.date_picker_date_format)
+        )
+    }
 }

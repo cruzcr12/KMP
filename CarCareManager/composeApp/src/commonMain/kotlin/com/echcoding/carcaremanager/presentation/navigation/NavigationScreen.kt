@@ -1,6 +1,5 @@
 package com.echcoding.carcaremanager.presentation.navigation
 
-import androidx.annotation.FloatRange
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -13,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.History
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
@@ -29,12 +29,10 @@ import carcaremanager.composeapp.generated.resources.history
 import carcaremanager.composeapp.generated.resources.maintenance
 import carcaremanager.composeapp.generated.resources.vehicles
 import com.echcoding.carcaremanager.domain.model.Vehicle
-import com.echcoding.carcaremanager.presentation.core.AthensGray
 import com.echcoding.carcaremanager.presentation.core.components.TitleBarHeader
 import com.echcoding.carcaremanager.presentation.core.mocks.vehicles
 import com.echcoding.carcaremanager.presentation.navigation.components.TabMenuItem
 import com.echcoding.carcaremanager.presentation.vehicle.vehicle_selected.components.VehicleSelector
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -108,7 +106,7 @@ fun NavigationScreen(
                 )
             }
         },
-        containerColor = AthensGray
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLowest
     ) { innerPadding ->
         HorizontalPager(
             state = pagerState,
