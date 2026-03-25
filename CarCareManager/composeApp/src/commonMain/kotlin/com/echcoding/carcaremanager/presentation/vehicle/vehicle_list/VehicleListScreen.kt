@@ -1,6 +1,7 @@
 package com.echcoding.carcaremanager.presentation.vehicle.vehicle_list
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -109,7 +110,14 @@ private fun VehicleListScreen(
     ){
         when {
             state.isLoading -> {
-                CircularProgressIndicator()
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
+                    CircularProgressIndicator()
+                }
             }
             state.errorMessage != null -> {
                 Text(

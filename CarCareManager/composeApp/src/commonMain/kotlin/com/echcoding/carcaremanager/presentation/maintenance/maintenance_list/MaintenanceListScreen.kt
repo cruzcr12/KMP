@@ -114,7 +114,14 @@ fun MaintenanceListScreen(
         }
     ) { padding ->
         if(state.isLoading) {
-            CircularProgressIndicator()
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                CircularProgressIndicator()
+            }
         }else {
             when {
                 state.errorMessage != null -> {
@@ -175,7 +182,8 @@ fun MaintenanceScreenPreview() {
     CustomAppTheme {
         MaintenanceListScreen(
             state = MaintenanceListState(
-                tasks = getMockMaintenances()
+                tasks = getMockMaintenances(),
+                isLoading = false
             ),
             onAction = {}
         )

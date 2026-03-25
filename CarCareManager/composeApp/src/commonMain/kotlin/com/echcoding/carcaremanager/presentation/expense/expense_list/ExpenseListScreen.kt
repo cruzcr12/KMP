@@ -110,7 +110,14 @@ fun ExpenseListScreen(
         }
     ){ padding ->
         if(state.isLoading){
-            CircularProgressIndicator()
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                CircularProgressIndicator()
+            }
         }else{
             when {
                 state.errorMessage != null -> {
@@ -169,7 +176,8 @@ fun ExpenseScreenPreview() {
     CustomAppTheme {
         ExpenseListScreen(
             state = ExpenseListState(
-                expenses = getMockExpenses()
+                expenses = getMockExpenses(),
+                isLoading = false
             ),
             onAction = {}
         )

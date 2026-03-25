@@ -23,7 +23,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 /**
- * This composable is a reusable top bar for the detail screens.
+ * This is a reusable top bar for the detail screens.
  * The actions parameter allow to define a possible action like a delete button.
  */
 @OptIn(ExperimentalMaterial3Api::class)

@@ -48,7 +48,6 @@ fun TitleBarHeader(){
                 .background(MaterialTheme.colorScheme.surfaceContainerLowest),
             contentAlignment = Alignment.Center
         ) {
-            // Using a simple text icon to represent the avatar in the screenshot
             Text("👩‍🔧", fontSize = 20.sp)
         }
     }

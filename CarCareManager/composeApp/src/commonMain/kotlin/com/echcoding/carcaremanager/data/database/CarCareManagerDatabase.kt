@@ -13,7 +13,7 @@ import com.echcoding.carcaremanager.data.database.entity.VehicleEntity
 
 @Database(
     entities = [VehicleEntity::class, MaintenanceEntity::class, ExpenseEntity::class],
-    version = 1, // When you change the schema, you'll have to increase the version number
+    version = 1, // When the schema changes, the version number must increase
     exportSchema = false
 )
 @TypeConverters( //Specify the type converters that you want to use in the database

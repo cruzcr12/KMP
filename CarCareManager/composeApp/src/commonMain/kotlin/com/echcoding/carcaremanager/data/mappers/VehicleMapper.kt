@@ -6,7 +6,7 @@ import com.echcoding.carcaremanager.domain.model.OdometerUnit
 import com.echcoding.carcaremanager.domain.model.Vehicle
 
 /**
- * This extension function converts a Vehicle object (domain object) to a VehicleEntity object.
+ * This extension function converts a Vehicle object (domain object) into a VehicleEntity object.
  */
 fun Vehicle.toVehicleEntity(): VehicleEntity{
     return VehicleEntity(
@@ -24,7 +24,7 @@ fun Vehicle.toVehicleEntity(): VehicleEntity{
 }
 
 /**
- * This extension function converts a VehicleEntity object (database object) to a Vehicle object.
+ * This extension function converts a VehicleEntity object (database object) into a Vehicle object.
  */
 fun VehicleEntity.toVehicle(): Vehicle {
     return Vehicle(
