@@ -7,4 +7,5 @@ sealed interface VehicleDetailAction {
     data object OnSaveVehicleClick: VehicleDetailAction
     data class OnStateChange(var vehicle: Vehicle?): VehicleDetailAction
     data class OnSelectedVehicleChange(val vehicle: Vehicle): VehicleDetailAction
+    data class OnSaveOdometer(val vehicle: Vehicle?): VehicleDetailAction
 }

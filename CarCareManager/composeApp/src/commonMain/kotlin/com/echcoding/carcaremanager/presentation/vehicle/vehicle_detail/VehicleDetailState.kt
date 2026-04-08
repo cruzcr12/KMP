@@ -7,5 +7,6 @@ data class VehicleDetailState(
     val isLoading: Boolean = false,
     val isSaving: Boolean = false,
     val isEditing: Boolean = false,
+    val isOdometerUpdating: Boolean = false, // Indicates if the odometer is being updated
     val errorMessage: String? = null
 )

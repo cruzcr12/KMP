@@ -89,7 +89,8 @@ class VehicleDetailViewModel(
                 ),
                 isLoading = false,
                 isSaving = false,
-                isEditing = false
+                isEditing = false,
+                isOdometerUpdating = false
             )
         }
     }
@@ -101,7 +102,7 @@ class VehicleDetailViewModel(
         viewModelScope.launch {
             val vehicle = repository.getVehicleById(vehicleId)
             _state.update {
-                it.copy(vehicle = vehicle, isEditing = true, isLoading = false)
+                it.copy(vehicle = vehicle, isEditing = true, isLoading = false, isOdometerUpdating = false)
             }
         }
     }
@@ -120,7 +121,12 @@ class VehicleDetailViewModel(
                             if(currentVehicle.id == null){
                                 saveDefaultMaintenances()
                             }
-                            _state.update { it.copy(isSaving = false) }
+                            // Verify if the odometer was updated to update the maintenance tasks and only if the vehicle is being updated
+                            if (_state.value.isEditing && _state.value.isOdometerUpdating){
+                                repository.updateVehicleOdometer(currentVehicle.id!!, currentVehicle.odometer)
+                            }
+                            // Update the state to indicate that saving is done
+                            _state.update { it.copy(isSaving = false, isOdometerUpdating = false) }
                             // Navigate back to the list screen
                             _effects.send(VehicleDetailSideEffect.NavigateBack)
                         } catch (e: Exception) {
@@ -139,6 +145,9 @@ class VehicleDetailViewModel(
             }
             is VehicleDetailAction.OnStateChange -> {
                 _state.update { it.copy(vehicle = action.vehicle) }
+            }
+            is VehicleDetailAction.OnSaveOdometer -> {
+                _state.update { it.copy(vehicle = action.vehicle, isOdometerUpdating = true)}
             }
             else -> Unit
         }

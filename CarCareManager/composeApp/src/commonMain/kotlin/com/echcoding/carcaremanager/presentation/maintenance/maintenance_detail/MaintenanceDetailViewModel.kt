@@ -11,7 +11,9 @@ import carcaremanager.composeapp.generated.resources.unknown_error
 import com.echcoding.carcaremanager.app.Route
 import com.echcoding.carcaremanager.domain.model.ControlType
 import com.echcoding.carcaremanager.domain.model.Maintenance
+import com.echcoding.carcaremanager.domain.model.MaintenanceStatusType
 import com.echcoding.carcaremanager.domain.repository.MaintenanceRepository
+import com.echcoding.carcaremanager.presentation.core.extensions.calculateStatus
 import com.echcoding.carcaremanager.presentation.core.utils.getCurrentLocalDate
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,10 +33,12 @@ class MaintenanceDetailViewModel(
     private val _sideEffect = Channel<MaintenanceDetailSideEffect>()
     val effects = _sideEffect.receiveAsFlow()
 
+    private var selectedVehicleOdometer: Int? = null
+
     init {
         val maintenanceId = savedStateHandle.toRoute<Route.MaintenanceDetails>().maintenanceId
         val selectedVehicleId = savedStateHandle.toRoute<Route.MaintenanceDetails>().selectedVehicleId
-        val selectedVehicleOdometer = savedStateHandle.toRoute<Route.MaintenanceDetails>().selectedVehicleOdometer
+        selectedVehicleOdometer = savedStateHandle.toRoute<Route.MaintenanceDetails>().selectedVehicleOdometer
 
         if(maintenanceId != null && maintenanceId != 0L){
             loadMaintenance(maintenanceId)
@@ -47,7 +51,7 @@ class MaintenanceDetailViewModel(
     /**
      * Initialize a blank maintenance when the screen is created
      */
-    private fun createNewMaintenance(vehicleId: Int, vehicleOdometer: Int){
+    private fun createNewMaintenance(vehicleId: Int, vehicleOdometer: Int?){
         _state.update{
             it.copy(
                 maintenance = Maintenance(
@@ -55,7 +59,7 @@ class MaintenanceDetailViewModel(
                     vehicleId = vehicleId,
                     name = "",
                     description = "",
-                    initialOdometer = vehicleOdometer,
+                    initialOdometer = vehicleOdometer ?: 0,
                     initialDate = getCurrentLocalDate(),
                     odometerInterval = 0,
                     dateInterval = 0,
@@ -85,9 +89,6 @@ class MaintenanceDetailViewModel(
             is MaintenanceDetailAction.OnSaveMaintenanceClick -> {
                 saveMaintenance()
             }
-            /*is MaintenanceDetailAction.OnSelectedMaintenanceChange -> {
-                _state.update { it.copy(maintenance = action.maintenance) }
-            }*/
             is MaintenanceDetailAction.OnStateChange -> {
                 _state.update { it.copy(maintenance = action.maintenance) }
             }
@@ -110,15 +111,26 @@ class MaintenanceDetailViewModel(
     }
 
     /**
+     * Updates the status of the maintenance based on the current odometer
+     */
+    private fun updateMaintenanceStatus(){
+        val currentMaintenance = _state.value.maintenance
+        val calculatedStatus = currentMaintenance?.calculateStatus(selectedVehicleOdometer ?: 0)
+        _state.update { it.copy(maintenance = currentMaintenance?.copy(status = calculatedStatus?.status ?: MaintenanceStatusType.UPCOMING)) }
+    }
+
+    /**
      * Saves (insert or update) the maintenance to the database
      */
     private fun saveMaintenance(){
+        updateMaintenanceStatus()
         val currentMaintenance = _state.value.maintenance
         if(currentMaintenance != null){
             viewModelScope.launch {
                 // Clear previous errors and show loading
                 _state.update { it.copy(errorMessage = null, isSaving = true) }
                 try {
+                    // Save the maintenance to the database
                     maintenanceRepository.upsertMaintenance(currentMaintenance)
                     // if success
                     _state.update { it.copy(isSaving = false) }

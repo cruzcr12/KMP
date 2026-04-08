@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.echcoding.carcaremanager.domain.model.Maintenance
+import com.echcoding.carcaremanager.domain.model.MaintenanceStatusType
 import com.echcoding.carcaremanager.presentation.core.extensions.calculateStatus
 import com.echcoding.carcaremanager.presentation.core.extensions.generateSubtitle
 import com.echcoding.carcaremanager.presentation.core.mocks.getMockMaintenances
@@ -41,7 +42,7 @@ fun MaintenanceTaskItem(
     onEditClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val status: MaintenanceStatus = maintenance.calculateStatus(currentOdometer)
+    val status: MaintenanceStatus = maintenance.status.toMaintenanceStatus()  //.calculateStatus(currentOdometer)
 
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -118,6 +119,7 @@ fun MaintenanceTaskItem(
         }
     }
 }
+
 
 @Preview
 @Composable

@@ -233,7 +233,7 @@ fun VehicleDetailScreen(
                     onValueChange = { newValue ->
                         // Filter out non-numeric characters if necessary, or just use toIntOrNull
                         val intValue = newValue.filter { it.isDigit() }.toIntOrNull() ?: 0
-                        onAction(VehicleDetailAction.OnStateChange(vehicle = state.vehicle?.copy(odometer = intValue)))
+                        onAction(VehicleDetailAction.OnSaveOdometer(state.vehicle?.copy(odometer = intValue)))
                     },
                     placeholder = stringResource(Res.string.odometer_placeholder),
                     icon = Icons.Default.GasMeter,

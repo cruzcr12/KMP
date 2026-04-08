@@ -12,6 +12,7 @@ import carcaremanager.composeapp.generated.resources.completed
 import carcaremanager.composeapp.generated.resources.due_soon
 import carcaremanager.composeapp.generated.resources.overdue
 import carcaremanager.composeapp.generated.resources.upcoming
+import com.echcoding.carcaremanager.domain.model.MaintenanceStatusType
 import com.echcoding.carcaremanager.themes.customapp.errorContainerLight
 import com.echcoding.carcaremanager.themes.customapp.informativeContainerLight
 import com.echcoding.carcaremanager.themes.customapp.informativeLight
@@ -25,26 +26,40 @@ sealed class MaintenanceStatus(
     val label: StringResource,
     val mainColor: Color,
     val backgroundColor: Color,
-    val icon: ImageVector
+    val icon: ImageVector,
+    val status: MaintenanceStatusType
 ) {
     data object Overdue : MaintenanceStatus(
         Res.string.overdue,
         onErrorContainerLight,
         errorContainerLight,
-        Icons.Default.ErrorOutline)
+        Icons.Default.ErrorOutline,
+        MaintenanceStatusType.OVERDUE)
     data object DueSoon : MaintenanceStatus(
         Res.string.due_soon,
         informativeLight,
         informativeContainerLight,
-        Icons.Default.Schedule)
+        Icons.Default.Schedule,
+        MaintenanceStatusType.DUE_SOON)
     data object Completed : MaintenanceStatus(
         Res.string.completed,
         tertiaryContainerLight,
         onTertiaryContainerLight,
-        Icons.Default.CheckCircleOutline)
+        Icons.Default.CheckCircleOutline,
+        MaintenanceStatusType.COMPLETED)
     data object Upcoming : MaintenanceStatus(
         Res.string.upcoming,
         tertiaryContainerLight,
         onTertiaryContainerLight,
-        Icons.Default.CalendarToday)
+        Icons.Default.CalendarToday,
+        MaintenanceStatusType.UPCOMING)
+}
+
+fun MaintenanceStatusType.toMaintenanceStatus(): MaintenanceStatus {
+    return when(this.name){
+        MaintenanceStatusType.OVERDUE.name -> MaintenanceStatus.Overdue
+        MaintenanceStatusType.DUE_SOON.name -> MaintenanceStatus.DueSoon
+        MaintenanceStatusType.COMPLETED.name -> MaintenanceStatus.Completed
+        else -> MaintenanceStatus.Upcoming
+    }
 }

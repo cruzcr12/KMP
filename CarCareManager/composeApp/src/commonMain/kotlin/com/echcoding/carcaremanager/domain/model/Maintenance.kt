@@ -12,6 +12,8 @@ data class Maintenance(
     val odometerInterval: Int, // Interval in kilometers or miles
     val dateInterval: Int, // Interval in days
     val controlType: ControlType, // How to control when the maintenance is due
+    val status: MaintenanceStatusType = MaintenanceStatusType.UPCOMING  // Current status of the maintenance
 )
 
 enum class ControlType { MILEAGE, TIME, BOTH }
+enum class MaintenanceStatusType { OVERDUE, DUE_SOON, COMPLETED, UPCOMING }

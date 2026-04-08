@@ -49,4 +49,7 @@ interface VehicleDao {
         deleteMaintenanceByVehicleId(id)
         deleteVehicleById(id)
     }
+
+    @Query("UPDATE vehicles SET odometer = :newOdometer WHERE id = :vehicleId")
+    suspend fun updateVehicleOdometer(vehicleId: Int, newOdometer: Int)
 }

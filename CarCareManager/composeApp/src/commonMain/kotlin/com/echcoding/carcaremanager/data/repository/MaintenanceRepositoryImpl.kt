@@ -38,4 +38,9 @@ class MaintenanceRepositoryImpl(
             }
     }
 
+    override suspend fun upsertAll(maintenances: List<Maintenance>) {
+        val entities = maintenances.map { it.toMaintenanceEntity() }
+        maintenanceDao.upsertAll(entities)
+    }
+
 }

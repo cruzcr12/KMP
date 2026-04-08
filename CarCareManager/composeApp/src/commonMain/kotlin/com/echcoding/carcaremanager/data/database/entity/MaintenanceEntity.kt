@@ -16,5 +16,6 @@ data class MaintenanceEntity(
     val initialDate: Long, // Using Long as Room doesn't support LocalDate
     val odometerInterval: Int,
     val dateInterval: Int,
-    val controlType: String
+    val controlType: String,
+    val status: String
 )

@@ -16,5 +16,6 @@ interface MaintenanceRepository {
 
     // Get all the maintenances tasks for a specific vehicle
     fun getMaintenancesForVehicle(vehicleId: Int): Flow<List<Maintenance>>
-
+    // Add a non-flow version for the repository to work with data immediately
+    suspend fun upsertAll(maintenances: List<Maintenance>)
 }
